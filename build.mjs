@@ -4,7 +4,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from 'node:fs';
 
-const esbuild = '/home/claude/.npm-global/lib/node_modules/tsx/node_modules/esbuild/bin/esbuild';
+const esbuild = 'node_modules/esbuild/bin/esbuild';
 const css = readFileSync('src/styles.css', 'utf8');
 const REACT = `<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>`;
