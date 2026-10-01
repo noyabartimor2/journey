@@ -1,0 +1,473 @@
+<title>JOURNEY הקמת מסד נתונים</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&family=Frank+Ruhl+Libre:wght@400;500&display=swap">
+<style>
+/* Layout: one calm column of two numbered steps, each with one big copy button. */
+:root {
+  --paper:#FAF7F2; --cream:#F3ECE2; --sage:#E1E8DC; --sage-deep:#5F735C; --blush:#F2E2DB;
+  --ink:#3A3631; --ink-2:#6F685F; --ink-3:#A0978B; --line:#E8E0D4; --white:#FFFDF9;
+  --display:"Frank Ruhl Libre","David",serif; --body:"Assistant","Arial Hebrew",system-ui,sans-serif;
+  color-scheme: light;
+}
+body { background:var(--paper); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.65; margin:0; }
+main { max-width:560px; margin:0 auto; padding-inline:20px; padding-block:36px 60px; display:grid; gap:22px; }
+.brand { font-family:var(--display); letter-spacing:.32em; font-size:14px; color:var(--ink-2); direction:ltr; text-align:right; }
+h1 { font-family:var(--display); font-weight:400; font-size:34px; line-height:1.2; margin:0; text-wrap:balance; }
+.lead { color:var(--ink-2); margin:0; }
+.step { background:var(--white); border-radius:22px; padding:22px; box-shadow:inset 0 0 0 1px var(--line); display:grid; gap:12px; }
+.step h2 { font-family:var(--display); font-weight:400; font-size:24px; margin:0; display:flex; gap:12px; align-items:baseline; }
+.num { font-size:28px; color:var(--sage-deep); }
+ol { margin:0; padding-inline-start:22px; display:grid; gap:6px; color:var(--ink-2); }
+b { color:var(--ink); }
+code { background:var(--cream); padding:1px 7px; border-radius:6px; font-size:15px; direction:ltr; display:inline-block; }
+button.copy { min-height:54px; border:0; border-radius:999px; background:var(--sage-deep); color:var(--white); font:600 18px var(--body); cursor:pointer; }
+button.copy.done { background:var(--ink); }
+button.copy:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+details summary { cursor:pointer; color:var(--ink-3); font-size:15px; }
+textarea { width:100%; box-sizing:border-box; height:220px; margin-top:8px; border:0; border-radius:14px; background:var(--cream); color:var(--ink-2); padding:12px; font:13px/1.5 ui-monospace,Menlo,Consolas,monospace; direction:ltr; resize:vertical; }
+.ok { background:var(--sage); border-radius:16px; padding:14px 16px; color:var(--ink); }
+.warn { background:var(--blush); border-radius:16px; padding:14px 16px; }
+</style>
+<main>
+  <p class="brand">JOURNEY</p>
+  <h1>הקמת מסד הנתונים</h1>
+  <p class="lead">שני שלבים, אחד אחרי השני. בכל שלב: להעתיק, להדביק, ללחוץ Run. את הקוד עצמו לא צריך לקרוא או להבין.</p>
+
+  <section class="step">
+    <h2><span class="num">1</span> המבנה וכללי הפרטיות</h2>
+    <ol>
+      <li>ב־Supabase, בתפריט בצד שמאל, לחצי על <b>SQL Editor</b>.</li>
+      <li>לחצי על <b>New query</b> (או על ה־+), כדי לפתוח דף ריק.</li>
+      <li>לחצי על הכפתור הירוק כאן למטה. הוא מעתיק את כל הקוד.</li>
+      <li>חזרי ל־Supabase, לחצי בתוך הדף הריק, והדביקי (<code>Ctrl+V</code> או <code>⌘+V</code> במק).</li>
+      <li>לחצי על <b>Run</b>, בפינה הימנית התחתונה. אם תופיע שאלה אם להריץ בכל זאת, אשרי.</li>
+    </ol>
+    <button class="copy" data-target="sql1">העתקת קוד שלב 1</button>
+    <details><summary>להציג את הקוד (לא חובה)</summary><textarea id="sql1" readonly>-- =====================================================================
+-- JOURNEY: database setup (part 1 of 2: structure and privacy rules)
+-- Paste into Supabase &gt; SQL Editor &gt; New query &gt; Run. Safe to run once.
+-- =====================================================================
+
+-- ---------- Who is who ----------------------------------------------
+
+-- Admins are listed by email (the email they sign in with).
+create table if not exists public.admins (
+  email text primary key
+);
+alter table public.admins enable row level security;
+-- No policies: nobody can read or change this list from the app. Only from the Supabase dashboard.
+
+-- One row per participant, created automatically when she signs up.
+create table if not exists public.profiles (
+  id uuid primary key references auth.users (id) on delete cascade,
+  email text,
+  display_name text not null default &#x27;&#x27;,
+  avatar_path text,
+  status text not null default &#x27;pending&#x27; check (status in (&#x27;pending&#x27;, &#x27;approved&#x27;, &#x27;blocked&#x27;)),
+  activated_at timestamptz,          -- the moment she was approved = her Day 1
+  created_at timestamptz not null default now()
+);
+alter table public.profiles enable row level security;
+
+create or replace function public.is_admin()
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from public.admins a
+    where lower(a.email) = lower(coalesce(auth.jwt() -&gt;&gt; &#x27;email&#x27;, &#x27;&#x27;))
+  );
+$$;
+
+create or replace function public.is_approved()
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.status = &#x27;approved&#x27; and p.activated_at is not null
+  );
+$$;
+
+-- ---------- The 9-day schedule (Israel time) -------------------------
+-- Day 1 opens at approval. Day N opens at 08:00 Asia/Jerusalem on the (N-1)th calendar day after.
+
+create or replace function public.day_unlock_time(p_activated_at timestamptz, p_day int)
+returns timestamptz language sql stable as $$
+  select case
+    when p_day &lt;= 1 then p_activated_at
+    else (((p_activated_at at time zone &#x27;Asia/Jerusalem&#x27;)::date + (p_day - 1)) + time &#x27;08:00&#x27;)
+         at time zone &#x27;Asia/Jerusalem&#x27;
+  end;
+$$;
+
+create or replace function public.current_day_for(p_user uuid)
+returns int language sql stable security definer set search_path = public as $$
+  select coalesce((
+    select 1 + (select count(*)::int from generate_series(2, 9) as n
+                where public.day_unlock_time(p.activated_at, n) &lt;= now())
+    from public.profiles p
+    where p.id = p_user and p.status = &#x27;approved&#x27; and p.activated_at is not null
+  ), 0);
+$$;
+
+-- Her current day (0 = not approved yet).
+create or replace function public.my_current_day()
+returns int language sql stable security definer set search_path = public as $$
+  select public.current_day_for(auth.uid());
+$$;
+
+-- New sign-up -&gt; pending profile.
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  insert into public.profiles (id, email, display_name)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data -&gt;&gt; &#x27;full_name&#x27;, new.raw_user_meta_data -&gt;&gt; &#x27;name&#x27;, split_part(coalesce(new.email, &#x27;&#x27;), &#x27;@&#x27;, 1))
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- Approving her (status -&gt; approved) starts her Day 1 automatically.
+create or replace function public.stamp_activation()
+returns trigger language plpgsql as $$
+begin
+  if new.status = &#x27;approved&#x27; and new.activated_at is null then
+    new.activated_at := now();
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists profiles_stamp_activation on public.profiles;
+create trigger profiles_stamp_activation before insert or update on public.profiles
+  for each row execute function public.stamp_activation();
+
+-- Profile rules: she sees and edits only her own name/photo. Admin sees and manages all.
+drop policy if exists &quot;profiles: own row&quot; on public.profiles;
+create policy &quot;profiles: own row&quot; on public.profiles for select using (id = auth.uid() or public.is_admin());
+drop policy if exists &quot;profiles: edit own name/photo&quot; on public.profiles;
+create policy &quot;profiles: edit own name/photo&quot; on public.profiles for update using (id = auth.uid() or public.is_admin()) with check (id = auth.uid() or public.is_admin());
+revoke update on public.profiles from authenticated, anon;
+grant update (display_name, avatar_path) on public.profiles to authenticated;
+
+-- Admin-only: approve / block / change start date (used by the admin screens later).
+create or replace function public.admin_set_status(p_user uuid, p_status text)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  if not public.is_admin() then raise exception &#x27;not allowed&#x27;; end if;
+  update public.profiles set status = p_status where id = p_user;
+end;
+$$;
+
+-- Names and photos of approved members, for the community (no emails, no status).
+create or replace view public.members as
+  select p.id, p.display_name, p.avatar_path
+  from public.profiles p
+  where p.status = &#x27;approved&#x27; and (public.is_approved() or public.is_admin());
+grant select on public.members to authenticated;
+
+-- ---------- Content: the 9 days and the library -----------------------
+
+create table if not exists public.days (
+  number int primary key check (number between 1 and 9),
+  title text not null,
+  emoji text not null default &#x27;&#x27;,
+  question text not null default &#x27;&#x27;,
+  youtube_url text,                  -- the creator&#x27;s video: just a YouTube link, nothing stored here
+  content jsonb not null default &#x27;{}&#x27;::jsonb,  -- intro, task, game, extra, share, moment
+  updated_at timestamptz not null default now()
+);
+alter table public.days enable row level security;
+-- A participant can only download days that are already open for her. Future days never leave the database.
+drop policy if exists &quot;days: open days only&quot; on public.days;
+create policy &quot;days: open days only&quot; on public.days for select using (number &lt;= public.my_current_day() or public.is_admin());
+drop policy if exists &quot;days: admin edits&quot; on public.days;
+create policy &quot;days: admin edits&quot; on public.days for all using (public.is_admin()) with check (public.is_admin());
+
+create table if not exists public.library_items (
+  id uuid primary key default gen_random_uuid(),
+  category text not null default &#x27;listen&#x27;,
+  kind text not null check (kind in (&#x27;audio&#x27;, &#x27;video&#x27;, &#x27;text&#x27;, &#x27;pdf&#x27;)),
+  title text not null,
+  description text not null default &#x27;&#x27;,
+  meta text not null default &#x27;&#x27;,
+  body jsonb,                        -- for text items
+  youtube_url text,                  -- for video items
+  file_path text,                    -- for uploaded audio / PDF (in the &quot;content&quot; storage)
+  sort int not null default 0,
+  created_at timestamptz not null default now()
+);
+alter table public.library_items enable row level security;
+drop policy if exists &quot;library: approved read&quot; on public.library_items;
+create policy &quot;library: approved read&quot; on public.library_items for select using (public.is_approved() or public.is_admin());
+drop policy if exists &quot;library: admin edits&quot; on public.library_items;
+create policy &quot;library: admin edits&quot; on public.library_items for all using (public.is_admin()) with check (public.is_admin());
+
+-- ---------- Her progress ----------------------------------------------
+
+create table if not exists public.progress (
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  day int not null check (day between 1 and 9),
+  completed_at timestamptz not null default now(),
+  primary key (user_id, day)
+);
+alter table public.progress enable row level security;
+drop policy if exists &quot;progress: own read&quot; on public.progress;
+create policy &quot;progress: own read&quot; on public.progress for select using (user_id = auth.uid() or public.is_admin());
+drop policy if exists &quot;progress: complete open day&quot; on public.progress;
+create policy &quot;progress: complete open day&quot; on public.progress for insert
+  with check (user_id = auth.uid() and day &lt;= public.my_current_day());
+drop policy if exists &quot;progress: undo own&quot; on public.progress;
+create policy &quot;progress: undo own&quot; on public.progress for delete using (user_id = auth.uid());
+
+-- ---------- Her private space (Day 1 &amp; 9 videos, Day 8 answers, ritual) ----
+
+create table if not exists public.private_items (
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  kind text not null check (kind in (&#x27;day1_video&#x27;, &#x27;day9_video&#x27;, &#x27;purpose_answers&#x27;, &#x27;ritual&#x27;)),
+  data jsonb not null default &#x27;{}&#x27;::jsonb,
+  video_path text,                   -- in the &quot;private-videos&quot; storage, inside her own folder
+  updated_at timestamptz not null default now(),
+  primary key (user_id, kind)
+);
+alter table public.private_items enable row level security;
+-- Only she can see or change these. Not other participants, not the admin screens.
+drop policy if exists &quot;private: only her&quot; on public.private_items;
+create policy &quot;private: only her&quot; on public.private_items for all
+  using (user_id = auth.uid() and public.is_approved())
+  with check (user_id = auth.uid() and public.is_approved());
+
+-- ---------- Community -------------------------------------------------
+
+create table if not exists public.posts (
+  id uuid primary key default gen_random_uuid(),
+  author_id uuid not null references public.profiles (id) on delete cascade,
+  day int check (day between 1 and 9),   -- empty = general post; a number = from that day&#x27;s sharing task
+  label text,                            -- e.g. &#x27;הוכחת שפע&#x27;
+  body text not null default &#x27;&#x27; check (char_length(body) &lt;= 5000),
+  created_at timestamptz not null default now()
+);
+create index if not exists posts_created_idx on public.posts (created_at desc);
+alter table public.posts enable row level security;
+-- No spoilers: she sees general posts and posts from days already open for her (and always her own).
+drop policy if exists &quot;posts: no spoilers&quot; on public.posts;
+create policy &quot;posts: no spoilers&quot; on public.posts for select using (
+  public.is_admin()
+  or author_id = auth.uid()
+  or (public.is_approved() and (day is null or day &lt;= public.my_current_day()))
+);
+drop policy if exists &quot;posts: approved can post&quot; on public.posts;
+create policy &quot;posts: approved can post&quot; on public.posts for insert with check (
+  author_id = auth.uid() and public.is_approved() and (day is null or day &lt;= public.my_current_day())
+);
+drop policy if exists &quot;posts: delete own or admin&quot; on public.posts;
+create policy &quot;posts: delete own or admin&quot; on public.posts for delete using (author_id = auth.uid() or public.is_admin());
+
+-- Photos now, videos (up to 3 minutes) too. One post can have several.
+create table if not exists public.post_media (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid not null references public.posts (id) on delete cascade,
+  kind text not null check (kind in (&#x27;image&#x27;, &#x27;video&#x27;)),
+  path text not null unique,             -- in the &quot;community&quot; storage
+  duration_seconds numeric check (duration_seconds is null or duration_seconds &lt;= 185),
+  width int,
+  height int,
+  sort int not null default 0,
+  created_at timestamptz not null default now(),
+  check (kind &lt;&gt; &#x27;video&#x27; or duration_seconds is not null)
+);
+alter table public.post_media enable row level security;
+drop policy if exists &quot;media: visible with its post&quot; on public.post_media;
+create policy &quot;media: visible with its post&quot; on public.post_media for select using (
+  exists (select 1 from public.posts p where p.id = post_id)
+);
+drop policy if exists &quot;media: add to own post&quot; on public.post_media;
+create policy &quot;media: add to own post&quot; on public.post_media for insert with check (
+  exists (select 1 from public.posts p where p.id = post_id and p.author_id = auth.uid())
+);
+drop policy if exists &quot;media: delete own or admin&quot; on public.post_media;
+create policy &quot;media: delete own or admin&quot; on public.post_media for delete using (
+  public.is_admin() or exists (select 1 from public.posts p where p.id = post_id and p.author_id = auth.uid())
+);
+
+create table if not exists public.comments (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid not null references public.posts (id) on delete cascade,
+  author_id uuid not null references public.profiles (id) on delete cascade,
+  body text not null check (char_length(body) between 1 and 2000),
+  created_at timestamptz not null default now()
+);
+create index if not exists comments_post_idx on public.comments (post_id, created_at);
+alter table public.comments enable row level security;
+drop policy if exists &quot;comments: visible with its post&quot; on public.comments;
+create policy &quot;comments: visible with its post&quot; on public.comments for select using (
+  exists (select 1 from public.posts p where p.id = post_id)
+);
+drop policy if exists &quot;comments: approved can comment&quot; on public.comments;
+create policy &quot;comments: approved can comment&quot; on public.comments for insert with check (
+  author_id = auth.uid() and public.is_approved() and exists (select 1 from public.posts p where p.id = post_id)
+);
+drop policy if exists &quot;comments: delete own or admin&quot; on public.comments;
+create policy &quot;comments: delete own or admin&quot; on public.comments for delete using (author_id = auth.uid() or public.is_admin());
+
+create table if not exists public.likes (
+  post_id uuid not null references public.posts (id) on delete cascade,
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (post_id, user_id)
+);
+alter table public.likes enable row level security;
+drop policy if exists &quot;likes: visible with its post&quot; on public.likes;
+create policy &quot;likes: visible with its post&quot; on public.likes for select using (
+  exists (select 1 from public.posts p where p.id = post_id)
+);
+drop policy if exists &quot;likes: like&quot; on public.likes;
+create policy &quot;likes: like&quot; on public.likes for insert with check (
+  user_id = auth.uid() and public.is_approved() and exists (select 1 from public.posts p where p.id = post_id)
+);
+drop policy if exists &quot;likes: unlike&quot; on public.likes;
+create policy &quot;likes: unlike&quot; on public.likes for delete using (user_id = auth.uid());
+
+-- The feed in one request: post + author + counts (follows all the rules above).
+create or replace view public.feed with (security_invoker = true) as
+  select
+    p.id, p.author_id, p.day, p.label, p.body, p.created_at,
+    m.display_name as author_name, m.avatar_path as author_avatar,
+    (select count(*) from public.likes l where l.post_id = p.id)::int as like_count,
+    (select count(*) from public.comments c where c.post_id = p.id)::int as comment_count,
+    exists (select 1 from public.likes l where l.post_id = p.id and l.user_id = auth.uid()) as liked_by_me,
+    coalesce((select jsonb_agg(jsonb_build_object(&#x27;kind&#x27;, pm.kind, &#x27;path&#x27;, pm.path, &#x27;duration&#x27;, pm.duration_seconds, &#x27;width&#x27;, pm.width, &#x27;height&#x27;, pm.height) order by pm.sort)
+              from public.post_media pm where pm.post_id = p.id), &#x27;[]&#x27;::jsonb) as media
+  from public.posts p
+  left join public.members m on m.id = p.author_id;
+grant select on public.feed to authenticated;
+
+-- ---------- File storage ------------------------------------------------
+-- All folders are private. Files are shown through short-lived links the app asks for.
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types) values
+  -- Size limits per file follow the Supabase plan for now (we set them once the plan is chosen).
+  (&#x27;private-videos&#x27;, &#x27;private-videos&#x27;, false, null,     array[&#x27;video/*&#x27;]),
+  (&#x27;community&#x27;,      &#x27;community&#x27;,      false, null,     array[&#x27;image/*&#x27;, &#x27;video/*&#x27;]),
+  (&#x27;avatars&#x27;,        &#x27;avatars&#x27;,        false, 10485760, array[&#x27;image/*&#x27;]),
+  (&#x27;content&#x27;,        &#x27;content&#x27;,        false, null,     array[&#x27;audio/*&#x27;, &#x27;application/pdf&#x27;, &#x27;image/*&#x27;])
+on conflict (id) do update set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
+
+-- private-videos: each participant has her own folder (named by her id). Only she can touch it.
+drop policy if exists &quot;private-videos: only her folder&quot; on storage.objects;
+create policy &quot;private-videos: only her folder&quot; on storage.objects for all to authenticated
+  using (bucket_id = &#x27;private-videos&#x27; and (storage.foldername(name))[1] = auth.uid()::text and public.is_approved())
+  with check (bucket_id = &#x27;private-videos&#x27; and (storage.foldername(name))[1] = auth.uid()::text and public.is_approved());
+
+-- community: she uploads into her own folder; others can open a file only if they may see its post.
+drop policy if exists &quot;community: upload own&quot; on storage.objects;
+create policy &quot;community: upload own&quot; on storage.objects for insert to authenticated
+  with check (bucket_id = &#x27;community&#x27; and (storage.foldername(name))[1] = auth.uid()::text and public.is_approved());
+drop policy if exists &quot;community: view if post visible&quot; on storage.objects;
+create policy &quot;community: view if post visible&quot; on storage.objects for select to authenticated
+  using (bucket_id = &#x27;community&#x27; and (
+    public.is_admin()
+    or (storage.foldername(name))[1] = auth.uid()::text
+    or exists (select 1 from public.post_media pm where pm.path = storage.objects.name)
+  ));
+drop policy if exists &quot;community: delete own or admin&quot; on storage.objects;
+create policy &quot;community: delete own or admin&quot; on storage.objects for delete to authenticated
+  using (bucket_id = &#x27;community&#x27; and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin()));
+
+-- avatars: she manages her own; approved members can see them.
+drop policy if exists &quot;avatars: manage own&quot; on storage.objects;
+create policy &quot;avatars: manage own&quot; on storage.objects for all to authenticated
+  using (bucket_id = &#x27;avatars&#x27; and (storage.foldername(name))[1] = auth.uid()::text)
+  with check (bucket_id = &#x27;avatars&#x27; and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists &quot;avatars: members view&quot; on storage.objects;
+create policy &quot;avatars: members view&quot; on storage.objects for select to authenticated
+  using (bucket_id = &#x27;avatars&#x27; and (public.is_approved() or public.is_admin()));
+
+-- content: the admin uploads library audio / PDFs; approved participants can open them.
+drop policy if exists &quot;content: approved view&quot; on storage.objects;
+create policy &quot;content: approved view&quot; on storage.objects for select to authenticated
+  using (bucket_id = &#x27;content&#x27; and (public.is_approved() or public.is_admin()));
+drop policy if exists &quot;content: admin manages&quot; on storage.objects;
+create policy &quot;content: admin manages&quot; on storage.objects for all to authenticated
+  using (bucket_id = &#x27;content&#x27; and public.is_admin())
+  with check (bucket_id = &#x27;content&#x27; and public.is_admin());
+</textarea></details>
+    <p class="ok">כשזה הצליח, תופיע למטה הודעה ירוקה כמו <code>Success. No rows returned</code>.</p>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">2</span> תוכן 9 הימים והספרייה</h2>
+    <ol>
+      <li>ב־SQL Editor, פתחי שוב דף ריק עם <b>New query</b>.</li>
+      <li>לחצי על הכפתור כאן למטה, הדביקי שם, ולחצי <b>Run</b>.</li>
+    </ol>
+    <button class="copy" data-target="sql2">העתקת קוד שלב 2</button>
+    <details><summary>להציג את הקוד (לא חובה)</summary><textarea id="sql2" readonly>-- =====================================================================
+-- JOURNEY: database setup (part 2 of 2: the 9 days + starter library)
+-- Paste into Supabase &gt; SQL Editor &gt; New query &gt; Run, after part 1.
+-- Running it again resets Days 1-9 to this text (YouTube links you already pasted are kept).
+-- =====================================================================
+
+insert into public.days (number, title, emoji, question, content) values (1, &#x27;היי וביי לחרדה&#x27;, &#x27;👋&#x27;, &#x27;ומה אם התקופה הזאת היא לא תקלה?&#x27;, $json${&quot;intro&quot;:[&quot;ומה אם מסתתרות בה מתנות שאת עדיין לא מסוגלת לראות?&quot;,&quot;היום אנחנו לא מנסות לפתור הכול.&quot;,&quot;אנחנו קודם כול מורידות קצת רעש, חוזרות לגוף ומתחילות ללמוד שפה חדשה:&quot;,{&quot;b&quot;:&quot;מה מרחיב אותי — ומה מכווץ אותי?&quot;}],&quot;task&quot;:{&quot;title&quot;:&quot;הסרטון שנפגוש שוב&quot;,&quot;body&quot;:[&quot;צלמי סרטון שלך עכשיו.&quot;,{&quot;lines&quot;:[&quot;בלי להיות רוחנית.&quot;,&quot;בלי לנסות לראות את הטוב.&quot;,&quot;בלי לסדר את המחשבות לפני.&quot;]},&quot;ספרי איפה את נמצאת עכשיו.&quot;,{&quot;lines&quot;:[&quot;מה קשה?&quot;,&quot;מה מפחיד?&quot;,&quot;מה מבלבל?&quot;,&quot;מה נמאס לך?&quot;,&quot;מה את לא יודעת?&quot;]},{&quot;b&quot;:&quot;שפכי הכול.&quot;},&quot;תעלי את הסרטון למרחב האישי שלך כאן.&quot;,&quot;אנחנו נחזור אליו בהמשך הג׳רני :)&quot;,{&quot;widget&quot;:&quot;day1Video&quot;}]},&quot;game&quot;:{&quot;title&quot;:&quot;התרחבות / התכווצות&quot;,&quot;body&quot;:[&quot;היום הגוף שלך הופך למצפן.&quot;,&quot;לפני החלטות קטנות תשאלי:&quot;,{&quot;b&quot;:&quot;זה מרחיב אותי או מכווץ אותי?&quot;},{&quot;lines&quot;:[&quot;מה בא לי לאכול?&quot;,&quot;מה ללבוש?&quot;,&quot;עם מי בא לי להיפגש?&quot;,&quot;האם בא לי לצאת או להישאר בבית?&quot;,&quot;לענות עכשיו או אחר כך?&quot;]},&quot;אל תתחילי בהחלטות גורליות :)&quot;,&quot;אנחנו רק מתחילות להכיר את השפה של הגוף.&quot;,{&quot;b&quot;:&quot;היום אל תחפשי תשובות. תאספי מידע.&quot;}]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (2, &#x27;גם זה יעבור&#x27;, &#x27;🌊&#x27;, &#x27;מי את כשאת מפסיקה למדוד את עצמך לפי מה שהשגת?&#x27;, $json${&quot;intro&quot;:[&quot;החיים זזים בגלים.&quot;,&quot;יש תקופות שבהן הכול טס, ויש תקופות שבהן הכול מרגיש תקוע, לא ברור או בתנועה פנימית.&quot;,&quot;אף אחת מהן לא מגדירה את הערך שלך.&quot;],&quot;task&quot;:{&quot;title&quot;:&quot;במה אני גאה בי?&quot;,&quot;body&quot;:[&quot;תעלי לקהילה:&quot;,{&quot;b&quot;:&quot;10 דברים שאני גאה בעצמי עליהם שלא קשורים להישגים שלי.&quot;},&quot;זה יכול להיות:&quot;,{&quot;lines&quot;:[&quot;אני גאה במסע הרגשי שעברתי.&quot;,&quot;אני גאה בדרך שבה למדתי לשים גבולות.&quot;,&quot;אני גאה שלא דיברתי עם האקס שלי כבר שבוע 😂&quot;,&quot;אני גאה בדרך שבה אני אוהבת את האנשים שלי.&quot;,&quot;אני גאה בעצמי שאני עדיין כאן.&quot;]},&quot;אחרי שהעלית את הרשימה שלך:&quot;,{&quot;b&quot;:&quot;תיכנסי לשיתופים של 3 נשים אחרות ותפרגני להן על משהו שאת רואה בהן.&quot;}]},&quot;share&quot;:{&quot;cta&quot;:&quot;לשתף במה אני גאה ✨&quot;,&quot;label&quot;:&quot;במה אני גאה&quot;,&quot;placeholder&quot;:&quot;אני גאה בעצמי ש…&quot;},&quot;game&quot;:{&quot;title&quot;:&quot;נקודת מבט מעניינת&quot;,&quot;body&quot;:[&quot;בכל פעם שאת תופסת היום מחשבה כמו:&quot;,{&quot;quotes&quot;:[&quot;אני מאחור.&quot;,&quot;בגילי כבר הייתי צריכה…&quot;,&quot;לכולן כבר יש ורק לי אין.&quot;,&quot;כנראה עשיתי טעות.&quot;,&quot;אני אמורה כבר לדעת מה אני רוצה.&quot;]},&quot;אל תתווכחי איתה.&quot;,&quot;אל תנסי בכוח לחשוב חיובי.&quot;,&quot;פשוט תגידי:&quot;,{&quot;b&quot;:&quot;\&quot;נקודת מבט מעניינת היא רק נקודת מבט מעניינת.\&quot;&quot;},&quot;אולי זו אמת.&quot;,&quot;ואולי זו פשוט נקודת מבט שחזרת עליה מספיק פעמים עד שהיא התחילה להרגיש כמו אמת.&quot;,&quot;היום אנחנו לא חייבות להאמין לכל מחשבה שעוברת לנו בראש.&quot;]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (3, &#x27;החזרת הריבונות&#x27;, &#x27;👑&#x27;, &#x27;ומה אם את לא מחכה שהחיים ישתנו — אלא החיים מחכים שתזוזי?&#x27;, $json${&quot;intro&quot;:[&quot;היום אנחנו עוברות מ:&quot;,{&quot;quotes&quot;:[&quot;למה זה קורה לי?&quot;]},&quot;ל:&quot;,{&quot;b&quot;:&quot;\&quot;מה אני בוראת מכאן?\&quot;&quot;},&quot;לא כדי להאשים את עצמך.&quot;,&quot;בדיוק להפך.&quot;,&quot;אם יש לך חלק ביצירת המציאות שלך — יש לך גם כוח להשתתף ביצירת הדבר הבא.&quot;],&quot;task&quot;:{&quot;title&quot;:&quot;5 דקות של היזכרות&quot;,&quot;body&quot;:[&quot;שימי אוזניות.&quot;,&quot;יש כאן קובץ קצר שהכנתי לך.&quot;,&quot;5 דקות שבהן את לא צריכה לפתור, להבין או לעשות.&quot;,&quot;רק להיזכר:&quot;,{&quot;b&quot;:&quot;אני לא מחכה לנס. אני משתתפת ביצירה שלו.&quot;},{&quot;audio&quot;:{&quot;title&quot;:&quot;5 דקות של היזכרות&quot;,&quot;duration&quot;:&quot;5:00&quot;}}]},&quot;game&quot;:{&quot;title&quot;:&quot;ומה כן בשליטתי?&quot;,&quot;body&quot;:[&quot;בכל פעם שאת תופסת את עצמך היום מתעסקת במשהו שאין לך שליטה עליו, תשאלי:&quot;,{&quot;b&quot;:&quot;אוקיי. ומה כן בשליטתי עכשיו?&quot;},{&quot;lines&quot;:[&quot;לא מחר.&quot;,&quot;לא כל החיים.&quot;]},{&quot;b&quot;:&quot;עכשיו.&quot;},&quot;ואם עולה משהו קטן שאת יכולה לעשות — תעשי אותו.&quot;]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (4, &#x27;פעולות מקדמות&#x27;, &#x27;→&#x27;, &#x27;איך את רוצה שהחיים שלך ירגישו — עוד לפני שאת יודעת איך הם ייראו?&#x27;, $json${&quot;intro&quot;:[&quot;אנחנו רגילות לנסות לפתור:&quot;,{&quot;lines&quot;:[&quot;איזו עבודה?&quot;,&quot;איזה עסק?&quot;,&quot;איזה גבר?&quot;,&quot;איזו עיר?&quot;]},&quot;היום פחות מעניין אותנו ה\&quot;איך\&quot;.&quot;,&quot;מעניין אותנו:&quot;,{&quot;b&quot;:&quot;איך אני רוצה להרגיש?&quot;}],&quot;task&quot;:{&quot;title&quot;:&quot;שתי רשימות&quot;,&quot;body&quot;:[&quot;פתחי שתי רשימות:&quot;,{&quot;h&quot;:&quot;אני לא מוכנה יותר להרגיש…&quot;},&quot;ואז:&quot;,{&quot;h&quot;:&quot;אני בוחרת להרגיש יותר…&quot;},&quot;לדוגמה:&quot;,{&quot;lines&quot;:[&quot;חופש.&quot;,&quot;ביטחון.&quot;,&quot;תשוקה.&quot;,&quot;משחקיות.&quot;,&quot;שייכות.&quot;,&quot;עוצמה.&quot;,&quot;שקט.&quot;]},&quot;עכשיו עצמי עיניים.&quot;,&quot;על כל רגש שבחרת תשאלי:&quot;,{&quot;b&quot;:&quot;\&quot;גוף, תראה לי איך זה מרגיש.\&quot;&quot;},&quot;תני לעצמך כמה שניות להרגיש אותו.&quot;,&quot;ואז תשאלי:&quot;,{&quot;b&quot;:&quot;מה פעולה אחת קטנה שאני יכולה לעשות היום שתואמת את החיים האלה?&quot;},&quot;תעשי אותה.&quot;,&quot;לא צריך תוכנית חומש.&quot;,&quot;אנחנו רק מזיזות את החיים מילימטר לכיוון שאנחנו רוצות.&quot;]},&quot;game&quot;:{&quot;title&quot;:&quot;אם הייתי כבר היא&quot;,&quot;body&quot;:[&quot;בכל פעם שאת עומדת לעשות משהו מתוך אוטומט, תשאלי:&quot;,{&quot;b&quot;:&quot;אם הייתי כבר האישה שמרגישה כמו שאני רוצה להרגיש — מה הייתי בוחרת עכשיו?&quot;}]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (5, &#x27;להרגיש את השיפט&#x27;, &#x27;✨&#x27;, &#x27;ומה אם המציאות כבר התחילה לזוז — ופשוט לא שמת לב?&#x27;, $json${&quot;intro&quot;:[&quot;היום אנחנו הופכות לבלשיות של שפע.&quot;,&quot;אנחנו לא מחכות רק לנס הענק.&quot;,&quot;אנחנו מתחילות לזהות את כל המקומות שבהם החיים כבר אומרים:&quot;,{&quot;b&quot;:&quot;היי מאמי, אני פה.&quot;}],&quot;task&quot;:{&quot;title&quot;:&quot;תיק ההוכחות&quot;,&quot;body&quot;:[&quot;פתחי בפתקים בטלפון רשימה חדשה:&quot;,{&quot;b&quot;:&quot;\&quot;הוכחות שהחיים איתי\&quot;&quot;},&quot;ומעכשיו — את מתעדת.&quot;,{&quot;lines&quot;:[&quot;קיבלת קפה?&quot;,&quot;מישהו הציע לעזור לך?&quot;,&quot;הגיעה הזדמנות משום מקום?&quot;,&quot;נכנס כסף שלא ציפית לו?&quot;,&quot;פגשת בדיוק את האדם שהיית צריכה לפגוש?&quot;,&quot;קרה צירוף מקרים מצחיק?&quot;,&quot;משהו הסתדר בקלות?&quot;]},{&quot;b&quot;:&quot;לפתקים.&quot;},&quot;אבל זה לא נשאר רק בפתקים.&quot;,&quot;במהלך היום, תעלי את ההוכחות שלך גם לכאן.&quot;,&quot;כשאת משתפת משהו שקרה לך, מישהי אחרת במסע מקבלת הוכחה שזה אפשרי גם עבורה.&quot;,&quot;וכשאת נכנסת ורואה נשים אחרות משתפות במה שקורה להן, גם את מתחילה לראות שיש הרבה יותר אפשרויות ממה שחשבת.&quot;,&quot;לכן היום:&quot;,{&quot;b&quot;:&quot;שימי לב ← תתעדי ← תשתפי ← תקראי הוכחות של אחרות.&quot;}]},&quot;share&quot;:{&quot;cta&quot;:&quot;להוסיף הוכחת שפע ✨&quot;,&quot;label&quot;:&quot;הוכחת שפע&quot;,&quot;placeholder&quot;:&quot;הנה זה. היום…&quot;,&quot;repeatable&quot;:true,&quot;again&quot;:&quot;להוסיף עוד הוכחה ✨&quot;},&quot;game&quot;:{&quot;title&quot;:&quot;\&quot;הנה זה.\&quot;&quot;,&quot;body&quot;:[&quot;בכל פעם שאת קולטת משהו טוב — קטן ככל שיהיה — תגידי:&quot;,{&quot;b&quot;:&quot;\&quot;הנה זה.\&quot;&quot;},&quot;ואז תתעדי אותו.&quot;]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (6, &#x27;תודעת ראויה&#x27;, &#x27;🍒&#x27;, &#x27;מי אמר שאת צריכה לחכות שהכול יסתדר כדי ליהנות?&#x27;, $json${&quot;intro&quot;:[&quot;יש חוזה מוזר שאנחנו לפעמים חותמות עליו:&quot;,{&quot;lines&quot;:[&quot;קודם אפתור את הכסף.&quot;,&quot;אמצא זוגיות.&quot;,&quot;אבין מה אני עושה בחיים.&quot;,&quot;אצא מהתקופה הזאת.&quot;]},&quot;**ואז** יהיה לי מותר ליהנות.&quot;,&quot;היום אנחנו משחקות עם אפשרות אחרת:&quot;,{&quot;b&quot;:&quot;מותר לי ליהנות גם באמצע.&quot;}],&quot;task&quot;:{&quot;title&quot;:&quot;Pleasure Mission&quot;,&quot;body&quot;:[&quot;היום יש לך משימה אחת:&quot;,{&quot;b&quot;:&quot;לעשות משהו שהוא נטו בשביל הכיף.&quot;},{&quot;lines&quot;:[&quot;לא מקדם אותך.&quot;,&quot;לא פרודוקטיבי.&quot;,&quot;לא \&quot;טוב להתפתחות שלך\&quot;.&quot;]},&quot;משהו שהגרסה בת ה־8 שלך הייתה אומרת עליו:&quot;,{&quot;b&quot;:&quot;יאאאאאאאאאא.&quot;},&quot;אחרי שעשית אותו — תעלי לקהילה תמונה או שיתוף קטן מהדייט שלך עם החיים.&quot;]},&quot;share&quot;:{&quot;cta&quot;:&quot;לשתף רגע של כיף 🍒&quot;,&quot;label&quot;:&quot;רגע של כיף&quot;,&quot;placeholder&quot;:&quot;הדייט שלי עם החיים היום…&quot;},&quot;game&quot;:{&quot;title&quot;:&quot;10% יותר כיף&quot;,&quot;body&quot;:[&quot;בכל פעם שאת עושה משהו היום תשאלי:&quot;,{&quot;b&quot;:&quot;איך אפשר להפוך את זה ל־10% יותר כיף?&quot;},{&quot;lines&quot;:[&quot;מוזיקה במקלחת?&quot;,&quot;קפה בכוס היפה?&quot;,&quot;לרקוד בדרך לסופר?&quot;,&quot;להתלבש יפה סתם?&quot;]},&quot;אנחנו לא מחכות לחיים הטובים.&quot;,&quot;אנחנו מכניסות אותם פנימה עכשיו.&quot;]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (7, &#x27;תודעת זיבי&#x27;, &#x27;💋&#x27;, &#x27;כמה מהחיים שלך בנויים על נקודות מבט שבכלל לא בחרת?&#x27;, $json${&quot;intro&quot;:[{&quot;lines&quot;:[&quot;איך אישה אמורה להיראות.&quot;,&quot;כמה כסף \&quot;נורמלי\&quot; להרוויח.&quot;,&quot;באיזה גיל צריך להתחתן.&quot;,&quot;איך קריירה אמורה להיראות.&quot;,&quot;מה המשפחה שלך חושבת שאפשרי עבורך.&quot;,&quot;מה מערכת יחסים קודמת גרמה לך להאמין על עצמך.&quot;,&quot;מה נחשב \&quot;אחראי\&quot;.&quot;]},{&quot;b&quot;:&quot;היום אנחנו מתגרשות מכל חוזה שמצמצם אותנו.&quot;}],&quot;task&quot;:{&quot;title&quot;:&quot;I CHOOSE TO BE FREE TODAY&quot;,&quot;body&quot;:[&quot;תתחילי במשפט:&quot;,{&quot;h&quot;:&quot;I choose to be free from…&quot;},&quot;ותוציאי הכול.&quot;,&quot;לדוגמה:&quot;,{&quot;lines&quot;:[&quot;אני בוחרת להיות חופשייה מהצורך שכולם יבינו אותי.&quot;,&quot;אני בוחרת להיות חופשייה מהטיימליין שדמיינתי לעצמי.&quot;,&quot;אני בוחרת להיות חופשייה מהרעיון שכסף חייב להגיע בדרך מסוימת.&quot;,&quot;אני בוחרת להיות חופשייה מהסטנדרטים שלימדו אותי שאני צריכה לעמוד בהם.&quot;]},&quot;ועכשיו:&quot;,{&quot;h&quot;:&quot;I choose to be free to…&quot;},{&quot;lines&quot;:[&quot;אני חופשייה לשנות את דעתי.&quot;,&quot;אני חופשייה להתחיל מחדש.&quot;,&quot;אני חופשייה להרוויח בדרך שנעימה לי.&quot;,&quot;אני חופשייה לבחור חיים שאנשים אחרים לא מבינים.&quot;]},{&quot;b&quot;:&quot;וכשסיימת, תעלי את הרשימה שלך לכאן.&quot;},&quot;הרשימה לא נשארת רק אצלך.&quot;,&quot;יכול להיות שהחופש שאת נותנת לעצמך היום יהיה בדיוק ה־permission slip שמישהי אחרת במסע הייתה צריכה לקרוא.&quot;]},&quot;share&quot;:{&quot;cta&quot;:&quot;לשתף את הצהרת החופש שלי 💋&quot;,&quot;label&quot;:&quot;תודעת זיבי&quot;,&quot;placeholder&quot;:&quot;I choose to be free from…&quot;},&quot;game&quot;:{&quot;title&quot;:&quot;נקודת מבט מעניינת&quot;,&quot;body&quot;:[&quot;בכל פעם שאת שומעת בראש:&quot;,{&quot;quotes&quot;:[&quot;אבל צריך…&quot;,&quot;אי אפשר…&quot;,&quot;זה לא נורמלי…&quot;,&quot;מה יחשבו עליי?&quot;,&quot;ככה לא עושים דברים…&quot;]},&quot;תגידי:&quot;,{&quot;b&quot;:&quot;\&quot;נקודת מבט מעניינת היא רק נקודת מבט מעניינת.\&quot;&quot;},&quot;ואז תשאלי:&quot;,{&quot;b&quot;:&quot;ומה אני בוחרת?&quot;}]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (8, &#x27;למצוא את הייעוד שלך&#x27;, &#x27;🧭&#x27;, &#x27;ומה אם הייעוד שלך הוא לא משהו שאת אמורה למצוא?&#x27;, $json${&quot;intro&quot;:[&quot;אולי ייעוד הוא לא מקצוע אחד שמסתתר איפשהו ואת צריכה לנחש אותו נכון.&quot;,&quot;אולי הוא נבנה בכל פעם שאת מסכימה להיות יותר את.&quot;],&quot;task&quot;:{&quot;title&quot;:&quot;שאלות שפותחות מרחב&quot;,&quot;body&quot;:[&quot;קחי כמה דקות ותעני בלי לנסות להיות הגיונית.&quot;,{&quot;widget&quot;:&quot;purposeAnswers&quot;},&quot;אל תחפשי מקצוע.&quot;,{&quot;b&quot;:&quot;תחפשי חיות.&quot;}]},&quot;game&quot;:{&quot;title&quot;:&quot;האם זה מרחיב אותי?&quot;,&quot;body&quot;:[&quot;לפני החלטות היום תשאלי:&quot;,{&quot;b&quot;:&quot;האם זה מרחיב אותי?&quot;},&quot;פחות:&quot;,{&quot;lines&quot;:[&quot;האם זה הדבר המושלם?&quot;,&quot;האם אנשים יבינו?&quot;,&quot;האם אני יכולה להבטיח שזה יעבוד?&quot;]},&quot;ויותר:&quot;,{&quot;b&quot;:&quot;האם זה מרחיב אותי?&quot;}]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+insert into public.days (number, title, emoji, question, content) values (9, &#x27;להיות המגדלור&#x27;, &#x27;☀️&#x27;, &#x27;את קולטת שאת כבר לא בדיוק אותה אישה שנכנסה לכאן לפני 9 ימים?&#x27;, $json${&quot;intro&quot;:[&quot;זוכרת את הסרטון ההוא מיום 1?&quot;,&quot;הגיע הזמן לפתוח אותו.&quot;],&quot;moment&quot;:{&quot;opening&quot;:&quot;יש משהו שהשארת לעצמך לפני 8 ימים…&quot;,&quot;reveal&quot;:&quot;לפתוח אותו&quot;,&quot;before&quot;:[&quot;לפני שאת לוחצת:&quot;,&quot;לא לשפוט את האישה שהיית שם.&quot;,{&quot;b&quot;:&quot;להסתכל עליה כמו שהיית מסתכלת על מישהי שאת אוהבת.&quot;}],&quot;watched&quot;:&quot;ראיתי אותה&quot;,&quot;next&quot;:{&quot;label&quot;:&quot;ועכשיו, תורך&quot;,&quot;title&quot;:&quot;לפגוש אותה&quot;,&quot;body&quot;:[{&quot;b&quot;:&quot;צלמי סרטון חדש.&quot;},&quot;עני בו:&quot;,{&quot;lines&quot;:[&quot;מה השתנה בי?&quot;,&quot;מה אני רואה היום שלא ראיתי אז?&quot;,&quot;על מה אני סומכת יותר?&quot;,&quot;מה למדתי על עצמי?&quot;,&quot;ומה הייתי רוצה להגיד לגרסה שלי מיום 1?&quot;]},&quot;בסוף, אם בא לך, תגידי לה:&quot;,{&quot;b&quot;:&quot;\&quot;אני יודעת שאת עדיין לא יודעת מה מגיע מחר. אבל חכי שתראי מי את הולכת להיות.\&quot;&quot;},{&quot;widget&quot;:&quot;day9Video&quot;}]}},&quot;extra&quot;:{&quot;label&quot;:&quot;טקס הסיום&quot;,&quot;title&quot;:&quot;ודאות לפני העולם&quot;,&quot;body&quot;:[&quot;עכשיו אנחנו בונות טקס בוקר קטן שתוכלי לקחת איתך גם אחרי שה־JOURNEY מסתיים.&quot;,&quot;לא שגרת בוקר של שעה וחצי שתעשי שלושה ימים ואז תשנאי :)&quot;,{&quot;b&quot;:&quot;5–10 דקות.&quot;},&quot;בחרי לעצמך כמה אלמנטים. הטקס צריך לענות על השאלה:&quot;,{&quot;b&quot;:&quot;איך אני רוצה לפגוש את עצמי לפני שאני פוגשת את העולם?&quot;},{&quot;widget&quot;:&quot;ritual&quot;}]},&quot;game&quot;:{&quot;label&quot;:&quot;המשחק האחרון&quot;,&quot;title&quot;:&quot;מי אני בוחרת להיות&quot;,&quot;body&quot;:[&quot;היום אל תשאלי:&quot;,{&quot;quotes&quot;:[&quot;מה הולך לקרות?&quot;]},&quot;תשאלי:&quot;,{&quot;b&quot;:&quot;\&quot;מי אני בוחרת להיות בתוך מה שיקרה?\&quot;&quot;}]}}$json$::jsonb)
+on conflict (number) do update set title = excluded.title, emoji = excluded.emoji, question = excluded.question, content = excluded.content, updated_at = now();
+
+-- Starter library (only added if the library is still empty).
+do $$
+begin
+  if not exists (select 1 from public.library_items) then
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;listen&#x27;, &#x27;audio&#x27;, &#x27;5 דקות של היזכרות&#x27;, &#x27;אוזניות, עיניים עצומות, ורק להיזכר. מיום 3.&#x27;, &#x27;5 דק׳&#x27;, null, 0);
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;listen&#x27;, &#x27;audio&#x27;, &#x27;נשימה לרגעים שהכול יותר מדי&#x27;, &#x27;לרגעים שבהם הגוף מתכווץ ואין זמן לכלום.&#x27;, &#x27;4 דק׳&#x27;, null, 1);
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;games&#x27;, &#x27;text&#x27;, &#x27;התרחבות / התכווצות&#x27;, &#x27;המצפן של הגוף, לכל החלטה קטנה.&#x27;, &#x27;דקה קריאה&#x27;, $json$[&quot;לפני החלטה קטנה, עצרי לשנייה ותשאלי:&quot;,&quot;**זה מרחיב אותי או מכווץ אותי?**&quot;,&quot;לא צריך להבין למה. רק לשים לב. הגוף עונה מהר יותר מהראש.&quot;]$json$::jsonb, 2);
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;games&#x27;, &#x27;text&#x27;, &#x27;נקודת מבט מעניינת&#x27;, &#x27;מה עושים עם מחשבה שמרגישה כמו אמת.&#x27;, &#x27;דקה קריאה&#x27;, $json$[&quot;כשעולה מחשבה כמו \&quot;אני מאחור\&quot; או \&quot;אי אפשר\&quot;, אל תתווכחי איתה.&quot;,&quot;פשוט תגידי: **\&quot;נקודת מבט מעניינת היא רק נקודת מבט מעניינת.\&quot;**&quot;,&quot;ואז תשאלי: **ומה אני בוחרת?**&quot;]$json$::jsonb, 3);
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;watch&#x27;, &#x27;video&#x27;, &#x27;מפגש לייב: לחיות בלי לדעת&#x27;, &#x27;שאלות, תשובות והרבה צחוק. הקלטה מהמפגש הקבוצתי.&#x27;, &#x27;42 דק׳&#x27;, null, 4);
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;print&#x27;, &#x27;pdf&#x27;, &#x27;הוכחות שהחיים איתי&#x27;, &#x27;דף תיעוד לתיק ההוכחות, לטלפון או להדפסה.&#x27;, &#x27;PDF · 2 עמ׳&#x27;, null, 5);
+    insert into public.library_items (category, kind, title, description, meta, body, sort) values (&#x27;print&#x27;, &#x27;pdf&#x27;, &#x27;טקס הוודאות שלי&#x27;, &#x27;תבנית לטקס בוקר של 5–10 דקות, לתלות ליד המראה.&#x27;, &#x27;PDF · עמוד אחד&#x27;, null, 6);
+  end if;
+end $$;
+</textarea></details>
+  </section>
+
+  <p class="warn">אם מופיעה הודעה אדומה, אל תנסי לתקן. צלמי את המסך ושלחי לי.</p>
+</main>
+<script>
+document.querySelectorAll('button.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var ta = document.getElementById(btn.dataset.target);
+    var label = btn.textContent;
+    function done(msg) { btn.textContent = msg; btn.classList.add('done'); setTimeout(function () { btn.textContent = label; btn.classList.remove('done'); }, 2500); }
+    function fallback() { ta.closest('details').open = true; ta.focus(); ta.select(); done('הקוד מסומן. עכשיו Ctrl+C להעתקה'); }
+    try {
+      navigator.clipboard.writeText(ta.value).then(function () { done('הועתק ✓ עכשיו להדביק ב־Supabase'); }, fallback);
+    } catch (e) { fallback(); }
+  });
+});
+</script>
