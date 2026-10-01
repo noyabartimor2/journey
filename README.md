@@ -10,4 +10,5 @@
 
 Build: `npm install && npm run build`
 
-Deploy: Vercel (`vercel.json`) builds with `npm run build` and publishes `site/`.
+Deploy: every push to `main` builds and publishes `site/` to GitHub Pages (`.github/workflows/deploy.yml`) – https://noyabartimor2.github.io/journey/
+Vercel config (`vercel.json`) is also included.
