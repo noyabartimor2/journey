@@ -828,3 +828,45 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: bala
 .audio .round.muted { opacity: 0.45; }
 .add-photo:disabled { opacity: 0.45; }
 a.btn { text-decoration: none; }
+
+/* ===================== Sales page (site/join/) ===================== */
+.sales { padding-bottom: 40px; }
+.sales-hero { min-height: auto; align-content: start; padding-top: 72px; gap: 22px; }
+.sales-hero .key-line { margin-top: 4px; }
+.sales-signin { justify-self: center; }
+.sales-price { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 12px; text-align: center; }
+.sales-price .was { color: var(--ink-3); text-decoration: line-through; font-size: var(--step-1); }
+.sales-price .now { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--ink); }
+.sales-price .note { flex-basis: 100%; color: var(--blush-deep); font-weight: 600; }
+.sales-join { display: grid; }
+.sales-join a.btn { text-decoration: none; }
+.sales-body { display: grid; gap: 48px; padding: 8px 24px 0; }
+.sales-section { display: grid; gap: 14px; }
+.sales-section h2 { font-size: var(--step-3); line-height: 1.25; }
+.sales-center { text-align: center; }
+.sales-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.sales-list li { position: relative; padding: 14px 44px 14px 18px; border-radius: 16px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); }
+.sales-list li::before { content: "✓"; position: absolute; inset-inline-start: 18px; top: 14px; color: var(--sage-deep); font-weight: 600; }
+.sales-days { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.sales-days li { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.sales-days li:last-child { border-bottom: 0; }
+.sales-days .num { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--blush); font-family: var(--font-display); font-size: var(--step-1); }
+.sales-days .title, .sales-card .title, .sales-steps .title { font-weight: 600; color: var(--ink); }
+.sales-days .q { color: var(--ink-2); font-size: var(--step--1); }
+.sales-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sales-card { display: grid; gap: 4px; align-content: start; padding: 16px; border-radius: 18px; background: var(--cream); color: var(--ink-2); font-size: var(--step--1); }
+.sales-card .emoji { font-size: 1.4rem; }
+.sales-card .title { font-size: var(--step-0); }
+.sales-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 12px; }
+.sales-steps li { counter-increment: step; position: relative; padding-inline-start: 48px; color: var(--ink-2); }
+.sales-steps li::before { content: counter(step); position: absolute; inset-inline-start: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--sage); color: var(--sage-deep); font-weight: 600; }
+.sales-offer { padding: 32px 22px; border-radius: var(--radius); background: linear-gradient(180deg, var(--blush) 0%, var(--paper) 100%); text-align: center; gap: 18px; }
+.sales-faq { display: grid; gap: 8px; }
+.sales-faq details { border-radius: 16px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); padding: 0 18px; }
+.sales-faq summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.sales-faq summary::-webkit-details-marker { display: none; }
+.sales-faq summary::after { content: "+"; color: var(--ink-3); font-weight: 400; }
+.sales-faq details[open] summary::after { content: "−"; }
+.sales-faq details p { padding-bottom: 16px; color: var(--ink-2); }
+.sales-footer { display: grid; gap: 6px; justify-items: center; padding-top: 8px; }
+@media (max-width: 360px) { .sales-grid { grid-template-columns: 1fr; } }
