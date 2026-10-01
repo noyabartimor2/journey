@@ -8,4 +8,6 @@
 - `site/` – the built real app (published by Netlify)
 - `dist/index.html` – the design preview with sample content
 
-Build: `node build.mjs`
+Build: `npm install && npm run build`
+
+Deploy: Vercel (`vercel.json`) builds with `npm run build` and publishes `site/`.
