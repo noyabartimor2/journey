@@ -9,6 +9,7 @@ import { Editable, EditBar, useUnsavedWarning } from '../components/edit.jsx';
 import { Icon } from '../components/ui.jsx';
 import { siteApi } from '../lib/site-api.js';
 import { JOIN_URL } from '../config.js';
+import { EmailSender } from '../components/EmailSender.jsx';
 
 const { useState, useEffect } = React;
 
@@ -231,6 +232,7 @@ export function ThanksPage() {
           <div className="thanks-card">
             <h2>התשלום התקבל</h2>
             <p>ברגע שהאישור מגיע אלינו, נשלח אלייך מייל עם קישור כניסה אישי. לחיצה עליו תכניס אותך ישר ל־JOURNEY, ויום 1 כבר יחכה לך.</p>
+            <EmailSender />
             <p className="note">לא הגיע תוך כמה דקות? כדאי להציץ בספאם או בקידומי מכירות. אפשר גם להיכנס עם המייל שאיתו שילמת.</p>
             <a className="btn primary block" href="../../">להיכנס ל־JOURNEY</a>
             <p className="thanks-help">

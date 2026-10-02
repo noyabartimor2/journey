@@ -1,6 +1,7 @@
 // The screens before she's inside: sign-in, waiting for approval, and a closed account.
 import { KEY_LINE, SUBTITLE, TAGLINE } from '../data/days.js';
 import { useApp } from '../lib/context.js';
+import { EmailSender } from '../components/EmailSender.jsx';
 const { useState, useEffect } = React;
 
 function GoogleMark() {
@@ -61,6 +62,7 @@ export function SignIn() {
         <div className="sent">
           <h2 style={{ fontSize: 'var(--step-3)' }}>בדקי את תיבת המייל</h2>
           <p style={{ color: 'var(--ink-2)' }}>שלחנו קישור כניסה אל <bdi dir="ltr">{email.trim()}</bdi>. לחיצה עליו תכניס אותך ישר פנימה.</p>
+          <EmailSender />
           <p className="note">לא הגיע תוך כמה דקות? כדאי להציץ גם בתיקיית הספאם או קידומי מכירות.</p>
           {isPreview && <button className="btn primary block" onClick={() => api.signInGoogle()}>המשך בתצוגה</button>}
           <button className="link" onClick={() => setSent(false)}>לשנות כתובת או לשלוח שוב</button>
