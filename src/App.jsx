@@ -8,6 +8,7 @@ import { Journey } from './screens/Journey.jsx';
 import { Community, ComposeSheet, CommentsSheet } from './screens/Community.jsx';
 import { Library, LibrarySheet } from './screens/Library.jsx';
 import { Home } from './screens/Home.jsx';
+import { InstallGuideSheet, InstallTip } from './components/InstallGuide.jsx';
 import { SignIn, Waiting, Closed, Loading } from './screens/Gate.jsx';
 import { EditBar, useUnsavedWarning } from './components/edit.jsx';
 import { clean } from './lib/content.js';
@@ -245,6 +246,7 @@ export function App({ api }) {
         {tab === 'today' && (
           <div className="screen" key={`today-${today}`}>
             <p className="greeting">{greeting(now, myName)}</p>
+            {!editMode && <InstallTip onOpen={() => setSheet({ type: 'install' })} />}
             {todayDay
               ? <DayPage day={todayDay} isToday {...dayProps} />
               : loadError ? <InlineError message={loadError} onRetry={() => setVersion((v) => v + 1)} /> : <p className="empty">טוענת את הבוקר שלך…</p>}
@@ -284,8 +286,9 @@ export function App({ api }) {
           <CommentsSheet post={sheet.post} now={Date.now()} onClose={() => setSheet(null)} onChanged={loadFeed} />
         )}
         {sheet && sheet.type === 'library' && <LibrarySheet item={sheet.item} onClose={() => setSheet(null)} />}
+        {sheet && sheet.type === 'install' && <InstallGuideSheet onClose={() => setSheet(null)} />}
         {sheet && sheet.type === 'space' && (
-          <SpaceSheet api={api} profile={profile} personal={personal} onClose={() => setSheet(null)}
+          <SpaceSheet api={api} profile={profile} personal={personal} onClose={() => setSheet(null)} onInstall={() => setSheet({ type: 'install' })}
             onSaved={() => { refreshMe(); loadFeed(); }} onSignOut={signOut} />
         )}
         {editMode && (
@@ -320,7 +323,7 @@ function InlineError({ message, onRetry }) {
 }
 
 // "המרחב האישי שלי": her private things from the journey, plus her profile.
-function SpaceSheet({ api, profile, personal, onClose, onSaved, onSignOut }) {
+function SpaceSheet({ api, profile, personal, onClose, onSaved, onSignOut, onInstall }) {
   const [name, setName] = useState(profile.name);
   const [photo, setPhoto] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -337,6 +340,10 @@ function SpaceSheet({ api, profile, personal, onClose, onSaved, onSignOut }) {
     <Sheet title="המרחב האישי שלי" onClose={onClose}>
       <div className="stack" style={{ gap: 22 }}>
         <p className="lock-note">🔒 רק את רואה את מה שכאן.</p>
+        <button className="install-row" onClick={onInstall}>
+          <span aria-hidden="true">📲</span>
+          <span><strong>להוסיף את JOURNEY למסך הבית</strong><br /><span className="note">הוראות לאייפון ולאנדרואיד</span></span>
+        </button>
 
         {!hasAny && <p className="empty space-empty">כאן יישמרו הדברים האישיים שלך מהמסע: הסרטונים שלך, התשובות שלך והטקס שלך.</p>}
 

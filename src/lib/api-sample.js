@@ -40,6 +40,7 @@ export const api = {
   onAuthChange(cb) { listeners.add(cb); return () => listeners.delete(cb); },
   async signInEmail() { await wait(400); },
   async signInGoogle() { state.stage = 'waiting'; notify(); },
+  async verifyCode() { await wait(400); state.stage = 'app'; notify(); },
   async signOut() { state.stage = 'signin'; notify(); },
 
   async loadMe() {

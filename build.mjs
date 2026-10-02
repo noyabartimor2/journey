@@ -6,6 +6,10 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from
 
 const esbuild = 'node_modules/esbuild/bin/esbuild';
 const css = readFileSync('src/styles.css', 'utf8');
+// Two @keyframes with the same name silently override each other (this once hid every bottom sheet).
+const frameNames = [...css.matchAll(/@keyframes\s+([\w-]+)/g)].map((m) => m[1]);
+const dupes = frameNames.filter((n, i) => frameNames.indexOf(n) !== i);
+if (dupes.length) { console.error(`Duplicate @keyframes in src/styles.css: ${[...new Set(dupes)].join(', ')}`); process.exit(1); }
 const REACT = `<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>`;
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
