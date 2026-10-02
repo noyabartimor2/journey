@@ -225,8 +225,7 @@ export function App({ api }) {
     <AppContext.Provider value={ctx}>
       <div className="app">
         {tab === 'home' && !editMode && (
-          <Home name={myName} greeting={greeting(now, myName)} today={today} todayDay={dayByNumber[today]} doneCount={completed.size}
-            profile={profile} onGo={setTab} onSpace={() => setSheet({ type: 'space' })} />
+          <Home />
         )}
 
         {tab !== 'home' && <header className="topbar">
