@@ -4,6 +4,7 @@ import { days as sampleDays } from '../data/days.js';
 import { libraryItems } from '../data/library.js';
 import { samplePosts, currentUser } from '../data/community.js';
 import { previewActivation } from './schedule.js';
+import { clean } from './content.js';
 
 const wait = (ms = 150) => new Promise((r) => setTimeout(r, ms));
 const listeners = new Set();
@@ -62,6 +63,12 @@ export const api = {
   async loadDays() {
     await wait();
     return sampleDays.filter((d) => d.number <= state.day).map((d) => ({ ...d, video: { art: d.video.art, source: null } }));
+  },
+  async saveDay(day) {
+    await wait(300);
+    const d = clean(day);
+    const i = sampleDays.findIndex((x) => x.number === d.number);
+    if (i >= 0) sampleDays[i] = { ...d, video: sampleDays[i].video };
   },
   async loadProgress() { return new Set(state.progress); },
   async setDone(day, done) { await wait(80); if (done) state.progress.add(day); else state.progress.delete(day); },

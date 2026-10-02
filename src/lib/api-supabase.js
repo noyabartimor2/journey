@@ -1,6 +1,7 @@
 // Everything the app reads and saves goes through here: the real database (Supabase).
 // The preview uses api-sample.js, which has exactly the same functions.
 import { SUPABASE_URL, SUPABASE_KEY, GOOGLE_SIGNIN, MAX_UPLOAD_MB } from '../config.js';
+import { clean } from './content.js';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
@@ -124,6 +125,15 @@ export const api = {
       number: r.number, title: r.title, emoji: r.emoji, question: r.question,
       video: { art: r.number, source: r.youtube_url ? { kind: 'link', url: r.youtube_url } : null },
     }));
+  },
+  // Admin: save an edited day (texts and structure). Empty paragraphs are dropped.
+  async saveDay(day) {
+    const { number, title, emoji, question, video, ...content } = clean(day);
+    if (!title) throw new Error(`ליום ${number} חייב להיות שם.`);
+    const { error } = await sb.from('days')
+      .update({ title, emoji: emoji || '', question: question || '', content, updated_at: new Date().toISOString() })
+      .eq('number', number);
+    fail(error, 'לא הצלחנו לשמור את השינויים. נסי שוב.');
   },
   async loadProgress() {
     const { data, error } = await sb.from('progress').select('day').eq('user_id', me.id);

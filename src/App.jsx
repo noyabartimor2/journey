@@ -1,5 +1,5 @@
 import { purposeQuestions } from './data/days.js';
-import { currentDay, israelHour } from './lib/schedule.js';
+import { currentDay, israelHour, TOTAL_DAYS } from './lib/schedule.js';
 import { AppContext } from './lib/context.js';
 import { Avatar, Sheet, Icon } from './components/ui.jsx';
 import { DayPage } from './components/DayPage.jsx';
@@ -8,6 +8,8 @@ import { Journey } from './screens/Journey.jsx';
 import { Community, ComposeSheet, CommentsSheet } from './screens/Community.jsx';
 import { Library, LibrarySheet } from './screens/Library.jsx';
 import { SignIn, Waiting, Closed, Loading } from './screens/Gate.jsx';
+import { EditBar, useUnsavedWarning } from './components/edit.jsx';
+import { clean } from './lib/content.js';
 const { useState, useMemo, useEffect, useCallback, useRef } = React;
 
 const TABS = [
@@ -59,6 +61,13 @@ export function App({ api }) {
   const [sheet, setSheet] = useState(null);
   const [toast, showToast] = useToast();
 
+  // Content editing (admins; everyone in the preview). drafts: { [dayNumber]: edited day }
+  const [editMode, setEditMode] = useState(false);
+  const [drafts, setDrafts] = useState({});
+  const [saveState, setSaveState] = useState({ saving: false, error: '' });
+  const changedCount = Object.keys(drafts).length;
+  useUnsavedWarning(changedCount > 0);
+
   // Sign-in state
   useEffect(() => {
     let alive = true;
@@ -82,8 +91,12 @@ export function App({ api }) {
   useEffect(() => { if (user) refreshMe(); else setMe(null); }, [user, version]);
 
   const profile = me && me.profile;
+  const isAdmin = !!(me && me.isAdmin);
   const approved = !!(profile && profile.status === 'approved' && profile.activatedAt);
-  const today = approved ? currentDay(profile.activatedAt, now) : 0;
+  // Admins can always get in and see all 9 days (to manage the content).
+  const hasAccess = approved || isAdmin;
+  const today = isAdmin ? TOTAL_DAYS : approved ? currentDay(profile.activatedAt, now) : 0;
+  const canEdit = isAdmin || !!api.isPreview;
 
   const loadFeed = useCallback(async () => {
     setFeedState((s) => ({ ...s, loading: true }));
@@ -93,7 +106,7 @@ export function App({ api }) {
 
   // Load her journey (again whenever a new day opens).
   useEffect(() => {
-    if (!approved) return;
+    if (!hasAccess) return;
     let alive = true;
     (async () => {
       try {
@@ -106,7 +119,7 @@ export function App({ api }) {
     setLibLoading(true);
     api.loadLibrary().then((l) => { if (alive) { setLibrary(l); setLibLoading(false); } }).catch(() => alive && setLibLoading(false));
     return () => { alive = false; };
-  }, [approved, today, version]);
+  }, [hasAccess, today, version]);
 
   useEffect(() => { window.scrollTo(0, 0); }, [tab]);
 
@@ -146,11 +159,27 @@ export function App({ api }) {
     try { await api.deletePost(post.id); setPosts((ps) => ps.filter((p) => p.id !== post.id)); }
     catch (e) { showToast(e.message); }
   };
+  const editDay = (d) => setDrafts((ds) => ({ ...ds, [d.number]: d }));
+  const discardEdits = () => { setDrafts({}); setSaveState({ saving: false, error: '' }); };
+  const saveEdits = async () => {
+    setSaveState({ saving: true, error: '' });
+    try {
+      for (const d of Object.values(drafts)) {
+        await api.saveDay(d);
+        setDays((all) => all.map((x) => (x.number === d.number ? clean(d) : x)));
+        setDrafts((ds) => { const c = { ...ds }; delete c[d.number]; return c; });
+      }
+      setSaveState({ saving: false, error: '' });
+      showToast('השינויים נשמרו ✓');
+    } catch (e) { setSaveState({ saving: false, error: e.message }); }
+  };
+  const exitEdit = () => { setEditMode(false); discardEdits(); };
+
   const signOut = async () => { setSheet(null); await api.signOut(); setUser(null); setTab('today'); };
 
   const shareCount = (n) => posts.filter((p) => p.mine && p.day === n && p.label).length;
   const ctx = useMemo(() => ({ api, isPreview: api.isPreview }), [api]);
-  const dayByNumber = Object.fromEntries(days.map((d) => [d.number, d]));
+  const dayByNumber = Object.fromEntries(days.map((d) => [d.number, drafts[d.number] || d]));
   const myName = firstName(profile && profile.name);
 
   const dayProps = {
@@ -158,6 +187,7 @@ export function App({ api }) {
     onComplete: (n) => setDone(n, true), onUndo: (n) => setDone(n, false),
     onShare: (day) => setSheet({ type: 'compose', day }),
     onSaveVideo: saveVideo, onSaveData: saveData,
+    editing: editMode, onEdit: editDay,
     onGoCommunity: () => { setOpenDay(null); setTab('community'); },
   };
 
@@ -175,7 +205,7 @@ export function App({ api }) {
   else if (!user) gate = <SignIn />;
   else if (loadError && !me) gate = <ErrorScreen message={loadError} onRetry={() => setVersion((v) => v + 1)} />;
   else if (profile.status === 'blocked') gate = <Closed onSignOut={signOut} />;
-  else if (!approved) gate = <Waiting name={myName} isAdmin={me.isAdmin} onRefresh={refreshMe} onSignOut={signOut} />;
+  else if (!hasAccess) gate = <Waiting name={myName} isAdmin={me.isAdmin} onRefresh={refreshMe} onSignOut={signOut} />;
 
   if (gate) {
     return (
@@ -192,9 +222,16 @@ export function App({ api }) {
       <div className="app">
         <header className="topbar">
           <span className="wordmark" dir="ltr">JOURNEY</span>
-          <button onClick={() => setSheet({ type: 'space' })} aria-label="המרחב האישי שלי">
-            <Avatar name={profile.name} photo={profile.photo} />
-          </button>
+          <span className="topbar-actions">
+            {canEdit && !editMode && (
+              <button className="icon-btn edit-toggle" onClick={() => { setEditMode(true); setTab((t) => (t === 'journey' || t === 'today' ? t : 'today')); }} aria-label="עריכת תוכן">
+                <Icon.pencil />
+              </button>
+            )}
+            <button onClick={() => setSheet({ type: 'space' })} aria-label="המרחב האישי שלי">
+              <Avatar name={profile.name} photo={profile.photo} />
+            </button>
+          </span>
         </header>
 
         {tab === 'today' && (
@@ -243,7 +280,11 @@ export function App({ api }) {
           <SpaceSheet api={api} profile={profile} personal={personal} onClose={() => setSheet(null)}
             onSaved={() => { refreshMe(); loadFeed(); }} onSignOut={signOut} />
         )}
-        {previewButton}
+        {editMode && (
+          <EditBar changed={changedCount} saving={saveState.saving} error={saveState.error} isPreview={!!api.isPreview}
+            onSave={saveEdits} onDiscard={discardEdits} onExit={exitEdit} />
+        )}
+        {!editMode && previewButton}
         {previewSheet}
         {toast && <div className="toast" role="status">{toast}</div>}
       </div>
