@@ -1061,6 +1061,8 @@ a.btn { text-decoration: none; }
 .thanks-card p { color: var(--ink-2); }
 .thanks-card .btn { margin-top: 8px; text-decoration: none; }
 .thanks { padding-bottom: 40px; }
+.thanks-help { margin-top: 6px; font-size: var(--step--1); color: var(--ink-2); }
+.thanks-help a { color: var(--blush-deep); font-weight: 600; text-decoration: none; unicode-bidi: isolate; }
 @media (prefers-reduced-motion: reduce) {
   .sales-hero-offer, .thanks-card { animation: none !important; opacity: 1; transform: none; }
 }

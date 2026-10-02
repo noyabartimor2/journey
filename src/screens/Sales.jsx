@@ -184,6 +184,10 @@ export function ThanksPage() {
             <p>ברגע שהאישור מגיע אלינו, נשלח אלייך מייל עם קישור כניסה אישי. לחיצה עליו תכניס אותך ישר ל־JOURNEY, ויום 1 כבר יחכה לך.</p>
             <p className="note">לא הגיע תוך כמה דקות? כדאי להציץ בספאם או בקידומי מכירות. אפשר גם להיכנס עם המייל שאיתו שילמת.</p>
             <a className="btn primary block" href="../../">להיכנס ל־JOURNEY</a>
+            <p className="thanks-help">
+              יש לך שאלה? תפני אליי באינסטגרם, אשמח לסייע!{' '}
+              <a href="https://instagram.com/noya_bt" target="_blank" rel="noopener" dir="ltr">@noya_bt</a>
+            </p>
           </div>
         </main>
       </AuraStage>
