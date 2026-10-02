@@ -1133,3 +1133,4 @@ a.btn { text-decoration: none; }
 .code-entry .input { text-align: center; letter-spacing: 0.4em; font-size: 1.25rem; }
 /* iPhone zooms into form fields smaller than 16px; keep the admin type picker at 16px. */
 .piece-tools select { font-size: 16px; }
+.email-sender .subject { color: var(--ink-2); }
