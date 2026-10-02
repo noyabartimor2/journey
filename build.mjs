@@ -24,7 +24,7 @@ function bundle(entry, out) {
 // 1. Preview
 mkdirSync('dist', { recursive: true });
 const previewJs = bundle('src/main-preview.jsx', 'dist/app.js');
-const preview = `<title>לשגשג בחוסר בהירות</title>
+const preview = `<title>JOURNEY</title>
 <meta name="theme-color" content="#FAF7F2">
 ${FONTS}
 <style>
@@ -57,7 +57,7 @@ const site = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>JOURNEY</title>
-<meta name="description" content="מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים">
+<meta name="description" content="מסע קהילתי של 9 ימים מחרדה לפריחה בחוסר בהירות">
 <meta name="theme-color" content="#FAF7F2">
 <meta name="robots" content="noindex">
 <link rel="manifest" href="manifest.webmanifest">
@@ -96,8 +96,8 @@ mkdirSync('site/join', { recursive: true });
 const joinJs = bundle('src/main-join.jsx', 'site/join/app.js');
 const joinHead = `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>JOURNEY · מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים</title>
-<meta name="description" content="9 בקרים. 9 ניסויים קטנים בחיים שלך. מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים.">
+<title>JOURNEY · מסע קהילתי של 9 ימים מחרדה לפריחה בחוסר בהירות</title>
+<meta name="description" content="מסע קהילתי של 9 ימים מחרדה לפריחה בחוסר בהירות. 9 בקרים, 9 ניסויים קטנים בחיים שלך.">
 <meta name="theme-color" content="#FAF7F2">
 ${FONTS}`;
 writeFileSync('site/join/index.html', `<!doctype html>
@@ -112,6 +112,23 @@ ${joinHead}
 <div id="root" dir="rtl" lang="he"></div>
 ${REACT}
 <script src="app.js?v=${stamp}"></script>
+</body>
+</html>
+`);
+// Thank-you page after payment (same bundle; it shows ThanksPage on /join/thanks/).
+mkdirSync('site/join/thanks', { recursive: true });
+writeFileSync('site/join/thanks/index.html', `<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+${joinHead}
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../icon-192.png" type="image/png">
+<link rel="stylesheet" href="../../styles.css?v=${stamp}">
+</head>
+<body>
+<div id="root" dir="rtl" lang="he"></div>
+${REACT}
+<script src="../app.js?v=${stamp}"></script>
 </body>
 </html>
 `);

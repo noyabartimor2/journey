@@ -1,6 +1,8 @@
 // The sales page (site/join/). Built from the real content of the 9 days.
 // The join button goes to JOIN_URL; until payment is connected it shows "opening soon".
+// After a successful payment Grow returns her to /join/thanks/ (ThanksPage), which leads into the app's home.
 import { days, KEY_LINE, SUBTITLE, TAGLINE } from '../data/days.js';
+import { AuraStage, JourneyWord } from '../components/Aura.jsx';
 import { JOIN_URL, PRICE_FULL, PRICE_NOW } from '../config.js';
 
 function JoinButton({ label = 'אני מצטרפת ל־JOURNEY' }) {
@@ -63,24 +65,28 @@ const FAQ = [
 export function SalesPage() {
   return (
     <div className="app sales">
-      <header className="gate sales-hero">
-        <div className="sun" />
-        <div className="gate-title">
-          <p className="brand" dir="ltr">JOURNEY</p>
-          <h1>{SUBTITLE}</h1>
-          <p>{TAGLINE}</p>
+      <AuraStage className="sales-hero">
+        <div className="sales-hero-inner">
+          <JourneyWord />
+          <p className="home-line">{SUBTITLE}</p>
+          <div className="sales-hero-offer">
+            <Price />
+            <JoinButton />
+            <a className="link sales-signin" href="../">כבר הצטרפתי, לכניסה</a>
+          </div>
         </div>
-        <p className="key-line">{KEY_LINE[0]}<br />{KEY_LINE[1]}</p>
-        <Price />
-        <JoinButton />
-        <a className="link sales-signin" href="../">כבר הצטרפתי, לכניסה</a>
-      </header>
+        <a className="sales-scroll" href="#more" aria-label="לגלול לפרטים">
+          <span aria-hidden="true">⌄</span>
+        </a>
+      </AuraStage>
 
-      <main className="sales-body">
+      <main className="sales-body" id="more">
+        <p className="key-line sales-key">{KEY_LINE[0]}<br />{KEY_LINE[1]}</p>
+
         <section className="sales-section prose">
           <p>ומה אם התקופה הזאת היא לא תקלה?</p>
           <p>יש תקופות שבהן שום דבר לא ברור. לא יודעות מה יהיה עם העבודה, עם הכסף, עם הזוגיות, עם הכיוון. הראש רץ, הגוף מתכווץ, ונדמה שהחיים יתחילו רק אחרי שהכול יסתדר.</p>
-          <p>JOURNEY הוא מסע של 9 בקרים שבו את לא מחכה שהוודאות תגיע. בכל בוקר ניסוי קטן אחד בחיים האמיתיים שלך: להוריד רעש, לחזור לגוף, ליהנות גם באמצע, ולגלות שאפשר לשגשג בדיוק מכאן.</p>
+          <p>JOURNEY הוא מסע קהילתי של 9 בקרים שבו את לא מחכה שהוודאות תגיע. בכל בוקר ניסוי קטן אחד בחיים האמיתיים שלך: להוריד רעש, לחזור לגוף, ליהנות גם באמצע, ולגלות שאפשר לשגשג בדיוק מכאן.</p>
         </section>
 
         <section className="sales-section">
@@ -135,11 +141,12 @@ export function SalesPage() {
           </ol>
         </section>
 
-        <section className="sales-section sales-offer">
+        <AuraStage className="sales-offer">
           <h2>מוכנה לבוקר הראשון?</h2>
+          <p className="tagline">{TAGLINE}</p>
           <Price />
           <JoinButton />
-        </section>
+        </AuraStage>
 
         <section className="sales-section">
           <p className="eyebrow">שאלות</p>
@@ -159,6 +166,27 @@ export function SalesPage() {
           <a className="link" href="../">כבר הצטרפתי, לכניסה</a>
         </footer>
       </main>
+    </div>
+  );
+}
+
+// Where Grow sends her after paying. It does NOT grant access by itself: access is opened
+// on the server once Grow confirms the payment, and she gets a sign-in link by email.
+export function ThanksPage() {
+  return (
+    <div className="app sales">
+      <AuraStage className="home thanks">
+        <main className="home-hero">
+          <JourneyWord />
+          <p className="home-line">ברוכה הבאה למסע 🤍</p>
+          <div className="thanks-card">
+            <h2>התשלום התקבל</h2>
+            <p>ברגע שהאישור מגיע אלינו, נשלח אלייך מייל עם קישור כניסה אישי. לחיצה עליו תכניס אותך ישר ל־JOURNEY, ויום 1 כבר יחכה לך.</p>
+            <p className="note">לא הגיע תוך כמה דקות? כדאי להציץ בספאם או בקידומי מכירות. אפשר גם להיכנס עם המייל שאיתו שילמת.</p>
+            <a className="btn primary block" href="../../">להיכנס ל־JOURNEY</a>
+          </div>
+        </main>
+      </AuraStage>
     </div>
   );
 }

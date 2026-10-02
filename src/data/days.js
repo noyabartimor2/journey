@@ -21,7 +21,7 @@
 
 export const KEY_LINE = ['את לא צריכה לדעת מה מגיע מחר.', 'תפגשי אותו כשהוא יגיע.'];
 export const TAGLINE = '9 בקרים. 9 ניסויים קטנים בחיים שלך.';
-export const SUBTITLE = 'מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים';
+export const SUBTITLE = 'מסע קהילתי של 9 ימים מחרדה לפריחה בחוסר בהירות';
 
 export const days = [
   {
