@@ -45,6 +45,7 @@ export function App({ api }) {
   const [user, setUser] = useState(undefined);      // undefined = still checking
   const [me, setMe] = useState(null);               // { profile, isAdmin }
   const [loadError, setLoadError] = useState('');
+  const [loadDetail, setLoadDetail] = useState('');     // technical reason, shown small for support
   const [now, setNow] = useState(() => new Date());
   const [version, setVersion] = useState(0);        // bump to reload everything
 
@@ -85,7 +86,8 @@ export function App({ api }) {
   }, []);
 
   const refreshMe = useCallback(async () => {
-    try { setMe(await api.loadMe()); setLoadError(''); } catch (e) { setLoadError(e.message); }
+    try { setMe(await api.loadMe()); setLoadError(''); setLoadDetail(''); }
+    catch (e) { setLoadError(e.message); const c = e.cause || {}; setLoadDetail([c.code, c.message || (e.cause ? String(e.cause) : ''), c.hint].filter(Boolean).join(' · ')); }
   }, [api]);
 
   useEffect(() => { if (user) refreshMe(); else setMe(null); }, [user, version]);
@@ -203,7 +205,7 @@ export function App({ api }) {
   let gate = null;
   if (user === undefined || (user && !me && !loadError)) gate = <Loading />;
   else if (!user) gate = <SignIn />;
-  else if (loadError && !me) gate = <ErrorScreen message={loadError} onRetry={() => setVersion((v) => v + 1)} />;
+  else if (loadError && !me) gate = <ErrorScreen message={loadError} detail={loadDetail} onRetry={() => setVersion((v) => v + 1)} />;
   else if (profile.status === 'blocked') gate = <Closed onSignOut={signOut} />;
   else if (!hasAccess) gate = <Waiting name={myName} isAdmin={me.isAdmin} onRefresh={refreshMe} onSignOut={signOut} />;
 
@@ -292,7 +294,7 @@ export function App({ api }) {
   );
 }
 
-function ErrorScreen({ message, onRetry }) {
+function ErrorScreen({ message, detail, onRetry }) {
   return (
     <main className="gate" style={{ alignContent: 'center' }}>
       <div className="sun" />
@@ -302,6 +304,7 @@ function ErrorScreen({ message, onRetry }) {
         <p>{message}</p>
       </div>
       <button className="btn white" style={{ justifySelf: 'center' }} onClick={onRetry}>לנסות שוב</button>
+      {detail && <p className="note" dir="ltr" style={{ textAlign: 'center', wordBreak: 'break-word' }}>{detail}</p>}
     </main>
   );
 }
