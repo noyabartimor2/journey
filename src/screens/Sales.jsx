@@ -1,105 +1,135 @@
-// The sales page (site/join/). Built from the real content of the 9 days.
+// The sales page (site/join/). Texts come from data/sales.js, or the admin's edited version (site_texts).
+// Admins (signed in to JOURNEY) see an edit button and can change every text in place.
 // The join button goes to JOIN_URL; until payment is connected it shows "opening soon".
 // After a successful payment Grow returns her to /join/thanks/ (ThanksPage), which leads into the app's home.
-import { days, KEY_LINE, SUBTITLE, TAGLINE } from '../data/days.js';
+import { days } from '../data/days.js';
+import { salesDefaults } from '../data/sales.js';
 import { AuraStage, JourneyWord } from '../components/Aura.jsx';
-import { JOIN_URL, PRICE_FULL, PRICE_NOW } from '../config.js';
+import { Editable, EditBar, useUnsavedWarning } from '../components/edit.jsx';
+import { Icon } from '../components/ui.jsx';
+import { siteApi } from '../lib/site-api.js';
+import { JOIN_URL } from '../config.js';
 
-function JoinButton({ label = 'אני מצטרפת ל־JOURNEY' }) {
-  if (!JOIN_URL) {
-    return (
-      <div className="sales-join">
-        <button className="btn primary block" disabled>ההרשמה נפתחת ממש בקרוב</button>
-      </div>
-    );
-  }
-  return (
-    <div className="sales-join">
-      <a className="btn primary block" href={JOIN_URL}>{label}</a>
-    </div>
-  );
+const { useState, useEffect } = React;
+
+const KEY = 'sales';
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const getIn = (o, path) => path.reduce((x, k) => (x == null ? x : x[k]), o);
+function setIn(o, path, v) {
+  const c = clone(o); let x = c;
+  path.slice(0, -1).forEach((k) => { x = x[k]; });
+  x[path[path.length - 1]] = v;
+  return c;
 }
 
-function Price() {
-  return (
-    <div className="sales-price" aria-label={`במקום ${PRICE_FULL} שקלים, עכשיו ${PRICE_NOW} שקלים`}>
-      <span className="was">₪{PRICE_FULL}</span>
-      <span className="now">₪{PRICE_NOW}</span>
-      <span className="note">מחיר מיוחד למצטרפות עכשיו</span>
-    </div>
-  );
+// The page's texts: saved version from the database merged over the defaults.
+function useSalesTexts() {
+  const [texts, setTexts] = useState(null);
+  useEffect(() => {
+    let done = false;
+    const finish = (saved) => { if (!done) { done = true; setTexts({ ...salesDefaults, ...(saved || {}) }); } };
+    siteApi.load(KEY).then(finish).catch(() => finish(null));
+    const t = setTimeout(() => finish(null), 2500);   // never leave the page blank
+    return () => clearTimeout(t);
+  }, []);
+  return [texts, setTexts];
 }
-
-const INSIDE = [
-  { emoji: '🎬', title: 'סרטון בוקר קצר', text: 'כל בוקר נפתח בשאלה אחת ובסרטון שמכניס אותך ליום.' },
-  { emoji: '✍️', title: 'משימה אחת', text: 'ניסוי קטן ופרקטי בחיים האמיתיים שלך. לא עוד תיאוריה.' },
-  { emoji: '🎲', title: 'המשחק של היום', text: 'משהו קליל שלוקחים איתך לאורך היום ומשנה את נקודת המבט.' },
-  { emoji: '💬', title: 'קהילה', text: 'נשים שעוברות את המסע יחד איתך, משתפות ומפרגנות.' },
-  { emoji: '🎧', title: 'ספרייה', text: 'הקלטות, משחקים ודפים להדפסה, לחזור אליהם מתי שצריך.' },
-  { emoji: '🔒', title: 'מרחב אישי', text: 'הסרטונים, התשובות והטקס שלך. רק את רואה אותם.' },
-];
-
-const STEPS = [
-  { title: 'מצטרפת ומשלמת', text: 'תשלום מאובטח, לוקח דקה.' },
-  { title: 'מקבלת מייל כניסה', text: 'קישור אישי, בלי סיסמאות. לחיצה אחת ואת בפנים.' },
-  { title: 'יום 1 נפתח מיד', text: 'אפשר להתחיל באותו רגע.' },
-  { title: 'כל בוקר ב־08:00', text: 'נפתח יום חדש ומגיעה אלייך תזכורת. 9 בקרים, עד יום 9.' },
-];
-
-const FOR_YOU = [
-  'את בתקופה של חוסר בהירות: בעבודה, בזוגיות, בכסף או בכיוון בחיים.',
-  'הראש לא מפסיק לנסות לפתור, לתכנן ולדאוג.',
-  'נמאס לך לחכות שהכול יסתדר כדי להתחיל לחיות.',
-  'בא לך משהו קטן, יומיומי ומעשי. לא עוד קורס ארוך שלא מסיימים.',
-];
-
-const FAQ = [
-  { q: 'כמה זמן זה לוקח ביום?', a: 'לא הרבה: סרטון קצר ומשימה אחת. המשחק של היום כבר קורה תוך כדי החיים, בלי לפנות לו זמן מיוחד.' },
-  { q: 'מתי אני מתחילה?', a: 'מיד. ברגע שהתשלום עובר, נשלח אלייך מייל כניסה ויום 1 פתוח. יום 2 נפתח למחרת ב־08:00, וכך כל בוקר עד יום 9.' },
-  { q: 'מה אם פספסתי בוקר?', a: 'שום דבר לא נעלם. ימים שכבר נפתחו נשארים פתוחים, ואפשר לחזור אליהם מתי שנוח לך.' },
-  { q: 'צריך להוריד אפליקציה?', a: 'לא. JOURNEY עובד מהדפדפן בטלפון או במחשב. אפשר להוסיף אותו למסך הבית ואז הוא מרגיש בדיוק כמו אפליקציה.' },
-  { q: 'מי רואה את מה שאני כותבת ומצלמת?', a: 'הסרטונים, התשובות והטקס במרחב האישי גלויים רק לך. בקהילה רואים רק מה שבחרת לשתף.' },
-  { q: 'איך נכנסים?', a: 'עם המייל שאיתו שילמת. מקבלים קישור כניסה למייל, בלי סיסמה.' },
-];
 
 export function SalesPage() {
+  const [saved, setSaved] = useSalesTexts();
+  const [draft, setDraft] = useState(null);           // edited texts, while editing
+  const [canEdit, setCanEdit] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [state, setState] = useState({ saving: false, error: '' });
+  useUnsavedWarning(!!draft);
+  useEffect(() => { siteApi.canEdit().then(setCanEdit).catch(() => {}); }, []);
+
+  if (!saved) return <div className="app sales"><AuraStage className="sales-hero" /></div>;
+  const c = draft || saved;
+  const set = (path, v) => setDraft(setIn(c, path, v));
+  // A text that becomes typeable in edit mode.
+  const E = (path, props = {}) => <Editable editing={editing} value={getIn(c, path)} onChange={(v) => set(path, v)} {...props} />;
+  const listTools = (path, index, blank) => editing && (
+    <span className="list-tools" contentEditable={false}>
+      <button type="button" aria-label="להוסיף מתחת" onClick={() => { const a = getIn(c, path).slice(); a.splice(index + 1, 0, clone(blank)); set(path, a); }}>＋</button>
+      <button type="button" aria-label="למחוק" onClick={() => set(path, getIn(c, path).filter((_, i) => i !== index))}>🗑</button>
+    </span>
+  );
+
+  const save = async () => {
+    setState({ saving: true, error: '' });
+    try { await siteApi.save(KEY, c); setSaved(c); setDraft(null); setState({ saving: false, error: '' }); }
+    catch (e) { setState({ saving: false, error: e.message }); }
+  };
+
+  const price = (
+    <div className="sales-price" aria-label={`במקום ${c.priceFull} שקלים, עכשיו ${c.priceNow} שקלים`}>
+      <span className="was">₪{E(['priceFull'])}</span>
+      <span className="now">₪{E(['priceNow'])}</span>
+      {E(['priceNote'], { className: 'note' })}
+    </div>
+  );
+  const join = (
+    <div className="sales-join">
+      {editing
+        ? <div className="btn primary block">{E([JOIN_URL ? 'joinLabel' : 'soonLabel'])}</div>
+        : JOIN_URL
+          ? <a className="btn primary block" href={JOIN_URL}>{c.joinLabel}</a>
+          : <button className="btn primary block" disabled>{c.soonLabel}</button>}
+    </div>
+  );
+
   return (
-    <div className="app sales">
+    <div className={`app sales ${editing ? 'is-editing' : ''}`}>
       <AuraStage className="sales-hero">
         <div className="sales-hero-inner">
           <JourneyWord />
-          <p className="home-line">{SUBTITLE}</p>
+          {E(['heroLine'], { as: 'p', className: 'home-line' })}
           <div className="sales-hero-offer">
-            <Price />
-            <JoinButton />
-            <a className="link sales-signin" href="../">כבר הצטרפתי, לכניסה</a>
+            {price}
+            {join}
+            {editing ? E(['signinLabel'], { as: 'p', className: 'link sales-signin' }) : <a className="link sales-signin" href="../">{c.signinLabel}</a>}
           </div>
         </div>
-        <a className="sales-scroll" href="#more" aria-label="לגלול לפרטים">
-          <span aria-hidden="true">⌄</span>
-        </a>
+        <a className="sales-scroll" href="#more" aria-label="לגלול לפרטים"><span aria-hidden="true">⌄</span></a>
       </AuraStage>
 
       <main className="sales-body" id="more">
-        <p className="key-line sales-key">{KEY_LINE[0]}<br />{KEY_LINE[1]}</p>
+        <p className="key-line sales-key">{E(['keyLine', 0])}<br />{E(['keyLine', 1])}</p>
 
         <section className="sales-section prose">
-          <p>ומה אם התקופה הזאת היא לא תקלה?</p>
-          <p>יש תקופות שבהן שום דבר לא ברור. לא יודעות מה יהיה עם העבודה, עם הכסף, עם הזוגיות, עם הכיוון. הראש רץ, הגוף מתכווץ, ונדמה שהחיים יתחילו רק אחרי שהכול יסתדר.</p>
-          <p>JOURNEY הוא מסע קהילתי של 9 בקרים שבו את לא מחכה שהוודאות תגיע. בכל בוקר ניסוי קטן אחד בחיים האמיתיים שלך: להוריד רעש, לחזור לגוף, ליהנות גם באמצע, ולגלות שאפשר לשגשג בדיוק מכאן.</p>
+          {E(['introLead'], { as: 'p' })}
+          {c.intro.map((t, i) => <div key={i} className="list-row">{E(['intro', i], { as: 'p' })}{listTools(['intro'], i, '')}</div>)}
         </section>
 
         <section className="sales-section">
-          <p className="eyebrow">למי זה מתאים</p>
-          <h2>JOURNEY בשבילך אם</h2>
+          {E(['forYouEyebrow'], { as: 'p', className: 'eyebrow' })}
+          {E(['forYouTitle'], { as: 'h2' })}
           <ul className="sales-list">
-            {FOR_YOU.map((t) => <li key={t}>{t}</li>)}
+            {c.forYou.map((t, i) => <li key={i}>{E(['forYou', i])}{listTools(['forYou'], i, '')}</li>)}
           </ul>
         </section>
 
         <section className="sales-section">
-          <p className="eyebrow">9 בקרים</p>
-          <h2>המסע, יום אחרי יום</h2>
+          {E(['outcomesEyebrow'], { as: 'p', className: 'eyebrow' })}
+          {E(['outcomesTitle'], { as: 'h2' })}
+          <ul className="sales-outcomes">
+            {c.outcomes.map((o, i) => (
+              <li key={i}>
+                {E(['outcomes', i, 'emoji'], { className: 'emoji' })}
+                <div>
+                  {E(['outcomes', i, 'title'], { as: 'p', className: 'title' })}
+                  {E(['outcomes', i, 'text'], { as: 'p' })}
+                  {listTools(['outcomes'], i, { emoji: '✨', title: '', text: '' })}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="sales-section">
+          {E(['daysEyebrow'], { as: 'p', className: 'eyebrow' })}
+          {E(['daysTitle'], { as: 'h2' })}
           <ol className="sales-days">
             {days.map((d) => (
               <li key={d.number}>
@@ -111,61 +141,80 @@ export function SalesPage() {
               </li>
             ))}
           </ol>
-          <p className="note sales-center">וביום 9 את פוגשת שוב את הסרטון שצילמת ביום הראשון.</p>
+          {editing && <p className="note sales-center">שמות הימים והשאלות מגיעים מתוכן הימים, ונערכים בתוך האפליקציה.</p>}
+          {E(['daysNote'], { as: 'p', className: 'note sales-center' })}
         </section>
 
         <section className="sales-section">
-          <p className="eyebrow">מה מחכה לך בפנים</p>
-          <h2>כל בוקר באותו מבנה, כדי שתמיד תדעי איפה את</h2>
+          {E(['insideEyebrow'], { as: 'p', className: 'eyebrow' })}
+          {E(['insideTitle'], { as: 'h2' })}
           <div className="sales-grid">
-            {INSIDE.map((i) => (
-              <div className="sales-card" key={i.title}>
-                <span className="emoji" aria-hidden="true">{i.emoji}</span>
-                <p className="title">{i.title}</p>
-                <p>{i.text}</p>
+            {c.inside.map((it, i) => (
+              <div className="sales-card" key={i}>
+                {E(['inside', i, 'emoji'], { className: 'emoji' })}
+                {E(['inside', i, 'title'], { as: 'p', className: 'title' })}
+                {E(['inside', i, 'text'], { as: 'p' })}
+                {listTools(['inside'], i, { emoji: '✨', title: '', text: '' })}
               </div>
             ))}
           </div>
         </section>
 
         <section className="sales-section">
-          <p className="eyebrow">איך זה עובד</p>
-          <h2>מהרגע שאת מצטרפת</h2>
+          {E(['stepsEyebrow'], { as: 'p', className: 'eyebrow' })}
+          {E(['stepsTitle'], { as: 'h2' })}
           <ol className="sales-steps">
-            {STEPS.map((s) => (
-              <li key={s.title}>
-                <p className="title">{s.title}</p>
-                <p>{s.text}</p>
+            {c.steps.map((st, i) => (
+              <li key={i}>
+                {E(['steps', i, 'title'], { as: 'p', className: 'title' })}
+                {E(['steps', i, 'text'], { as: 'p' })}
+                {listTools(['steps'], i, { title: '', text: '' })}
               </li>
             ))}
           </ol>
         </section>
 
         <AuraStage className="sales-offer">
-          <h2>מוכנה לבוקר הראשון?</h2>
-          <p className="tagline">{TAGLINE}</p>
-          <Price />
-          <JoinButton />
+          {E(['offerTitle'], { as: 'h2' })}
+          {E(['offerLine'], { as: 'p', className: 'tagline' })}
+          {price}
+          {join}
         </AuraStage>
 
         <section className="sales-section">
-          <p className="eyebrow">שאלות</p>
-          <h2>שאלות נפוצות</h2>
+          {E(['faqEyebrow'], { as: 'p', className: 'eyebrow' })}
+          {E(['faqTitle'], { as: 'h2' })}
           <div className="sales-faq">
-            {FAQ.map((f) => (
-              <details key={f.q}>
+            {c.faq.map((f, i) => (editing ? (
+              <div className="faq-edit" key={i}>
+                {E(['faq', i, 'q'], { as: 'p', className: 'q', placeholder: 'שאלה' })}
+                {E(['faq', i, 'a'], { as: 'p', placeholder: 'תשובה' })}
+                {listTools(['faq'], i, { q: '', a: '' })}
+              </div>
+            ) : (
+              <details key={i}>
                 <summary>{f.q}</summary>
                 <p>{f.a}</p>
               </details>
-            ))}
+            )))}
           </div>
         </section>
 
         <footer className="sales-footer">
           <p className="brand small-brand" dir="ltr">JOURNEY</p>
-          <a className="link" href="../">כבר הצטרפתי, לכניסה</a>
+          <a className="link" href="../">{c.signinLabel}</a>
         </footer>
       </main>
+
+      {canEdit && !editing && (
+        <button className="sales-edit-btn" onClick={() => setEditing(true)} aria-label="עריכת דף הנחיתה"><Icon.pencil /> עריכה</button>
+      )}
+      {editing && (
+        <EditBar changed={draft ? 1 : 0} saving={state.saving} error={state.error} isPreview={siteApi.preview}
+          changedLabel="יש שינויים שלא נשמרו"
+          onSave={save} onDiscard={() => { setDraft(null); setState({ saving: false, error: '' }); }}
+          onExit={() => { setEditing(false); setDraft(null); }} />
+      )}
     </div>
   );
 }
@@ -184,6 +233,10 @@ export function ThanksPage() {
             <p>ברגע שהאישור מגיע אלינו, נשלח אלייך מייל עם קישור כניסה אישי. לחיצה עליו תכניס אותך ישר ל־JOURNEY, ויום 1 כבר יחכה לך.</p>
             <p className="note">לא הגיע תוך כמה דקות? כדאי להציץ בספאם או בקידומי מכירות. אפשר גם להיכנס עם המייל שאיתו שילמת.</p>
             <a className="btn primary block" href="../../">להיכנס ל־JOURNEY</a>
+            <p className="thanks-help">
+              יש לך שאלה? תפני אליי באינסטגרם, אשמח לסייע!{' '}
+              <a href="https://instagram.com/noya_bt" target="_blank" rel="noopener" dir="ltr">@noya_bt</a>
+            </p>
           </div>
         </main>
       </AuraStage>

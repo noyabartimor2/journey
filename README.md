@@ -4,7 +4,7 @@
 
 - `src/` – the app (React, no build tools needed besides esbuild)
 - `src/data/days.js` – the 9 days content (source for `supabase/02_content.sql`)
-- `supabase/` – database setup, run in order: `01_structure.sql` (tables, privacy rules, storage), `02_content.sql` (days + library), `03_grants.sql` (table access for the app; needed on newer Supabase projects)
+- `supabase/` – database setup, run in order: `01_structure.sql` (tables, privacy rules, storage), `02_content.sql` (days + library), `03_grants.sql` (table access for the app; needed on newer Supabase projects), `04_site_texts.sql` (editable sales-page texts)
 - `site/` – the built real app (published by Netlify)
 - `dist/index.html` – the design preview with sample content
 
