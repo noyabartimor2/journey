@@ -136,6 +136,7 @@ export function SalesPage() {
               <li key={d.number}>
                 <span className="num">{d.number}</span>
                 <div>
+                  <p className="day-label">יום {d.number}</p>
                   <p className="title">{d.title} <span aria-hidden="true">{d.emoji}</span></p>
                   <p className="q">{d.question}</p>
                 </div>
