@@ -70,6 +70,12 @@ export const api = {
     if (error && /rate|seconds/i.test(error.message)) fail(error, 'שלחנו קישור לפני רגע. חכי דקה ונסי שוב.');
     fail(error, 'לא הצלחנו לשלוח את הקישור. בדקי את כתובת המייל ונסי שוב.');
   },
+  // The code from the sign-in email: signs her in right here (needed in the home-screen app on iPhone,
+  // where the email link would open Safari instead).
+  async verifyCode(email, code) {
+    const { error } = await sb.auth.verifyOtp({ email: email.trim(), token: code.trim(), type: 'email' });
+    if (error) throw new Error('הקוד לא תקין או שפג תוקפו. אפשר לבקש קישור חדש.');
+  },
   async signInGoogle() {
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',

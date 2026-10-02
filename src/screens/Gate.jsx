@@ -63,12 +63,37 @@ export function SignIn() {
           <h2 style={{ fontSize: 'var(--step-3)' }}>בדקי את תיבת המייל</h2>
           <p style={{ color: 'var(--ink-2)' }}>שלחנו קישור כניסה אל <bdi dir="ltr">{email.trim()}</bdi>. לחיצה עליו תכניס אותך ישר פנימה.</p>
           <EmailSender />
+          <CodeEntry email={email} />
           <p className="note">לא הגיע תוך כמה דקות? כדאי להציץ גם בתיקיית הספאם או קידומי מכירות.</p>
           {isPreview && <button className="btn primary block" onClick={() => api.signInGoogle()}>המשך בתצוגה</button>}
           <button className="link" onClick={() => setSent(false)}>לשנות כתובת או לשלוח שוב</button>
         </div>
       )}
     </main>
+  );
+}
+
+// Signing in with the code from the email, without leaving the app.
+function CodeEntry({ email }) {
+  const { api } = useApp();
+  const [code, setCode] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const ok = /^\d{6,8}$/.test(code.trim());
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!ok) return;
+    setBusy(true); setError('');
+    try { await api.verifyCode(email, code); } catch (err) { setError(err.message); setBusy(false); }
+  };
+  return (
+    <form className="code-entry" onSubmit={submit}>
+      <label htmlFor="signin-code">יש קוד במייל? אפשר להקליד אותו כאן</label>
+      <input id="signin-code" className="input" inputMode="numeric" autoComplete="one-time-code" dir="ltr" maxLength={8}
+        placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} />
+      <button type="submit" className="btn white block" disabled={!ok || busy}>{busy ? 'בודקת…' : 'כניסה עם הקוד'}</button>
+      {error && <p className="error-note center" role="alert">{error}</p>}
+    </form>
   );
 }
 

@@ -966,9 +966,9 @@ a.btn { text-decoration: none; }
 .speck {
   position: absolute; bottom: -10px; border-radius: 50%;
   background: #FFFDF9; box-shadow: 0 0 10px 2px rgba(255, 240, 220, 0.9);
-  opacity: 0; animation: rise linear infinite;
+  opacity: 0; animation: speckRise linear infinite;
 }
-@keyframes rise {
+@keyframes speckRise {
   0% { transform: translate(0, 0); opacity: 0; }
   12% { opacity: 0.9; }
   85% { opacity: 0.6; }
@@ -1106,3 +1106,30 @@ a.btn { text-decoration: none; }
 .email-sender .addr { color: var(--ink-2); word-break: break-all; }
 .email-sender .hint { margin-top: 4px; color: var(--ink-3); }
 .sales-days .day-label { font-size: var(--step--1); font-weight: 600; letter-spacing: 0.04em; color: var(--blush-deep); }
+
+/* ---------- Add to home screen + code sign-in ---------- */
+.install { gap: 16px; }
+.install-why { color: var(--ink-2); }
+.install-warn { display: grid; gap: 4px; padding: 14px 16px; border-radius: 16px; background: var(--blush); color: var(--ink); font-size: var(--step--1); }
+.install-tabs { grid-template-columns: repeat(2, 1fr); }
+.install-tabs button.on { background: var(--ink); color: var(--paper); box-shadow: none; }
+.install-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.install-steps li { display: flex; gap: 12px; align-items: flex-start; }
+.install-steps .n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--sage); color: var(--sage-deep); font-weight: 600; font-size: var(--step--1); }
+.install-steps p { color: var(--ink-2); line-height: 1.6; }
+.inline-icon { display: inline-block; vertical-align: -3px; color: #2F7BF6; margin-inline: 2px; }
+.install-note { display: grid; gap: 4px; padding: 14px 16px; border-radius: 16px; background: var(--cream); font-size: var(--step--1); color: var(--ink-2); }
+.install-note strong { color: var(--ink); }
+.install-done { display: grid; gap: 6px; justify-items: center; text-align: center; padding: 20px; }
+.install-done .big { font-size: 2rem; color: var(--sage-deep); }
+.install-tip { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 10px 8px 10px 14px; border-radius: 18px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+.install-tip .emoji { font-size: 1.3rem; }
+.install-tip-text { flex: 1; display: grid; text-align: start; gap: 1px; font-size: var(--step--1); color: var(--ink-2); }
+.install-tip-text strong { color: var(--ink); font-size: var(--step-0); }
+.install-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; background: var(--sage); text-align: start; font-size: var(--step-0); }
+.install-row > span:first-child { font-size: 1.4rem; }
+.code-entry { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); text-align: center; }
+.code-entry label { color: var(--ink-2); font-size: var(--step--1); }
+.code-entry .input { text-align: center; letter-spacing: 0.4em; font-size: 1.25rem; }
+/* iPhone zooms into form fields smaller than 16px; keep the admin type picker at 16px. */
+.piece-tools select { font-size: 16px; }
