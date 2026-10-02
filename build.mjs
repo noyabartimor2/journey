@@ -83,4 +83,39 @@ writeFileSync('site/manifest.webmanifest', JSON.stringify({
 for (const f of ['icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
   if (existsSync(`assets/${f}`)) copyFileSync(`assets/${f}`, `site/${f}`);
 }
-console.log('Built dist/index.html (preview) and site/ (real app)');
+// 3. Sales page: site/join/ (published) and dist/join.html (self-contained preview)
+mkdirSync('site/join', { recursive: true });
+const joinJs = bundle('src/main-join.jsx', 'site/join/app.js');
+const joinHead = `<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JOURNEY · מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים</title>
+<meta name="description" content="9 בקרים. 9 ניסויים קטנים בחיים שלך. מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים.">
+<meta name="theme-color" content="#FAF7F2">
+${FONTS}`;
+writeFileSync('site/join/index.html', `<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+${joinHead}
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=${stamp}">
+</head>
+<body>
+<div id="root" dir="rtl" lang="he"></div>
+${REACT}
+<script src="app.js?v=${stamp}"></script>
+</body>
+</html>
+`);
+writeFileSync('dist/join.html', `${joinHead}
+<style>
+${css}
+</style>
+<div id="root" dir="rtl" lang="he"></div>
+${REACT}
+<script>
+${joinJs}
+</script>
+`);
+
+console.log('Built dist/ (previews), site/ (real app) and site/join/ (sales page)');

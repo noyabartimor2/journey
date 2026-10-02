@@ -1,0 +1,890 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JOURNEY · מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים</title>
+<meta name="description" content="9 בקרים. 9 ניסויים קטנים בחיים שלך. מחרדה לשגשוג בתוך אי־ודאות ב־9 ימים.">
+<meta name="theme-color" content="#FAF7F2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&family=Frank+Ruhl+Libre:wght@300;400;500&display=swap">
+<style>
+/* Layout concept: a single quiet column, like a private morning journal.
+   "Today" opens on a soft dawn whose sun rises a little higher each day of the nine. */
+:root {
+  --paper: #FAF7F2;      /* warm off-white page */
+  --cream: #F3ECE2;      /* cream surfaces */
+  --shell: #EEE7DD;      /* around the app on large screens */
+  --blush: #F2E2DB;      /* very soft blush */
+  --blush-deep: #C58F82; /* blush for small accents */
+  --sage: #E1E8DC;       /* soft sage surface */
+  --sage-deep: #5F735C;  /* main action colour */
+  --mist: #E2EAEF;       /* subtle light blue */
+  --mist-deep: #7E98A8;
+  --ink: #3A3631;        /* warm charcoal text, never black */
+  --ink-2: #6F685F;
+  --ink-3: #A0978B;
+  --line: #E8E0D4;
+  --white: #FFFDF9;
+
+  --font-display: "Frank Ruhl Libre", "David", "Times New Roman", serif;
+  --font-body: "Assistant", "Arial Hebrew", "Segoe UI", system-ui, sans-serif;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.0625rem;
+  --step-2: 1.375rem;
+  --step-3: 1.75rem;
+  --step-4: 2.375rem;
+
+  --radius: 22px;
+  --nav-h: 64px;
+  --col: 460px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--shell);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--mist-deep); outline-offset: 3px; border-radius: 8px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; letter-spacing: -0.005em; }
+
+.app {
+  position: relative;
+  max-width: var(--col);
+  min-height: 100%;
+  margin: 0 auto;
+  background: var(--paper);
+}
+@media (min-width: 520px) {
+  .app { box-shadow: 0 0 0 1px var(--line), 0 30px 80px -40px rgba(80, 64, 48, 0.25); }
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px 10px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-1);
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--blush);
+  color: var(--ink-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar.sage { background: var(--sage); }
+.avatar.mist { background: var(--mist); }
+.avatar.cream { background: var(--cream); }
+.avatar.lg { width: 72px; height: 72px; font-size: var(--step-2); }
+
+/* ---------- Screens ---------- */
+.screen {
+  padding-inline: 20px;
+  padding-block: 4px calc(var(--nav-h) + 48px + env(safe-area-inset-bottom, 0px));
+  animation: fadeIn 0.5s ease both;
+}
+@keyframes fadeIn { from { opacity: 0.001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.page-head { display: grid; gap: 4px; padding-block: 18px 22px; }
+.page-head h1 { font-size: var(--step-4); line-height: 1.1; }
+.page-head p { color: var(--ink-2); }
+
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+/* ---------- Dawn (Today's heart) ---------- */
+.greeting { color: var(--ink-2); padding-block: 6px 14px; font-size: var(--step-1); }
+.dawn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  min-height: 330px;
+  padding: 28px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  background:
+    linear-gradient(180deg, var(--mist) 0%, color-mix(in srgb, var(--mist) 45%, var(--blush)) 52%, var(--cream) 100%);
+  isolation: isolate;
+}
+.dawn.compact { min-height: 250px; }
+.dawn .sun {
+  position: absolute;
+  z-index: -1;
+  width: 230px; height: 230px;
+  left: 50%;
+  translate: -50% 0;
+  bottom: calc(18% + var(--rise) * 46%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #FBEDE4 0%, #F3D5C8 38%, rgba(242, 214, 202, 0.0) 70%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.dawn .horizon {
+  position: absolute;
+  z-index: -1;
+  inset-inline: 0;
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(180deg, rgba(250, 247, 242, 0) 0%, color-mix(in srgb, var(--cream) 80%, transparent) 55%, var(--cream) 100%);
+}
+@keyframes breathe { 0%, 100% { scale: 1; opacity: 0.92; } 50% { scale: 1.06; opacity: 1; } }
+
+.day-dots { display: flex; gap: 6px; align-items: center; }
+.day-dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: color-mix(in srgb, var(--ink-3) 30%, transparent);
+}
+.day-dots span.done { background: var(--sage-deep); }
+.day-dots span.now { background: transparent; box-shadow: 0 0 0 1.5px var(--blush-deep); width: 9px; height: 9px; }
+
+.dawn h1 { font-size: clamp(2.125rem, 9vw, 2.75rem); line-height: 1.08; font-weight: 400; }
+.dawn .intention { font-size: var(--step-1); color: var(--ink-2); max-width: 30ch; }
+.dawn .eyebrow { color: var(--ink-2); }
+
+/* What's waiting today */
+.agenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  padding-block: 20px 4px;
+  color: var(--ink-2);
+  font-size: var(--step-0);
+}
+.agenda button { padding: 4px 0; color: var(--ink-2); }
+.agenda button:hover { color: var(--ink); }
+.agenda .sep { padding-inline: 10px; color: var(--ink-3); }
+
+/* ---------- Content blocks ---------- */
+.blocks { display: grid; gap: 40px; padding-block: 32px 8px; }
+.block { display: grid; gap: 12px; scroll-margin-top: 80px; }
+.block .eyebrow { padding-inline-start: 2px; }
+.prose { display: grid; gap: 14px; font-size: var(--step-1); line-height: 1.8; max-width: 62ch; }
+.prose p:first-child { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.5; color: var(--ink); }
+.prose p { color: var(--ink-2); }
+
+.media-frame {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--cream);
+}
+.media-frame iframe, .media-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.art { position: absolute; inset: 0; }
+.play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 64px; height: 64px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--white) 78%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--ink);
+  transition: transform 0.3s ease;
+}
+.play:hover { transform: scale(1.05); }
+.media-meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.media-meta strong { font-weight: 600; }
+.media-meta span { color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: var(--step--1); }
+.media-note {
+  position: absolute; inset-inline: 16px; bottom: 14px;
+  padding: 8px 14px; border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 85%, transparent);
+  font-size: var(--step--1); color: var(--ink-2); text-align: center;
+}
+
+.audio {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--mist);
+}
+.audio .round {
+  grid-row: span 2;
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--white);
+  color: var(--ink);
+}
+.audio strong { font-weight: 600; }
+.audio .track { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.audio .bar { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--mist-deep) 25%, transparent); overflow: hidden; }
+.audio .bar i { display: block; height: 100%; background: var(--mist-deep); transition: width 0.25s linear; }
+.audio .time { font-size: var(--step--1); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.figure { display: grid; gap: 10px; margin: 0; }
+.figure .media-frame { aspect-ratio: 4 / 3; }
+.figure figcaption { color: var(--ink-3); font-size: var(--step--1); text-align: center; }
+
+.exercise {
+  display: grid;
+  gap: 14px;
+  padding: 24px 22px;
+  border-radius: var(--radius);
+  background: var(--sage);
+}
+.exercise h3 { font-size: var(--step-2); line-height: 1.3; }
+.exercise ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; counter-reset: s; }
+.exercise li { display: grid; grid-template-columns: 26px 1fr; gap: 8px; counter-increment: s; color: var(--ink-2); }
+.exercise li::before {
+  content: counter(s);
+  font-family: var(--font-display);
+  color: var(--sage-deep);
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+/* ---------- Completion ---------- */
+.finish { display: grid; gap: 14px; padding-block: 44px 8px; text-align: center; }
+.finish .hint { color: var(--ink-3); font-size: var(--step--1); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 54px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: var(--step-1);
+  transition: background-color 0.25s ease, transform 0.2s ease, opacity 0.2s;
+}
+.btn:active { transform: scale(0.985); }
+.btn.primary { background: var(--sage-deep); color: var(--white); }
+.btn.primary:hover { background: color-mix(in srgb, var(--sage-deep) 88%, var(--ink)); }
+.btn.soft { background: var(--blush); color: var(--ink); }
+.btn.quiet { background: transparent; color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.white { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.block { width: 100%; }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.link { color: var(--ink-2); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line); font-size: var(--step--1); padding: 6px; }
+
+.done-card {
+  display: grid; gap: 8px; justify-items: center;
+  padding: 30px 22px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--sage) 0%, var(--paper) 100%);
+  animation: fadeIn 0.6s ease both;
+}
+.done-card .check {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--sage-deep); color: var(--white);
+  margin-bottom: 6px;
+}
+.done-card h2 { font-size: var(--step-3); }
+.done-card p { color: var(--ink-2); }
+
+.share { display: grid; gap: 12px; padding: 24px 22px; border-radius: var(--radius); background: var(--blush); text-align: center; margin-top: 4px; }
+.share p { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.4; }
+
+/* ---------- Journey ---------- */
+.journey { list-style: none; margin: 0; padding: 0; display: grid; }
+.journey li { position: relative; }
+.journey li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 27px;
+  top: 58px; bottom: -6px;
+  width: 1px;
+  background: var(--line);
+}
+.jrow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 0;
+  text-align: start;
+  border-radius: 18px;
+}
+.jrow:disabled { cursor: default; }
+.jrow .num {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink-2);
+  position: relative; z-index: 1;
+}
+.jrow.done .num { background: var(--sage); box-shadow: none; color: var(--sage-deep); }
+.jrow.today .num { background: var(--blush); box-shadow: inset 0 0 0 1.5px var(--blush-deep); color: var(--ink); }
+.jrow.locked .num { color: var(--ink-3); box-shadow: inset 0 0 0 1px var(--line); background: transparent; }
+.jrow .txt { display: grid; gap: 1px; min-width: 0; }
+.jrow .t { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.3; }
+.jrow.locked .t { color: var(--ink-3); }
+.jrow .s { font-size: var(--step--1); color: var(--ink-3); }
+.jrow.today .s { color: var(--blush-deep); font-weight: 600; }
+.jrow .chev { color: var(--ink-3); }
+.jrow.today { background: color-mix(in srgb, var(--blush) 45%, transparent); padding-inline-end: 14px; }
+
+.progress-line { display: grid; gap: 8px; margin-bottom: 26px; }
+.progress-line .bar { height: 4px; border-radius: 4px; background: var(--cream); overflow: hidden; }
+.progress-line .bar i { display: block; height: 100%; background: var(--sage-deep); border-radius: 4px; }
+.progress-line .row { display: flex; justify-content: space-between; color: var(--ink-2); font-size: var(--step--1); }
+
+/* ---------- Day page (opened from Journey) ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  background: var(--paper);
+  max-width: var(--col);
+  margin: 0 auto;
+  animation: slideIn 0.35s ease both;
+}
+@keyframes slideIn { from { opacity: 0.001; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+.backbar { display: flex; align-items: center; gap: 6px; color: var(--ink-2); padding: 6px 0; }
+
+/* ---------- Community ---------- */
+.composer {
+  width: 100%;
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  border-radius: 999px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink-3);
+  text-align: start;
+  margin-bottom: 24px;
+}
+.feed { display: grid; gap: 14px; }
+.post {
+  display: grid; gap: 14px;
+  padding: 20px 18px 14px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: 0 1px 0 var(--line);
+}
+.post-head { display: flex; gap: 12px; align-items: center; }
+.post-head .who { display: grid; min-width: 0; }
+.post-head strong { font-weight: 600; }
+.post-head span { font-size: var(--step--1); color: var(--ink-3); }
+.post .text { font-size: var(--step-1); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.post .photo { aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; position: relative; background: var(--cream); }
+.post .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.post-actions { display: flex; gap: 6px; border-top: 1px solid var(--line); padding-top: 8px; }
+.post-actions button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 999px; color: var(--ink-2); font-size: var(--step--1); }
+.post-actions button:hover { background: var(--cream); }
+.post-actions .liked { color: var(--blush-deep); }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--cream); color: var(--ink-2); font-size: var(--step--1); }
+
+/* ---------- Library ---------- */
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin: 0 -20px 18px; padding-inline: 20px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; padding: 8px 16px; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); font-size: var(--step--1); font-weight: 600; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
+.lib { display: grid; gap: 4px; }
+.lib-item {
+  width: 100%;
+  display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center;
+  padding: 12px 0;
+  text-align: start;
+  border-bottom: 1px solid var(--line);
+}
+.lib-item .swatch { width: 64px; height: 64px; border-radius: 16px; position: relative; overflow: hidden; }
+.lib-item .txt { display: grid; gap: 2px; min-width: 0; }
+.lib-item strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); line-height: 1.35; }
+.lib-item p { color: var(--ink-3); font-size: var(--step--1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sw-audio { background: var(--mist); }
+.sw-video { background: var(--blush); }
+.sw-text { background: var(--sage); }
+.sw-pdf { background: var(--cream); }
+.swatch::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: radial-gradient(circle, rgba(255,253,249,0.9), rgba(255,253,249,0) 70%); }
+
+.file-card { display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: var(--radius); background: var(--cream); }
+.file-card .doc { width: 44px; height: 54px; border-radius: 8px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); display: grid; place-items: center; font-size: 11px; font-weight: 600; color: var(--ink-3); flex: none; }
+.file-card .txt { display: grid; min-width: 0; }
+.file-card span { color: var(--ink-3); font-size: var(--step--1); }
+
+/* ---------- Bottom tabs ---------- */
+.tabs {
+  position: fixed;
+  z-index: 30;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, var(--col));
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 6px 12px env(safe-area-inset-bottom, 0px);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+}
+.tabs button {
+  height: var(--nav-h);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  color: var(--ink-3);
+  font-size: var(--step-0);
+  font-weight: 600;
+}
+.tabs button::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: transparent; transition: background 0.3s; }
+.tabs button[aria-current="page"] { color: var(--ink); }
+.tabs button[aria-current="page"]::after { background: var(--blush-deep); }
+
+/* ---------- Bottom sheet ---------- */
+.sheet-wrap { position: fixed; inset: 0; z-index: 60; display: grid; align-items: end; justify-items: center; }
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(58, 54, 49, 0.28); animation: fade 0.3s ease both; }
+@keyframes fade { from { opacity: 0; } }
+.sheet {
+  position: relative;
+  width: min(100%, var(--col));
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border-radius: 28px 28px 0 0;
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  animation: rise 0.38s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes rise { from { transform: translateY(40px); opacity: 0.001; } }
+.sheet .handle { width: 40px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 14px; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.sheet-head h2 { font-size: var(--step-3); }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-2); flex: none; }
+.icon-btn:hover { background: var(--cream); }
+.stack { display: grid; gap: 14px; }
+
+.field { display: grid; gap: 6px; }
+.field label { font-size: var(--step--1); color: var(--ink-2); font-weight: 600; }
+.input, .textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line);
+  padding: 14px 16px;
+  font-size: var(--step-1);
+  outline: none;
+}
+.input:focus, .textarea:focus { box-shadow: inset 0 0 0 1.5px var(--mist-deep); }
+.textarea { min-height: 140px; resize: none; line-height: 1.7; }
+.thumb { position: relative; width: 100%; aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb .icon-btn { position: absolute; top: 10px; inset-inline-end: 10px; background: color-mix(in srgb, var(--white) 85%, transparent); }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.add-photo { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); font-weight: 600; font-size: var(--step--1); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.comments { display: grid; gap: 16px; margin-bottom: 18px; }
+.comment { display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+.comment .avatar { width: 32px; height: 32px; font-size: 12px; }
+.comment .bubble { background: var(--white); border-radius: 16px; padding: 10px 14px; box-shadow: inset 0 0 0 1px var(--line); min-width: 0; }
+.comment strong { font-weight: 600; font-size: var(--step--1); }
+.comment p { overflow-wrap: anywhere; }
+.comment span { font-size: 12px; color: var(--ink-3); }
+.comment-form { display: flex; gap: 8px; align-items: center; position: sticky; bottom: 0; background: var(--paper); padding-top: 8px; }
+.comment-form .input { border-radius: 999px; }
+.empty { color: var(--ink-3); text-align: center; padding: 24px 0; }
+
+/* ---------- Welcome / waiting ---------- */
+.gate {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  align-content: end;
+  gap: 28px;
+  padding: 40px 24px calc(40px + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, var(--mist) 0%, color-mix(in srgb, var(--mist) 40%, var(--blush)) 45%, var(--paper) 78%);
+}
+.gate .sun {
+  position: absolute; z-index: -1;
+  width: 340px; height: 340px; border-radius: 50%;
+  top: 12%; left: 50%; translate: -50% 0;
+  background: radial-gradient(circle, #FBEDE4 0%, #F3D5C8 40%, rgba(242,214,202,0) 70%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.gate-title { display: grid; gap: 12px; text-align: center; }
+.gate-title h1 { font-size: clamp(2.25rem, 10vw, 3rem); line-height: 1.1; }
+.gate-title p { color: var(--ink-2); font-size: var(--step-1); max-width: 30ch; margin-inline: auto; }
+.gate-form { display: grid; gap: 12px; }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--ink-3); font-size: var(--step--1); }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.gate .small { text-align: center; color: var(--ink-3); font-size: var(--step--1); }
+.sent { display: grid; gap: 10px; text-align: center; padding: 22px; border-radius: var(--radius); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+
+/* ---------- Preview tool (not part of the real app) ---------- */
+.preview-pill {
+  position: fixed;
+  z-index: 50;
+  inset-inline-end: max(12px, calc(50% - var(--col) / 2 + 12px));
+  bottom: calc(var(--nav-h) + 22px + env(safe-area-inset-bottom, 0px));
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.82;
+  box-shadow: 0 6px 20px -8px rgba(58,54,49,0.5);
+}
+.preview-pill.on-gate { bottom: auto; top: calc(16px + env(safe-area-inset-top, 0px)); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.seg.nine { grid-template-columns: repeat(9, 1fr); }
+.seg button { min-height: 44px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); font-weight: 600; font-size: var(--step--1); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
+.note { color: var(--ink-3); font-size: var(--step--1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ===================== JOURNEY copy update ===================== */
+.wordmark { font-size: 0.9375rem; letter-spacing: 0.32em; font-weight: 500; }
+.day-of {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--ink-2);
+  text-align: right;
+}
+.day-of.plain { color: var(--ink-3); }
+.emoji { font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; font-size: 0.8em; }
+.dawn .question {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 28ch;
+  text-wrap: balance;
+}
+
+/* Short rich text used across the days */
+.rich { display: grid; gap: 10px; font-size: var(--step-1); line-height: 1.7; color: var(--ink-2); }
+.rich strong { color: var(--ink); font-weight: 600; }
+.rich .em {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--ink);
+  padding-block: 4px;
+  text-wrap: balance;
+}
+.rich h4 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--step-2);
+  color: var(--ink);
+}
+.rich .lines { display: grid; gap: 2px; padding-inline-start: 14px; border-inline-start: 1px solid color-mix(in srgb, var(--ink-3) 35%, transparent); }
+.rich .quotes { display: grid; gap: 6px; }
+.rich .quotes p { font-family: var(--font-display); font-style: normal; color: var(--ink-2); font-size: var(--step-1); }
+.rich-media { padding-block: 8px; }
+
+.intro { padding-block: 26px 6px; }
+.intro .rich { font-size: var(--step-1); }
+.block { padding-top: 26px; }
+
+/* Opening cards: the task, the game */
+.folds { display: grid; gap: 12px; padding-top: 30px; }
+.fold { border-radius: var(--radius); overflow: hidden; transition: background-color 0.3s; }
+.fold.sage { background: var(--sage); }
+.fold.blush { background: var(--blush); }
+.fold.mist { background: var(--mist); }
+.fold-head {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 20px 22px;
+  text-align: start;
+}
+.fold-titles { display: grid; gap: 2px; min-width: 0; }
+.fold-title { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.3; color: var(--ink); }
+.fold-chev {
+  flex: none; width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--white) 70%, transparent);
+  color: var(--ink-2);
+  transition: transform 0.35s ease;
+}
+.fold.open .fold-chev { transform: rotate(180deg); }
+.fold-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(.2,.8,.2,1); }
+.fold.open .fold-body { grid-template-rows: 1fr; }
+.fold-inner { overflow: hidden; min-height: 0; }
+.fold-inner > :first-child { padding: 0 22px 24px; }
+.fold.open .fold-inner { padding-bottom: 2px; }
+.fold .fold-inner > .share-task { padding: 0 22px 24px; }
+
+.share-task { display: grid; gap: 10px; }
+.shared-note { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--sage-deep); font-weight: 600; flex-wrap: wrap; }
+
+.finish { padding-block: 36px 8px; }
+.done-card .next { color: var(--ink-3); font-size: var(--step--1); margin-top: 6px; }
+.done-card { text-align: center; }
+.done-card.final { background: linear-gradient(180deg, var(--blush) 0%, var(--paper) 100%); gap: 14px; }
+.done-card.final .check { background: var(--blush-deep); }
+.done-card.final h2 { font-size: var(--step-3); line-height: 1.35; }
+
+.key-line {
+  margin-top: 28px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* Private things */
+.private { display: grid; gap: 10px; }
+.private-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.lock-note { font-size: var(--step--1); color: var(--ink-3); }
+.lock-note.center { text-align: center; }
+.meet .meet-text {
+  position: absolute; inset: auto 14px 14px;
+  display: grid; gap: 2px; padding: 12px 16px; border-radius: 16px;
+  background: color-mix(in srgb, var(--white) 86%, transparent);
+  text-align: center;
+}
+.meet .meet-text strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); color: var(--ink); }
+.meet .meet-text span { font-size: var(--step--1); color: var(--ink-3); }
+
+.answers { display: grid; gap: 14px; }
+.answers .q { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); color: var(--ink); line-height: 1.4; }
+.textarea.small { min-height: 72px; font-size: var(--step-0); }
+
+.ritual { display: grid; gap: 16px; }
+.pick-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick-chips .chip { background: var(--white); box-shadow: none; }
+.pick-chips .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.custom-row { display: flex; gap: 8px; }
+.custom-row .input { border-radius: 999px; padding-block: 11px; font-size: var(--step-0); }
+.custom-row .btn { min-height: 46px; padding: 0 18px; font-size: var(--step-0); flex: none; }
+.ritual .stack .field label { font-size: var(--step-0); color: var(--ink); font-weight: 600; }
+.ritual .stack .input { font-size: var(--step-0); padding-block: 11px; }
+
+.ritual-card {
+  display: grid; gap: 10px;
+  padding: 24px 22px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.ritual-card h3 { font-size: var(--step-2); line-height: 1.35; }
+.ritual-card ol { margin: 6px 0 4px; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: r; }
+.ritual-card li { display: grid; grid-template-columns: 24px 1fr; column-gap: 8px; counter-increment: r; }
+.ritual-card li::before { content: counter(r); grid-row: span 2; font-family: var(--font-display); color: var(--blush-deep); font-size: var(--step-1); line-height: 1.4; }
+.ritual-card li strong { font-weight: 600; }
+.ritual-card li span { color: var(--ink-2); font-size: var(--step-0); }
+.ritual-card .link { justify-self: start; }
+
+/* Personal space */
+.space-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.space-video { display: grid; gap: 6px; min-width: 0; }
+.space-video .media-frame { aspect-ratio: 3 / 4; }
+.space-block { display: grid; gap: 14px; }
+.qa { display: grid; gap: 2px; }
+.qa strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); }
+.qa p { color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; }
+.space-empty { text-align: start; padding: 0; color: var(--ink-2); }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 4px 0; width: 100%; }
+
+/* Community labels */
+.post-head .tag { margin-inline-start: auto; flex: none; max-width: 48%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Brand on the welcome screens */
+.brand {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  letter-spacing: 0.42em;
+  padding-inline-start: 0.42em;
+  color: var(--ink);
+  text-align: center;
+}
+.brand.small-brand { font-size: var(--step-0); color: var(--ink-2); }
+.gate-title h1 { font-size: clamp(1.875rem, 8.5vw, 2.5rem); line-height: 1.2; }
+.gate .key-line { margin-top: 0; font-size: var(--step-1); }
+
+/* ---------- Day 9: the Day 1 → Day 9 moment ---------- */
+.moment {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 30px -8px 0;
+  padding: 44px 24px 32px;
+  border-radius: 32px;
+  display: grid;
+  gap: 22px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--blush) 0%, color-mix(in srgb, var(--blush) 40%, var(--mist)) 55%, var(--paper) 100%);
+}
+.moment-glow {
+  position: absolute; z-index: -1;
+  width: 320px; height: 320px; border-radius: 50%;
+  top: -60px; left: 50%; translate: -50% 0;
+  background: radial-gradient(circle, rgba(255, 248, 240, 0.95) 0%, rgba(255, 248, 240, 0) 68%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.moment-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.24em; color: var(--blush-deep); }
+.moment-opening {
+  font-size: clamp(1.75rem, 7.6vw, 2.25rem);
+  line-height: 1.3;
+  color: var(--ink);
+  max-width: 16ch;
+  margin-inline: auto;
+}
+.moment.step-closed { padding-block: 64px 36px; min-height: 420px; align-content: center; }
+.moment-closed { display: grid; gap: 22px; animation: fadeIn 0.6s ease both; }
+.moment-guide .rich { text-align: center; justify-items: center; }
+.moment-open { display: grid; gap: 16px; animation: unveil 1.1s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes unveil { from { opacity: 0.001; transform: scale(0.96); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.moment-video {
+  position: relative;
+  width: min(100%, 340px);
+  max-width: 100%;
+  aspect-ratio: 9 / 14;
+  max-height: 68vh;
+  margin-inline: auto;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 30px 60px -30px rgba(120, 80, 64, 0.45), 0 0 0 6px color-mix(in srgb, var(--white) 70%, transparent);
+}
+.moment-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--ink); }
+.moment-empty-text {
+  position: absolute; inset: auto 14px 14px;
+  display: grid; gap: 4px; padding: 14px 16px; border-radius: 18px;
+  background: color-mix(in srgb, var(--white) 88%, transparent);
+}
+.moment-empty-text strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); }
+.moment-empty-text span { font-size: var(--step--1); color: var(--ink-3); }
+.moment-hush { color: var(--ink-2); font-family: var(--font-display); font-size: var(--step-1); }
+.moment-next {
+  display: grid; gap: 12px;
+  text-align: start;
+  padding-top: 26px;
+  border-top: 1px solid color-mix(in srgb, var(--blush-deep) 25%, transparent);
+  scroll-margin-top: 80px;
+  animation: fadeIn 0.7s ease both;
+}
+.moment-next h3 { font-size: var(--step-3); }
+
+/* ---------- Real-data states: errors, toasts, uploads ---------- */
+.error-note { color: #A2574A; font-size: var(--step--1); }
+.error-note.center { text-align: center; }
+.soft-error { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 18px; border-radius: 18px; background: var(--blush); color: var(--ink-2); margin-bottom: 16px; }
+.toast {
+  position: fixed; z-index: 80;
+  left: 50%; transform: translateX(-50%);
+  bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom, 0px));
+  max-width: min(92vw, 420px);
+  padding: 12px 20px; border-radius: 999px;
+  background: var(--ink); color: var(--paper);
+  font-size: var(--step--1); font-weight: 600; text-align: center;
+  box-shadow: 0 10px 30px -12px rgba(58,54,49,0.5);
+  animation: fadeIn 0.3s ease both;
+}
+.post-actions .push-end { margin-inline-start: auto; color: var(--ink-3); }
+.post-actions .confirm-row { margin-inline-start: auto; display: inline-flex; gap: 2px; }
+.post-actions .danger { color: #A2574A; font-weight: 600; }
+.inline-link { color: var(--ink-3); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.post .photo.video { aspect-ratio: auto; background: var(--ink); }
+.post .photo.video video { width: 100%; max-height: 70vh; display: block; background: var(--ink); }
+.thumb video { width: 100%; height: 100%; object-fit: cover; background: var(--ink); }
+.thumb-badge { position: absolute; bottom: 10px; inset-inline-start: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(58,54,49,0.7); color: var(--paper); font-size: 12px; font-variant-numeric: tabular-nums; direction: ltr; }
+.audio .round.muted { opacity: 0.45; }
+.add-photo:disabled { opacity: 0.45; }
+a.btn { text-decoration: none; }
+
+/* ===================== Sales page (site/join/) ===================== */
+.sales { padding-bottom: 40px; }
+.sales-hero { min-height: auto; align-content: start; padding-top: 72px; gap: 22px; }
+.sales-hero .key-line { margin-top: 4px; }
+.sales-signin { justify-self: center; }
+.sales-price { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 12px; text-align: center; }
+.sales-price .was { color: var(--ink-3); text-decoration: line-through; font-size: var(--step-1); }
+.sales-price .now { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--ink); }
+.sales-price .note { flex-basis: 100%; color: var(--blush-deep); font-weight: 600; }
+.sales-join { display: grid; }
+.sales-join a.btn { text-decoration: none; }
+.sales-body { display: grid; gap: 48px; padding: 8px 24px 0; }
+.sales-section { display: grid; gap: 14px; }
+.sales-section h2 { font-size: var(--step-3); line-height: 1.25; }
+.sales-center { text-align: center; }
+.sales-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.sales-list li { position: relative; padding: 14px 44px 14px 18px; border-radius: 16px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); }
+.sales-list li::before { content: "✓"; position: absolute; inset-inline-start: 18px; top: 14px; color: var(--sage-deep); font-weight: 600; }
+.sales-days { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.sales-days li { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.sales-days li:last-child { border-bottom: 0; }
+.sales-days .num { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--blush); font-family: var(--font-display); font-size: var(--step-1); }
+.sales-days .title, .sales-card .title, .sales-steps .title { font-weight: 600; color: var(--ink); }
+.sales-days .q { color: var(--ink-2); font-size: var(--step--1); }
+.sales-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sales-card { display: grid; gap: 4px; align-content: start; padding: 16px; border-radius: 18px; background: var(--cream); color: var(--ink-2); font-size: var(--step--1); }
+.sales-card .emoji { font-size: 1.4rem; }
+.sales-card .title { font-size: var(--step-0); }
+.sales-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 12px; }
+.sales-steps li { counter-increment: step; position: relative; padding-inline-start: 48px; color: var(--ink-2); }
+.sales-steps li::before { content: counter(step); position: absolute; inset-inline-start: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--sage); color: var(--sage-deep); font-weight: 600; }
+.sales-offer { padding: 32px 22px; border-radius: var(--radius); background: linear-gradient(180deg, var(--blush) 0%, var(--paper) 100%); text-align: center; gap: 18px; }
+.sales-faq { display: grid; gap: 8px; }
+.sales-faq details { border-radius: 16px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); padding: 0 18px; }
+.sales-faq summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.sales-faq summary::-webkit-details-marker { display: none; }
+.sales-faq summary::after { content: "+"; color: var(--ink-3); font-weight: 400; }
+.sales-faq details[open] summary::after { content: "−"; }
+.sales-faq details p { padding-bottom: 16px; color: var(--ink-2); }
+.sales-footer { display: grid; gap: 6px; justify-items: center; padding-top: 8px; }
+@media (max-width: 360px) { .sales-grid { grid-template-columns: 1fr; } }
+
+</style>
+<div id="root" dir="rtl" lang="he"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+(()=>{var t=["\u05D0\u05EA \u05DC\u05D0 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D3\u05E2\u05EA \u05DE\u05D4 \u05DE\u05D2\u05D9\u05E2 \u05DE\u05D7\u05E8.","\u05EA\u05E4\u05D2\u05E9\u05D9 \u05D0\u05D5\u05EA\u05D5 \u05DB\u05E9\u05D4\u05D5\u05D0 \u05D9\u05D2\u05D9\u05E2."],s="9 \u05D1\u05E7\u05E8\u05D9\u05DD. 9 \u05E0\u05D9\u05E1\u05D5\u05D9\u05D9\u05DD \u05E7\u05D8\u05E0\u05D9\u05DD \u05D1\u05D7\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA.",a="\u05DE\u05D7\u05E8\u05D3\u05D4 \u05DC\u05E9\u05D2\u05E9\u05D5\u05D2 \u05D1\u05EA\u05D5\u05DA \u05D0\u05D9\u05BE\u05D5\u05D3\u05D0\u05D5\u05EA \u05D1\u05BE9 \u05D9\u05DE\u05D9\u05DD",i=[{number:1,title:"\u05D4\u05D9\u05D9 \u05D5\u05D1\u05D9\u05D9 \u05DC\u05D7\u05E8\u05D3\u05D4",emoji:"\u{1F44B}",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05EA\u05E7\u05D5\u05E4\u05D4 \u05D4\u05D6\u05D0\u05EA \u05D4\u05D9\u05D0 \u05DC\u05D0 \u05EA\u05E7\u05DC\u05D4?",intro:["\u05D5\u05DE\u05D4 \u05D0\u05DD \u05DE\u05E1\u05EA\u05EA\u05E8\u05D5\u05EA \u05D1\u05D4 \u05DE\u05EA\u05E0\u05D5\u05EA \u05E9\u05D0\u05EA \u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05DE\u05E1\u05D5\u05D2\u05DC\u05EA \u05DC\u05E8\u05D0\u05D5\u05EA?","\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05DE\u05E0\u05E1\u05D5\u05EA \u05DC\u05E4\u05EA\u05D5\u05E8 \u05D4\u05DB\u05D5\u05DC.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E7\u05D5\u05D3\u05DD \u05DB\u05D5\u05DC \u05DE\u05D5\u05E8\u05D9\u05D3\u05D5\u05EA \u05E7\u05E6\u05EA \u05E8\u05E2\u05E9, \u05D7\u05D5\u05D6\u05E8\u05D5\u05EA \u05DC\u05D2\u05D5\u05E3 \u05D5\u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05DC\u05DC\u05DE\u05D5\u05D3 \u05E9\u05E4\u05D4 \u05D7\u05D3\u05E9\u05D4:",{b:"\u05DE\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9 \u2014 \u05D5\u05DE\u05D4 \u05DE\u05DB\u05D5\u05D5\u05E5 \u05D0\u05D5\u05EA\u05D9?"}],video:{art:1},task:{title:"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05E0\u05E4\u05D2\u05D5\u05E9 \u05E9\u05D5\u05D1",body:["\u05E6\u05DC\u05DE\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DC\u05DA \u05E2\u05DB\u05E9\u05D9\u05D5.",{lines:["\u05D1\u05DC\u05D9 \u05DC\u05D4\u05D9\u05D5\u05EA \u05E8\u05D5\u05D7\u05E0\u05D9\u05EA.","\u05D1\u05DC\u05D9 \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05E8\u05D0\u05D5\u05EA \u05D0\u05EA \u05D4\u05D8\u05D5\u05D1.","\u05D1\u05DC\u05D9 \u05DC\u05E1\u05D3\u05E8 \u05D0\u05EA \u05D4\u05DE\u05D7\u05E9\u05D1\u05D5\u05EA \u05DC\u05E4\u05E0\u05D9."]},"\u05E1\u05E4\u05E8\u05D9 \u05D0\u05D9\u05E4\u05D4 \u05D0\u05EA \u05E0\u05DE\u05E6\u05D0\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5.",{lines:["\u05DE\u05D4 \u05E7\u05E9\u05D4?","\u05DE\u05D4 \u05DE\u05E4\u05D7\u05D9\u05D3?","\u05DE\u05D4 \u05DE\u05D1\u05DC\u05D1\u05DC?","\u05DE\u05D4 \u05E0\u05DE\u05D0\u05E1 \u05DC\u05DA?","\u05DE\u05D4 \u05D0\u05EA \u05DC\u05D0 \u05D9\u05D5\u05D3\u05E2\u05EA?"]},{b:"\u05E9\u05E4\u05DB\u05D9 \u05D4\u05DB\u05D5\u05DC."},"\u05EA\u05E2\u05DC\u05D9 \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05DC\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05DA \u05DB\u05D0\u05DF.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E0\u05D7\u05D6\u05D5\u05E8 \u05D0\u05DC\u05D9\u05D5 \u05D1\u05D4\u05DE\u05E9\u05DA \u05D4\u05D2\u05F3\u05E8\u05E0\u05D9 :)",{widget:"day1Video"}]},game:{title:"\u05D4\u05EA\u05E8\u05D7\u05D1\u05D5\u05EA / \u05D4\u05EA\u05DB\u05D5\u05D5\u05E6\u05D5\u05EA",body:["\u05D4\u05D9\u05D5\u05DD \u05D4\u05D2\u05D5\u05E3 \u05E9\u05DC\u05DA \u05D4\u05D5\u05E4\u05DA \u05DC\u05DE\u05E6\u05E4\u05DF.","\u05DC\u05E4\u05E0\u05D9 \u05D4\u05D7\u05DC\u05D8\u05D5\u05EA \u05E7\u05D8\u05E0\u05D5\u05EA \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9 \u05D0\u05D5 \u05DE\u05DB\u05D5\u05D5\u05E5 \u05D0\u05D5\u05EA\u05D9?"},{lines:["\u05DE\u05D4 \u05D1\u05D0 \u05DC\u05D9 \u05DC\u05D0\u05DB\u05D5\u05DC?","\u05DE\u05D4 \u05DC\u05DC\u05D1\u05D5\u05E9?","\u05E2\u05DD \u05DE\u05D9 \u05D1\u05D0 \u05DC\u05D9 \u05DC\u05D4\u05D9\u05E4\u05D2\u05E9?","\u05D4\u05D0\u05DD \u05D1\u05D0 \u05DC\u05D9 \u05DC\u05E6\u05D0\u05EA \u05D0\u05D5 \u05DC\u05D4\u05D9\u05E9\u05D0\u05E8 \u05D1\u05D1\u05D9\u05EA?","\u05DC\u05E2\u05E0\u05D5\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5 \u05D0\u05D5 \u05D0\u05D7\u05E8 \u05DB\u05DA?"]},"\u05D0\u05DC \u05EA\u05EA\u05D7\u05D9\u05DC\u05D9 \u05D1\u05D4\u05D7\u05DC\u05D8\u05D5\u05EA \u05D2\u05D5\u05E8\u05DC\u05D9\u05D5\u05EA :)","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05E7 \u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05DC\u05D4\u05DB\u05D9\u05E8 \u05D0\u05EA \u05D4\u05E9\u05E4\u05D4 \u05E9\u05DC \u05D4\u05D2\u05D5\u05E3.",{b:"\u05D4\u05D9\u05D5\u05DD \u05D0\u05DC \u05EA\u05D7\u05E4\u05E9\u05D9 \u05EA\u05E9\u05D5\u05D1\u05D5\u05EA. \u05EA\u05D0\u05E1\u05E4\u05D9 \u05DE\u05D9\u05D3\u05E2."}]}},{number:2,title:"\u05D2\u05DD \u05D6\u05D4 \u05D9\u05E2\u05D1\u05D5\u05E8",emoji:"\u{1F30A}",question:"\u05DE\u05D9 \u05D0\u05EA \u05DB\u05E9\u05D0\u05EA \u05DE\u05E4\u05E1\u05D9\u05E7\u05D4 \u05DC\u05DE\u05D3\u05D5\u05D3 \u05D0\u05EA \u05E2\u05E6\u05DE\u05DA \u05DC\u05E4\u05D9 \u05DE\u05D4 \u05E9\u05D4\u05E9\u05D2\u05EA?",intro:["\u05D4\u05D7\u05D9\u05D9\u05DD \u05D6\u05D6\u05D9\u05DD \u05D1\u05D2\u05DC\u05D9\u05DD.","\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E4\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05D4\u05DB\u05D5\u05DC \u05D8\u05E1, \u05D5\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E4\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05D4\u05DB\u05D5\u05DC \u05DE\u05E8\u05D2\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E2, \u05DC\u05D0 \u05D1\u05E8\u05D5\u05E8 \u05D0\u05D5 \u05D1\u05EA\u05E0\u05D5\u05E2\u05D4 \u05E4\u05E0\u05D9\u05DE\u05D9\u05EA.","\u05D0\u05E3 \u05D0\u05D7\u05EA \u05DE\u05D4\u05DF \u05DC\u05D0 \u05DE\u05D2\u05D3\u05D9\u05E8\u05D4 \u05D0\u05EA \u05D4\u05E2\u05E8\u05DA \u05E9\u05DC\u05DA."],video:{art:2},task:{title:"\u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D9?",body:["\u05EA\u05E2\u05DC\u05D9 \u05DC\u05E7\u05D4\u05D9\u05DC\u05D4:",{b:"10 \u05D3\u05D1\u05E8\u05D9\u05DD \u05E9\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05E2\u05E6\u05DE\u05D9 \u05E2\u05DC\u05D9\u05D4\u05DD \u05E9\u05DC\u05D0 \u05E7\u05E9\u05D5\u05E8\u05D9\u05DD \u05DC\u05D4\u05D9\u05E9\u05D2\u05D9\u05DD \u05E9\u05DC\u05D9."},"\u05D6\u05D4 \u05D9\u05DB\u05D5\u05DC \u05DC\u05D4\u05D9\u05D5\u05EA:",{lines:["\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05DE\u05E1\u05E2 \u05D4\u05E8\u05D2\u05E9\u05D9 \u05E9\u05E2\u05D1\u05E8\u05EA\u05D9.","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D3\u05E8\u05DA \u05E9\u05D1\u05D4 \u05DC\u05DE\u05D3\u05EA\u05D9 \u05DC\u05E9\u05D9\u05DD \u05D2\u05D1\u05D5\u05DC\u05D5\u05EA.","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05E9\u05DC\u05D0 \u05D3\u05D9\u05D1\u05E8\u05EA\u05D9 \u05E2\u05DD \u05D4\u05D0\u05E7\u05E1 \u05E9\u05DC\u05D9 \u05DB\u05D1\u05E8 \u05E9\u05D1\u05D5\u05E2 \u{1F602}","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D3\u05E8\u05DA \u05E9\u05D1\u05D4 \u05D0\u05E0\u05D9 \u05D0\u05D5\u05D4\u05D1\u05EA \u05D0\u05EA \u05D4\u05D0\u05E0\u05E9\u05D9\u05DD \u05E9\u05DC\u05D9.","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05E2\u05E6\u05DE\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DB\u05D0\u05DF."]},"\u05D0\u05D7\u05E8\u05D9 \u05E9\u05D4\u05E2\u05DC\u05D9\u05EA \u05D0\u05EA \u05D4\u05E8\u05E9\u05D9\u05DE\u05D4 \u05E9\u05DC\u05DA:",{b:"\u05EA\u05D9\u05DB\u05E0\u05E1\u05D9 \u05DC\u05E9\u05D9\u05EA\u05D5\u05E4\u05D9\u05DD \u05E9\u05DC 3 \u05E0\u05E9\u05D9\u05DD \u05D0\u05D7\u05E8\u05D5\u05EA \u05D5\u05EA\u05E4\u05E8\u05D2\u05E0\u05D9 \u05DC\u05D4\u05DF \u05E2\u05DC \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D0\u05EA \u05E8\u05D5\u05D0\u05D4 \u05D1\u05D4\u05DF."}]},share:{cta:"\u05DC\u05E9\u05EA\u05E3 \u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u2728",label:"\u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4",placeholder:"\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05E2\u05E6\u05DE\u05D9 \u05E9\u2026"},game:{title:"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05EA\u05D5\u05E4\u05E1\u05EA \u05D4\u05D9\u05D5\u05DD \u05DE\u05D7\u05E9\u05D1\u05D4 \u05DB\u05DE\u05D5:",{quotes:["\u05D0\u05E0\u05D9 \u05DE\u05D0\u05D7\u05D5\u05E8.","\u05D1\u05D2\u05D9\u05DC\u05D9 \u05DB\u05D1\u05E8 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E6\u05E8\u05D9\u05DB\u05D4\u2026","\u05DC\u05DB\u05D5\u05DC\u05DF \u05DB\u05D1\u05E8 \u05D9\u05E9 \u05D5\u05E8\u05E7 \u05DC\u05D9 \u05D0\u05D9\u05DF.","\u05DB\u05E0\u05E8\u05D0\u05D4 \u05E2\u05E9\u05D9\u05EA\u05D9 \u05D8\u05E2\u05D5\u05EA.","\u05D0\u05E0\u05D9 \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DB\u05D1\u05E8 \u05DC\u05D3\u05E2\u05EA \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4."]},"\u05D0\u05DC \u05EA\u05EA\u05D5\u05D5\u05DB\u05D7\u05D9 \u05D0\u05D9\u05EA\u05D4.","\u05D0\u05DC \u05EA\u05E0\u05E1\u05D9 \u05D1\u05DB\u05D5\u05D7 \u05DC\u05D7\u05E9\u05D5\u05D1 \u05D7\u05D9\u05D5\u05D1\u05D9.","\u05E4\u05E9\u05D5\u05D8 \u05EA\u05D2\u05D9\u05D3\u05D9:",{b:'"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA \u05D4\u05D9\u05D0 \u05E8\u05E7 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA."'},"\u05D0\u05D5\u05DC\u05D9 \u05D6\u05D5 \u05D0\u05DE\u05EA.","\u05D5\u05D0\u05D5\u05DC\u05D9 \u05D6\u05D5 \u05E4\u05E9\u05D5\u05D8 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05E9\u05D7\u05D6\u05E8\u05EA \u05E2\u05DC\u05D9\u05D4 \u05DE\u05E1\u05E4\u05D9\u05E7 \u05E4\u05E2\u05DE\u05D9\u05DD \u05E2\u05D3 \u05E9\u05D4\u05D9\u05D0 \u05D4\u05EA\u05D7\u05D9\u05DC\u05D4 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05DB\u05DE\u05D5 \u05D0\u05DE\u05EA.","\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05D7\u05D9\u05D9\u05D1\u05D5\u05EA \u05DC\u05D4\u05D0\u05DE\u05D9\u05DF \u05DC\u05DB\u05DC \u05DE\u05D7\u05E9\u05D1\u05D4 \u05E9\u05E2\u05D5\u05D1\u05E8\u05EA \u05DC\u05E0\u05D5 \u05D1\u05E8\u05D0\u05E9."]}},{number:3,title:"\u05D4\u05D7\u05D6\u05E8\u05EA \u05D4\u05E8\u05D9\u05D1\u05D5\u05E0\u05D5\u05EA",emoji:"\u{1F451}",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D0\u05EA \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D4 \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05D9\u05E9\u05EA\u05E0\u05D5 \u2014 \u05D0\u05DC\u05D0 \u05D4\u05D7\u05D9\u05D9\u05DD \u05DE\u05D7\u05DB\u05D9\u05DD \u05E9\u05EA\u05D6\u05D5\u05D6\u05D9?",intro:["\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05E2\u05D5\u05D1\u05E8\u05D5\u05EA \u05DE:",{quotes:["\u05DC\u05DE\u05D4 \u05D6\u05D4 \u05E7\u05D5\u05E8\u05D4 \u05DC\u05D9?"]},"\u05DC:",{b:'"\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05E8\u05D0\u05EA \u05DE\u05DB\u05D0\u05DF?"'},"\u05DC\u05D0 \u05DB\u05D3\u05D9 \u05DC\u05D4\u05D0\u05E9\u05D9\u05DD \u05D0\u05EA \u05E2\u05E6\u05DE\u05DA.","\u05D1\u05D3\u05D9\u05D5\u05E7 \u05DC\u05D4\u05E4\u05DA.","\u05D0\u05DD \u05D9\u05E9 \u05DC\u05DA \u05D7\u05DC\u05E7 \u05D1\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05DE\u05E6\u05D9\u05D0\u05D5\u05EA \u05E9\u05DC\u05DA \u2014 \u05D9\u05E9 \u05DC\u05DA \u05D2\u05DD \u05DB\u05D5\u05D7 \u05DC\u05D4\u05E9\u05EA\u05EA\u05E3 \u05D1\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05D3\u05D1\u05E8 \u05D4\u05D1\u05D0."],video:{art:3},task:{title:"5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05DC \u05D4\u05D9\u05D6\u05DB\u05E8\u05D5\u05EA",body:["\u05E9\u05D9\u05DE\u05D9 \u05D0\u05D5\u05D6\u05E0\u05D9\u05D5\u05EA.","\u05D9\u05E9 \u05DB\u05D0\u05DF \u05E7\u05D5\u05D1\u05E5 \u05E7\u05E6\u05E8 \u05E9\u05D4\u05DB\u05E0\u05EA\u05D9 \u05DC\u05DA.","5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05D0\u05EA \u05DC\u05D0 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E4\u05EA\u05D5\u05E8, \u05DC\u05D4\u05D1\u05D9\u05DF \u05D0\u05D5 \u05DC\u05E2\u05E9\u05D5\u05EA.","\u05E8\u05E7 \u05DC\u05D4\u05D9\u05D6\u05DB\u05E8:",{b:"\u05D0\u05E0\u05D9 \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D4 \u05DC\u05E0\u05E1. \u05D0\u05E0\u05D9 \u05DE\u05E9\u05EA\u05EA\u05E4\u05EA \u05D1\u05D9\u05E6\u05D9\u05E8\u05D4 \u05E9\u05DC\u05D5."},{audio:{title:"5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05DC \u05D4\u05D9\u05D6\u05DB\u05E8\u05D5\u05EA",duration:"5:00"}}]},game:{title:"\u05D5\u05DE\u05D4 \u05DB\u05DF \u05D1\u05E9\u05DC\u05D9\u05D8\u05EA\u05D9?",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05EA\u05D5\u05E4\u05E1\u05EA \u05D0\u05EA \u05E2\u05E6\u05DE\u05DA \u05D4\u05D9\u05D5\u05DD \u05DE\u05EA\u05E2\u05E1\u05E7\u05EA \u05D1\u05DE\u05E9\u05D4\u05D5 \u05E9\u05D0\u05D9\u05DF \u05DC\u05DA \u05E9\u05DC\u05D9\u05D8\u05D4 \u05E2\u05DC\u05D9\u05D5, \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D0\u05D5\u05E7\u05D9\u05D9. \u05D5\u05DE\u05D4 \u05DB\u05DF \u05D1\u05E9\u05DC\u05D9\u05D8\u05EA\u05D9 \u05E2\u05DB\u05E9\u05D9\u05D5?"},{lines:["\u05DC\u05D0 \u05DE\u05D7\u05E8.","\u05DC\u05D0 \u05DB\u05DC \u05D4\u05D7\u05D9\u05D9\u05DD."]},{b:"\u05E2\u05DB\u05E9\u05D9\u05D5."},"\u05D5\u05D0\u05DD \u05E2\u05D5\u05DC\u05D4 \u05DE\u05E9\u05D4\u05D5 \u05E7\u05D8\u05DF \u05E9\u05D0\u05EA \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05E2\u05E9\u05D5\u05EA \u2014 \u05EA\u05E2\u05E9\u05D9 \u05D0\u05D5\u05EA\u05D5."]}},{number:4,title:"\u05E4\u05E2\u05D5\u05DC\u05D5\u05EA \u05DE\u05E7\u05D3\u05DE\u05D5\u05EA",emoji:"\u2192",question:"\u05D0\u05D9\u05DA \u05D0\u05EA \u05E8\u05D5\u05E6\u05D4 \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA \u05D9\u05E8\u05D2\u05D9\u05E9\u05D5 \u2014 \u05E2\u05D5\u05D3 \u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05EA \u05D9\u05D5\u05D3\u05E2\u05EA \u05D0\u05D9\u05DA \u05D4\u05DD \u05D9\u05D9\u05E8\u05D0\u05D5?",intro:["\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05D2\u05D9\u05DC\u05D5\u05EA \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05E4\u05EA\u05D5\u05E8:",{lines:["\u05D0\u05D9\u05D6\u05D5 \u05E2\u05D1\u05D5\u05D3\u05D4?","\u05D0\u05D9\u05D6\u05D4 \u05E2\u05E1\u05E7?","\u05D0\u05D9\u05D6\u05D4 \u05D2\u05D1\u05E8?","\u05D0\u05D9\u05D6\u05D5 \u05E2\u05D9\u05E8?"]},'\u05D4\u05D9\u05D5\u05DD \u05E4\u05D7\u05D5\u05EA \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05E0\u05D5 \u05D4"\u05D0\u05D9\u05DA".',"\u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05E0\u05D5:",{b:"\u05D0\u05D9\u05DA \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9?"}],video:{art:4},task:{title:"\u05E9\u05EA\u05D9 \u05E8\u05E9\u05D9\u05DE\u05D5\u05EA",body:["\u05E4\u05EA\u05D7\u05D9 \u05E9\u05EA\u05D9 \u05E8\u05E9\u05D9\u05DE\u05D5\u05EA:",{h:"\u05D0\u05E0\u05D9 \u05DC\u05D0 \u05DE\u05D5\u05DB\u05E0\u05D4 \u05D9\u05D5\u05EA\u05E8 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9\u2026"},"\u05D5\u05D0\u05D6:",{h:"\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05D9\u05D5\u05EA\u05E8\u2026"},"\u05DC\u05D3\u05D5\u05D2\u05DE\u05D4:",{lines:["\u05D7\u05D5\u05E4\u05E9.","\u05D1\u05D9\u05D8\u05D7\u05D5\u05DF.","\u05EA\u05E9\u05D5\u05E7\u05D4.","\u05DE\u05E9\u05D7\u05E7\u05D9\u05D5\u05EA.","\u05E9\u05D9\u05D9\u05DB\u05D5\u05EA.","\u05E2\u05D5\u05E6\u05DE\u05D4.","\u05E9\u05E7\u05D8."]},"\u05E2\u05DB\u05E9\u05D9\u05D5 \u05E2\u05E6\u05DE\u05D9 \u05E2\u05D9\u05E0\u05D9\u05D9\u05DD.","\u05E2\u05DC \u05DB\u05DC \u05E8\u05D2\u05E9 \u05E9\u05D1\u05D7\u05E8\u05EA \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:'"\u05D2\u05D5\u05E3, \u05EA\u05E8\u05D0\u05D4 \u05DC\u05D9 \u05D0\u05D9\u05DA \u05D6\u05D4 \u05DE\u05E8\u05D2\u05D9\u05E9."'},"\u05EA\u05E0\u05D9 \u05DC\u05E2\u05E6\u05DE\u05DA \u05DB\u05DE\u05D4 \u05E9\u05E0\u05D9\u05D5\u05EA \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05D0\u05D5\u05EA\u05D5.","\u05D5\u05D0\u05D6 \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05DE\u05D4 \u05E4\u05E2\u05D5\u05DC\u05D4 \u05D0\u05D7\u05EA \u05E7\u05D8\u05E0\u05D4 \u05E9\u05D0\u05E0\u05D9 \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05E2\u05E9\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD \u05E9\u05EA\u05D5\u05D0\u05DE\u05EA \u05D0\u05EA \u05D4\u05D7\u05D9\u05D9\u05DD \u05D4\u05D0\u05DC\u05D4?"},"\u05EA\u05E2\u05E9\u05D9 \u05D0\u05D5\u05EA\u05D4.","\u05DC\u05D0 \u05E6\u05E8\u05D9\u05DA \u05EA\u05D5\u05DB\u05E0\u05D9\u05EA \u05D7\u05D5\u05DE\u05E9.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05E7 \u05DE\u05D6\u05D9\u05D6\u05D5\u05EA \u05D0\u05EA \u05D4\u05D7\u05D9\u05D9\u05DD \u05DE\u05D9\u05DC\u05D9\u05DE\u05D8\u05E8 \u05DC\u05DB\u05D9\u05D5\u05D5\u05DF \u05E9\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05D5\u05E6\u05D5\u05EA."]},game:{title:"\u05D0\u05DD \u05D4\u05D9\u05D9\u05EA\u05D9 \u05DB\u05D1\u05E8 \u05D4\u05D9\u05D0",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E2\u05D5\u05DE\u05D3\u05EA \u05DC\u05E2\u05E9\u05D5\u05EA \u05DE\u05E9\u05D4\u05D5 \u05DE\u05EA\u05D5\u05DA \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8, \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D0\u05DD \u05D4\u05D9\u05D9\u05EA\u05D9 \u05DB\u05D1\u05E8 \u05D4\u05D0\u05D9\u05E9\u05D4 \u05E9\u05DE\u05E8\u05D2\u05D9\u05E9\u05D4 \u05DB\u05DE\u05D5 \u05E9\u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u2014 \u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5?"}]}},{number:5,title:"\u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05D0\u05EA \u05D4\u05E9\u05D9\u05E4\u05D8",emoji:"\u2728",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05DE\u05E6\u05D9\u05D0\u05D5\u05EA \u05DB\u05D1\u05E8 \u05D4\u05EA\u05D7\u05D9\u05DC\u05D4 \u05DC\u05D6\u05D5\u05D6 \u2014 \u05D5\u05E4\u05E9\u05D5\u05D8 \u05DC\u05D0 \u05E9\u05DE\u05EA \u05DC\u05D1?",intro:["\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05D4\u05D5\u05E4\u05DB\u05D5\u05EA \u05DC\u05D1\u05DC\u05E9\u05D9\u05D5\u05EA \u05E9\u05DC \u05E9\u05E4\u05E2.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D5\u05EA \u05E8\u05E7 \u05DC\u05E0\u05E1 \u05D4\u05E2\u05E0\u05E7.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05DC\u05D6\u05D4\u05D5\u05EA \u05D0\u05EA \u05DB\u05DC \u05D4\u05DE\u05E7\u05D5\u05DE\u05D5\u05EA \u05E9\u05D1\u05D4\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD \u05DB\u05D1\u05E8 \u05D0\u05D5\u05DE\u05E8\u05D9\u05DD:",{b:"\u05D4\u05D9\u05D9 \u05DE\u05D0\u05DE\u05D9, \u05D0\u05E0\u05D9 \u05E4\u05D4."}],video:{art:5},task:{title:"\u05EA\u05D9\u05E7 \u05D4\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA",body:["\u05E4\u05EA\u05D7\u05D9 \u05D1\u05E4\u05EA\u05E7\u05D9\u05DD \u05D1\u05D8\u05DC\u05E4\u05D5\u05DF \u05E8\u05E9\u05D9\u05DE\u05D4 \u05D7\u05D3\u05E9\u05D4:",{b:'"\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05D0\u05D9\u05EA\u05D9"'},"\u05D5\u05DE\u05E2\u05DB\u05E9\u05D9\u05D5 \u2014 \u05D0\u05EA \u05DE\u05EA\u05E2\u05D3\u05EA.",{lines:["\u05E7\u05D9\u05D1\u05DC\u05EA \u05E7\u05E4\u05D4?","\u05DE\u05D9\u05E9\u05D4\u05D5 \u05D4\u05E6\u05D9\u05E2 \u05DC\u05E2\u05D6\u05D5\u05E8 \u05DC\u05DA?","\u05D4\u05D2\u05D9\u05E2\u05D4 \u05D4\u05D6\u05D3\u05DE\u05E0\u05D5\u05EA \u05DE\u05E9\u05D5\u05DD \u05DE\u05E7\u05D5\u05DD?","\u05E0\u05DB\u05E0\u05E1 \u05DB\u05E1\u05E3 \u05E9\u05DC\u05D0 \u05E6\u05D9\u05E4\u05D9\u05EA \u05DC\u05D5?","\u05E4\u05D2\u05E9\u05EA \u05D1\u05D3\u05D9\u05D5\u05E7 \u05D0\u05EA \u05D4\u05D0\u05D3\u05DD \u05E9\u05D4\u05D9\u05D9\u05EA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E4\u05D2\u05D5\u05E9?","\u05E7\u05E8\u05D4 \u05E6\u05D9\u05E8\u05D5\u05E3 \u05DE\u05E7\u05E8\u05D9\u05DD \u05DE\u05E6\u05D7\u05D9\u05E7?","\u05DE\u05E9\u05D4\u05D5 \u05D4\u05E1\u05EA\u05D3\u05E8 \u05D1\u05E7\u05DC\u05D5\u05EA?"]},{b:"\u05DC\u05E4\u05EA\u05E7\u05D9\u05DD."},"\u05D0\u05D1\u05DC \u05D6\u05D4 \u05DC\u05D0 \u05E0\u05E9\u05D0\u05E8 \u05E8\u05E7 \u05D1\u05E4\u05EA\u05E7\u05D9\u05DD.","\u05D1\u05DE\u05D4\u05DC\u05DA \u05D4\u05D9\u05D5\u05DD, \u05EA\u05E2\u05DC\u05D9 \u05D0\u05EA \u05D4\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05DC\u05DA \u05D2\u05DD \u05DC\u05DB\u05D0\u05DF.","\u05DB\u05E9\u05D0\u05EA \u05DE\u05E9\u05EA\u05E4\u05EA \u05DE\u05E9\u05D4\u05D5 \u05E9\u05E7\u05E8\u05D4 \u05DC\u05DA, \u05DE\u05D9\u05E9\u05D4\u05D9 \u05D0\u05D7\u05E8\u05EA \u05D1\u05DE\u05E1\u05E2 \u05DE\u05E7\u05D1\u05DC\u05EA \u05D4\u05D5\u05DB\u05D7\u05D4 \u05E9\u05D6\u05D4 \u05D0\u05E4\u05E9\u05E8\u05D9 \u05D2\u05DD \u05E2\u05D1\u05D5\u05E8\u05D4.","\u05D5\u05DB\u05E9\u05D0\u05EA \u05E0\u05DB\u05E0\u05E1\u05EA \u05D5\u05E8\u05D5\u05D0\u05D4 \u05E0\u05E9\u05D9\u05DD \u05D0\u05D7\u05E8\u05D5\u05EA \u05DE\u05E9\u05EA\u05E4\u05D5\u05EA \u05D1\u05DE\u05D4 \u05E9\u05E7\u05D5\u05E8\u05D4 \u05DC\u05D4\u05DF, \u05D2\u05DD \u05D0\u05EA \u05DE\u05EA\u05D7\u05D9\u05DC\u05D4 \u05DC\u05E8\u05D0\u05D5\u05EA \u05E9\u05D9\u05E9 \u05D4\u05E8\u05D1\u05D4 \u05D9\u05D5\u05EA\u05E8 \u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05DE\u05DE\u05D4 \u05E9\u05D7\u05E9\u05D1\u05EA.","\u05DC\u05DB\u05DF \u05D4\u05D9\u05D5\u05DD:",{b:"\u05E9\u05D9\u05DE\u05D9 \u05DC\u05D1 \u2190 \u05EA\u05EA\u05E2\u05D3\u05D9 \u2190 \u05EA\u05E9\u05EA\u05E4\u05D9 \u2190 \u05EA\u05E7\u05E8\u05D0\u05D9 \u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05DC \u05D0\u05D7\u05E8\u05D5\u05EA."}]},share:{cta:"\u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05D4\u05D5\u05DB\u05D7\u05EA \u05E9\u05E4\u05E2 \u2728",label:"\u05D4\u05D5\u05DB\u05D7\u05EA \u05E9\u05E4\u05E2",placeholder:"\u05D4\u05E0\u05D4 \u05D6\u05D4. \u05D4\u05D9\u05D5\u05DD\u2026",repeatable:!0,again:"\u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05E2\u05D5\u05D3 \u05D4\u05D5\u05DB\u05D7\u05D4 \u2728"},game:{title:'"\u05D4\u05E0\u05D4 \u05D6\u05D4."',body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E7\u05D5\u05DC\u05D8\u05EA \u05DE\u05E9\u05D4\u05D5 \u05D8\u05D5\u05D1 \u2014 \u05E7\u05D8\u05DF \u05DB\u05DB\u05DC \u05E9\u05D9\u05D4\u05D9\u05D4 \u2014 \u05EA\u05D2\u05D9\u05D3\u05D9:",{b:'"\u05D4\u05E0\u05D4 \u05D6\u05D4."'},"\u05D5\u05D0\u05D6 \u05EA\u05EA\u05E2\u05D3\u05D9 \u05D0\u05D5\u05EA\u05D5."]}},{number:6,title:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05E8\u05D0\u05D5\u05D9\u05D4",emoji:"\u{1F352}",question:"\u05DE\u05D9 \u05D0\u05DE\u05E8 \u05E9\u05D0\u05EA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D7\u05DB\u05D5\u05EA \u05E9\u05D4\u05DB\u05D5\u05DC \u05D9\u05E1\u05EA\u05D3\u05E8 \u05DB\u05D3\u05D9 \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA?",intro:["\u05D9\u05E9 \u05D7\u05D5\u05D6\u05D4 \u05DE\u05D5\u05D6\u05E8 \u05E9\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05E4\u05E2\u05DE\u05D9\u05DD \u05D7\u05D5\u05EA\u05DE\u05D5\u05EA \u05E2\u05DC\u05D9\u05D5:",{lines:["\u05E7\u05D5\u05D3\u05DD \u05D0\u05E4\u05EA\u05D5\u05E8 \u05D0\u05EA \u05D4\u05DB\u05E1\u05E3.","\u05D0\u05DE\u05E6\u05D0 \u05D6\u05D5\u05D2\u05D9\u05D5\u05EA.","\u05D0\u05D1\u05D9\u05DF \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E2\u05D5\u05E9\u05D4 \u05D1\u05D7\u05D9\u05D9\u05DD.","\u05D0\u05E6\u05D0 \u05DE\u05D4\u05EA\u05E7\u05D5\u05E4\u05D4 \u05D4\u05D6\u05D0\u05EA."]},"**\u05D5\u05D0\u05D6** \u05D9\u05D4\u05D9\u05D4 \u05DC\u05D9 \u05DE\u05D5\u05EA\u05E8 \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA.","\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05E9\u05D7\u05E7\u05D5\u05EA \u05E2\u05DD \u05D0\u05E4\u05E9\u05E8\u05D5\u05EA \u05D0\u05D7\u05E8\u05EA:",{b:"\u05DE\u05D5\u05EA\u05E8 \u05DC\u05D9 \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA \u05D2\u05DD \u05D1\u05D0\u05DE\u05E6\u05E2."}],video:{art:6},task:{title:"Pleasure Mission",body:["\u05D4\u05D9\u05D5\u05DD \u05D9\u05E9 \u05DC\u05DA \u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D7\u05EA:",{b:"\u05DC\u05E2\u05E9\u05D5\u05EA \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D4\u05D5\u05D0 \u05E0\u05D8\u05D5 \u05D1\u05E9\u05D1\u05D9\u05DC \u05D4\u05DB\u05D9\u05E3."},{lines:["\u05DC\u05D0 \u05DE\u05E7\u05D3\u05DD \u05D0\u05D5\u05EA\u05DA.","\u05DC\u05D0 \u05E4\u05E8\u05D5\u05D3\u05D5\u05E7\u05D8\u05D9\u05D1\u05D9.",'\u05DC\u05D0 "\u05D8\u05D5\u05D1 \u05DC\u05D4\u05EA\u05E4\u05EA\u05D7\u05D5\u05EA \u05E9\u05DC\u05DA".']},"\u05DE\u05E9\u05D4\u05D5 \u05E9\u05D4\u05D2\u05E8\u05E1\u05D4 \u05D1\u05EA \u05D4\u05BE8 \u05E9\u05DC\u05DA \u05D4\u05D9\u05D9\u05EA\u05D4 \u05D0\u05D5\u05DE\u05E8\u05EA \u05E2\u05DC\u05D9\u05D5:",{b:"\u05D9\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0."},"\u05D0\u05D7\u05E8\u05D9 \u05E9\u05E2\u05E9\u05D9\u05EA \u05D0\u05D5\u05EA\u05D5 \u2014 \u05EA\u05E2\u05DC\u05D9 \u05DC\u05E7\u05D4\u05D9\u05DC\u05D4 \u05EA\u05DE\u05D5\u05E0\u05D4 \u05D0\u05D5 \u05E9\u05D9\u05EA\u05D5\u05E3 \u05E7\u05D8\u05DF \u05DE\u05D4\u05D3\u05D9\u05D9\u05D8 \u05E9\u05DC\u05DA \u05E2\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD."]},share:{cta:"\u05DC\u05E9\u05EA\u05E3 \u05E8\u05D2\u05E2 \u05E9\u05DC \u05DB\u05D9\u05E3 \u{1F352}",label:"\u05E8\u05D2\u05E2 \u05E9\u05DC \u05DB\u05D9\u05E3",placeholder:"\u05D4\u05D3\u05D9\u05D9\u05D8 \u05E9\u05DC\u05D9 \u05E2\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD \u05D4\u05D9\u05D5\u05DD\u2026"},game:{title:"10% \u05D9\u05D5\u05EA\u05E8 \u05DB\u05D9\u05E3",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E2\u05D5\u05E9\u05D4 \u05DE\u05E9\u05D4\u05D5 \u05D4\u05D9\u05D5\u05DD \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D0\u05D9\u05DA \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05E4\u05D5\u05DA \u05D0\u05EA \u05D6\u05D4 \u05DC\u05BE10% \u05D9\u05D5\u05EA\u05E8 \u05DB\u05D9\u05E3?"},{lines:["\u05DE\u05D5\u05D6\u05D9\u05E7\u05D4 \u05D1\u05DE\u05E7\u05DC\u05D7\u05EA?","\u05E7\u05E4\u05D4 \u05D1\u05DB\u05D5\u05E1 \u05D4\u05D9\u05E4\u05D4?","\u05DC\u05E8\u05E7\u05D5\u05D3 \u05D1\u05D3\u05E8\u05DA \u05DC\u05E1\u05D5\u05E4\u05E8?","\u05DC\u05D4\u05EA\u05DC\u05D1\u05E9 \u05D9\u05E4\u05D4 \u05E1\u05EA\u05DD?"]},"\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D5\u05EA \u05DC\u05D7\u05D9\u05D9\u05DD \u05D4\u05D8\u05D5\u05D1\u05D9\u05DD.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05DB\u05E0\u05D9\u05E1\u05D5\u05EA \u05D0\u05D5\u05EA\u05DD \u05E4\u05E0\u05D9\u05DE\u05D4 \u05E2\u05DB\u05E9\u05D9\u05D5."]}},{number:7,title:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05D6\u05D9\u05D1\u05D9",emoji:"\u{1F48B}",question:"\u05DB\u05DE\u05D4 \u05DE\u05D4\u05D7\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA \u05D1\u05E0\u05D5\u05D9\u05D9\u05DD \u05E2\u05DC \u05E0\u05E7\u05D5\u05D3\u05D5\u05EA \u05DE\u05D1\u05D8 \u05E9\u05D1\u05DB\u05DC\u05DC \u05DC\u05D0 \u05D1\u05D7\u05E8\u05EA?",intro:[{lines:["\u05D0\u05D9\u05DA \u05D0\u05D9\u05E9\u05D4 \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DC\u05D4\u05D9\u05E8\u05D0\u05D5\u05EA.",'\u05DB\u05DE\u05D4 \u05DB\u05E1\u05E3 "\u05E0\u05D5\u05E8\u05DE\u05DC\u05D9" \u05DC\u05D4\u05E8\u05D5\u05D5\u05D9\u05D7.',"\u05D1\u05D0\u05D9\u05D6\u05D4 \u05D2\u05D9\u05DC \u05E6\u05E8\u05D9\u05DA \u05DC\u05D4\u05EA\u05D7\u05EA\u05DF.","\u05D0\u05D9\u05DA \u05E7\u05E8\u05D9\u05D9\u05E8\u05D4 \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DC\u05D4\u05D9\u05E8\u05D0\u05D5\u05EA.","\u05DE\u05D4 \u05D4\u05DE\u05E9\u05E4\u05D7\u05D4 \u05E9\u05DC\u05DA \u05D7\u05D5\u05E9\u05D1\u05EA \u05E9\u05D0\u05E4\u05E9\u05E8\u05D9 \u05E2\u05D1\u05D5\u05E8\u05DA.","\u05DE\u05D4 \u05DE\u05E2\u05E8\u05DB\u05EA \u05D9\u05D7\u05E1\u05D9\u05DD \u05E7\u05D5\u05D3\u05DE\u05EA \u05D2\u05E8\u05DE\u05D4 \u05DC\u05DA \u05DC\u05D4\u05D0\u05DE\u05D9\u05DF \u05E2\u05DC \u05E2\u05E6\u05DE\u05DA.",'\u05DE\u05D4 \u05E0\u05D7\u05E9\u05D1 "\u05D0\u05D7\u05E8\u05D0\u05D9".']},{b:"\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05EA\u05D2\u05E8\u05E9\u05D5\u05EA \u05DE\u05DB\u05DC \u05D7\u05D5\u05D6\u05D4 \u05E9\u05DE\u05E6\u05DE\u05E6\u05DD \u05D0\u05D5\u05EA\u05E0\u05D5."}],video:{art:7},task:{title:"I CHOOSE TO BE FREE TODAY",body:["\u05EA\u05EA\u05D7\u05D9\u05DC\u05D9 \u05D1\u05DE\u05E9\u05E4\u05D8:",{h:"I choose to be free from\u2026"},"\u05D5\u05EA\u05D5\u05E6\u05D9\u05D0\u05D9 \u05D4\u05DB\u05D5\u05DC.","\u05DC\u05D3\u05D5\u05D2\u05DE\u05D4:",{lines:["\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05E6\u05D5\u05E8\u05DA \u05E9\u05DB\u05D5\u05DC\u05DD \u05D9\u05D1\u05D9\u05E0\u05D5 \u05D0\u05D5\u05EA\u05D9.","\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05D8\u05D9\u05D9\u05DE\u05DC\u05D9\u05D9\u05DF \u05E9\u05D3\u05DE\u05D9\u05D9\u05E0\u05EA\u05D9 \u05DC\u05E2\u05E6\u05DE\u05D9.","\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05E8\u05E2\u05D9\u05D5\u05DF \u05E9\u05DB\u05E1\u05E3 \u05D7\u05D9\u05D9\u05D1 \u05DC\u05D4\u05D2\u05D9\u05E2 \u05D1\u05D3\u05E8\u05DA \u05DE\u05E1\u05D5\u05D9\u05DE\u05EA.","\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05E1\u05D8\u05E0\u05D3\u05E8\u05D8\u05D9\u05DD \u05E9\u05DC\u05D9\u05DE\u05D3\u05D5 \u05D0\u05D5\u05EA\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E2\u05DE\u05D5\u05D3 \u05D1\u05D4\u05DD."]},"\u05D5\u05E2\u05DB\u05E9\u05D9\u05D5:",{h:"I choose to be free to\u2026"},{lines:["\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05E9\u05E0\u05D5\u05EA \u05D0\u05EA \u05D3\u05E2\u05EA\u05D9.","\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05D4\u05EA\u05D7\u05D9\u05DC \u05DE\u05D7\u05D3\u05E9.","\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05D4\u05E8\u05D5\u05D5\u05D9\u05D7 \u05D1\u05D3\u05E8\u05DA \u05E9\u05E0\u05E2\u05D9\u05DE\u05D4 \u05DC\u05D9.","\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05D7\u05D9\u05D9\u05DD \u05E9\u05D0\u05E0\u05E9\u05D9\u05DD \u05D0\u05D7\u05E8\u05D9\u05DD \u05DC\u05D0 \u05DE\u05D1\u05D9\u05E0\u05D9\u05DD."]},{b:"\u05D5\u05DB\u05E9\u05E1\u05D9\u05D9\u05DE\u05EA, \u05EA\u05E2\u05DC\u05D9 \u05D0\u05EA \u05D4\u05E8\u05E9\u05D9\u05DE\u05D4 \u05E9\u05DC\u05DA \u05DC\u05DB\u05D0\u05DF."},"\u05D4\u05E8\u05E9\u05D9\u05DE\u05D4 \u05DC\u05D0 \u05E0\u05E9\u05D0\u05E8\u05EA \u05E8\u05E7 \u05D0\u05E6\u05DC\u05DA.","\u05D9\u05DB\u05D5\u05DC \u05DC\u05D4\u05D9\u05D5\u05EA \u05E9\u05D4\u05D7\u05D5\u05E4\u05E9 \u05E9\u05D0\u05EA \u05E0\u05D5\u05EA\u05E0\u05EA \u05DC\u05E2\u05E6\u05DE\u05DA \u05D4\u05D9\u05D5\u05DD \u05D9\u05D4\u05D9\u05D4 \u05D1\u05D3\u05D9\u05D5\u05E7 \u05D4\u05BEpermission slip \u05E9\u05DE\u05D9\u05E9\u05D4\u05D9 \u05D0\u05D7\u05E8\u05EA \u05D1\u05DE\u05E1\u05E2 \u05D4\u05D9\u05D9\u05EA\u05D4 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E7\u05E8\u05D5\u05D0."]},share:{cta:"\u05DC\u05E9\u05EA\u05E3 \u05D0\u05EA \u05D4\u05E6\u05D4\u05E8\u05EA \u05D4\u05D7\u05D5\u05E4\u05E9 \u05E9\u05DC\u05D9 \u{1F48B}",label:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05D6\u05D9\u05D1\u05D9",placeholder:"I choose to be free from\u2026"},game:{title:"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E9\u05D5\u05DE\u05E2\u05EA \u05D1\u05E8\u05D0\u05E9:",{quotes:["\u05D0\u05D1\u05DC \u05E6\u05E8\u05D9\u05DA\u2026","\u05D0\u05D9 \u05D0\u05E4\u05E9\u05E8\u2026","\u05D6\u05D4 \u05DC\u05D0 \u05E0\u05D5\u05E8\u05DE\u05DC\u05D9\u2026","\u05DE\u05D4 \u05D9\u05D7\u05E9\u05D1\u05D5 \u05E2\u05DC\u05D9\u05D9?","\u05DB\u05DB\u05D4 \u05DC\u05D0 \u05E2\u05D5\u05E9\u05D9\u05DD \u05D3\u05D1\u05E8\u05D9\u05DD\u2026"]},"\u05EA\u05D2\u05D9\u05D3\u05D9:",{b:'"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA \u05D4\u05D9\u05D0 \u05E8\u05E7 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA."'},"\u05D5\u05D0\u05D6 \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D5\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA?"}]}},{number:8,title:"\u05DC\u05DE\u05E6\u05D5\u05D0 \u05D0\u05EA \u05D4\u05D9\u05D9\u05E2\u05D5\u05D3 \u05E9\u05DC\u05DA",emoji:"\u{1F9ED}",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05D9\u05D9\u05E2\u05D5\u05D3 \u05E9\u05DC\u05DA \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D0\u05EA \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DC\u05DE\u05E6\u05D5\u05D0?",intro:["\u05D0\u05D5\u05DC\u05D9 \u05D9\u05D9\u05E2\u05D5\u05D3 \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05DE\u05E7\u05E6\u05D5\u05E2 \u05D0\u05D7\u05D3 \u05E9\u05DE\u05E1\u05EA\u05EA\u05E8 \u05D0\u05D9\u05E4\u05E9\u05D4\u05D5 \u05D5\u05D0\u05EA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E0\u05D7\u05E9 \u05D0\u05D5\u05EA\u05D5 \u05E0\u05DB\u05D5\u05DF.","\u05D0\u05D5\u05DC\u05D9 \u05D4\u05D5\u05D0 \u05E0\u05D1\u05E0\u05D4 \u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05DE\u05E1\u05DB\u05D9\u05DE\u05D4 \u05DC\u05D4\u05D9\u05D5\u05EA \u05D9\u05D5\u05EA\u05E8 \u05D0\u05EA."],video:{art:8},task:{title:"\u05E9\u05D0\u05DC\u05D5\u05EA \u05E9\u05E4\u05D5\u05EA\u05D7\u05D5\u05EA \u05DE\u05E8\u05D7\u05D1",body:["\u05E7\u05D7\u05D9 \u05DB\u05DE\u05D4 \u05D3\u05E7\u05D5\u05EA \u05D5\u05EA\u05E2\u05E0\u05D9 \u05D1\u05DC\u05D9 \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D4\u05D2\u05D9\u05D5\u05E0\u05D9\u05EA.",{widget:"purposeAnswers"},"\u05D0\u05DC \u05EA\u05D7\u05E4\u05E9\u05D9 \u05DE\u05E7\u05E6\u05D5\u05E2.",{b:"\u05EA\u05D7\u05E4\u05E9\u05D9 \u05D7\u05D9\u05D5\u05EA."}]},game:{title:"\u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9?",body:["\u05DC\u05E4\u05E0\u05D9 \u05D4\u05D7\u05DC\u05D8\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9?"},"\u05E4\u05D7\u05D5\u05EA:",{lines:["\u05D4\u05D0\u05DD \u05D6\u05D4 \u05D4\u05D3\u05D1\u05E8 \u05D4\u05DE\u05D5\u05E9\u05DC\u05DD?","\u05D4\u05D0\u05DD \u05D0\u05E0\u05E9\u05D9\u05DD \u05D9\u05D1\u05D9\u05E0\u05D5?","\u05D4\u05D0\u05DD \u05D0\u05E0\u05D9 \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05D4\u05D1\u05D8\u05D9\u05D7 \u05E9\u05D6\u05D4 \u05D9\u05E2\u05D1\u05D5\u05D3?"]},"\u05D5\u05D9\u05D5\u05EA\u05E8:",{b:"\u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9?"}]}},{number:9,title:"\u05DC\u05D4\u05D9\u05D5\u05EA \u05D4\u05DE\u05D2\u05D3\u05DC\u05D5\u05E8",emoji:"\u2600\uFE0F",question:"\u05D0\u05EA \u05E7\u05D5\u05DC\u05D8\u05EA \u05E9\u05D0\u05EA \u05DB\u05D1\u05E8 \u05DC\u05D0 \u05D1\u05D3\u05D9\u05D5\u05E7 \u05D0\u05D5\u05EA\u05D4 \u05D0\u05D9\u05E9\u05D4 \u05E9\u05E0\u05DB\u05E0\u05E1\u05D4 \u05DC\u05DB\u05D0\u05DF \u05DC\u05E4\u05E0\u05D9 9 \u05D9\u05DE\u05D9\u05DD?",intro:["\u05D6\u05D5\u05DB\u05E8\u05EA \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05D4\u05D4\u05D5\u05D0 \u05DE\u05D9\u05D5\u05DD 1?","\u05D4\u05D2\u05D9\u05E2 \u05D4\u05D6\u05DE\u05DF \u05DC\u05E4\u05EA\u05D5\u05D7 \u05D0\u05D5\u05EA\u05D5."],video:{art:9},moment:{opening:"\u05D9\u05E9 \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D4\u05E9\u05D0\u05E8\u05EA \u05DC\u05E2\u05E6\u05DE\u05DA \u05DC\u05E4\u05E0\u05D9 8 \u05D9\u05DE\u05D9\u05DD\u2026",reveal:"\u05DC\u05E4\u05EA\u05D5\u05D7 \u05D0\u05D5\u05EA\u05D5",before:["\u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05EA \u05DC\u05D5\u05D7\u05E6\u05EA:","\u05DC\u05D0 \u05DC\u05E9\u05E4\u05D5\u05D8 \u05D0\u05EA \u05D4\u05D0\u05D9\u05E9\u05D4 \u05E9\u05D4\u05D9\u05D9\u05EA \u05E9\u05DD.",{b:"\u05DC\u05D4\u05E1\u05EA\u05DB\u05DC \u05E2\u05DC\u05D9\u05D4 \u05DB\u05DE\u05D5 \u05E9\u05D4\u05D9\u05D9\u05EA \u05DE\u05E1\u05EA\u05DB\u05DC\u05EA \u05E2\u05DC \u05DE\u05D9\u05E9\u05D4\u05D9 \u05E9\u05D0\u05EA \u05D0\u05D5\u05D4\u05D1\u05EA."}],watched:"\u05E8\u05D0\u05D9\u05EA\u05D9 \u05D0\u05D5\u05EA\u05D4",next:{label:"\u05D5\u05E2\u05DB\u05E9\u05D9\u05D5, \u05EA\u05D5\u05E8\u05DA",title:"\u05DC\u05E4\u05D2\u05D5\u05E9 \u05D0\u05D5\u05EA\u05D4",body:[{b:"\u05E6\u05DC\u05DE\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05D7\u05D3\u05E9."},"\u05E2\u05E0\u05D9 \u05D1\u05D5:",{lines:["\u05DE\u05D4 \u05D4\u05E9\u05EA\u05E0\u05D4 \u05D1\u05D9?","\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05D4\u05D9\u05D5\u05DD \u05E9\u05DC\u05D0 \u05E8\u05D0\u05D9\u05EA\u05D9 \u05D0\u05D6?","\u05E2\u05DC \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E1\u05D5\u05DE\u05DB\u05EA \u05D9\u05D5\u05EA\u05E8?","\u05DE\u05D4 \u05DC\u05DE\u05D3\u05EA\u05D9 \u05E2\u05DC \u05E2\u05E6\u05DE\u05D9?","\u05D5\u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05D2\u05D9\u05D3 \u05DC\u05D2\u05E8\u05E1\u05D4 \u05E9\u05DC\u05D9 \u05DE\u05D9\u05D5\u05DD 1?"]},"\u05D1\u05E1\u05D5\u05E3, \u05D0\u05DD \u05D1\u05D0 \u05DC\u05DA, \u05EA\u05D2\u05D9\u05D3\u05D9 \u05DC\u05D4:",{b:'"\u05D0\u05E0\u05D9 \u05D9\u05D5\u05D3\u05E2\u05EA \u05E9\u05D0\u05EA \u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D9\u05D5\u05D3\u05E2\u05EA \u05DE\u05D4 \u05DE\u05D2\u05D9\u05E2 \u05DE\u05D7\u05E8. \u05D0\u05D1\u05DC \u05D7\u05DB\u05D9 \u05E9\u05EA\u05E8\u05D0\u05D9 \u05DE\u05D9 \u05D0\u05EA \u05D4\u05D5\u05DC\u05DB\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA."'},{widget:"day9Video"}]}},extra:{label:"\u05D8\u05E7\u05E1 \u05D4\u05E1\u05D9\u05D5\u05DD",title:"\u05D5\u05D3\u05D0\u05D5\u05EA \u05DC\u05E4\u05E0\u05D9 \u05D4\u05E2\u05D5\u05DC\u05DD",body:["\u05E2\u05DB\u05E9\u05D9\u05D5 \u05D0\u05E0\u05D7\u05E0\u05D5 \u05D1\u05D5\u05E0\u05D5\u05EA \u05D8\u05E7\u05E1 \u05D1\u05D5\u05E7\u05E8 \u05E7\u05D8\u05DF \u05E9\u05EA\u05D5\u05DB\u05DC\u05D9 \u05DC\u05E7\u05D7\u05EA \u05D0\u05D9\u05EA\u05DA \u05D2\u05DD \u05D0\u05D7\u05E8\u05D9 \u05E9\u05D4\u05BEJOURNEY \u05DE\u05E1\u05EA\u05D9\u05D9\u05DD.","\u05DC\u05D0 \u05E9\u05D2\u05E8\u05EA \u05D1\u05D5\u05E7\u05E8 \u05E9\u05DC \u05E9\u05E2\u05D4 \u05D5\u05D7\u05E6\u05D9 \u05E9\u05EA\u05E2\u05E9\u05D9 \u05E9\u05DC\u05D5\u05E9\u05D4 \u05D9\u05DE\u05D9\u05DD \u05D5\u05D0\u05D6 \u05EA\u05E9\u05E0\u05D0\u05D9 :)",{b:"5\u201310 \u05D3\u05E7\u05D5\u05EA."},"\u05D1\u05D7\u05E8\u05D9 \u05DC\u05E2\u05E6\u05DE\u05DA \u05DB\u05DE\u05D4 \u05D0\u05DC\u05DE\u05E0\u05D8\u05D9\u05DD. \u05D4\u05D8\u05E7\u05E1 \u05E6\u05E8\u05D9\u05DA \u05DC\u05E2\u05E0\u05D5\u05EA \u05E2\u05DC \u05D4\u05E9\u05D0\u05DC\u05D4:",{b:"\u05D0\u05D9\u05DA \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05E4\u05D2\u05D5\u05E9 \u05D0\u05EA \u05E2\u05E6\u05DE\u05D9 \u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E4\u05D5\u05D2\u05E9\u05EA \u05D0\u05EA \u05D4\u05E2\u05D5\u05DC\u05DD?"},{widget:"ritual"}]},game:{label:"\u05D4\u05DE\u05E9\u05D7\u05E7 \u05D4\u05D0\u05D7\u05E8\u05D5\u05DF",title:"\u05DE\u05D9 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA",body:["\u05D4\u05D9\u05D5\u05DD \u05D0\u05DC \u05EA\u05E9\u05D0\u05DC\u05D9:",{quotes:["\u05DE\u05D4 \u05D4\u05D5\u05DC\u05DA \u05DC\u05E7\u05E8\u05D5\u05EA?"]},"\u05EA\u05E9\u05D0\u05DC\u05D9:",{b:'"\u05DE\u05D9 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D1\u05EA\u05D5\u05DA \u05DE\u05D4 \u05E9\u05D9\u05E7\u05E8\u05D4?"'}]}}];function r({label:e="\u05D0\u05E0\u05D9 \u05DE\u05E6\u05D8\u05E8\u05E4\u05EA \u05DC\u05BEJOURNEY"}){return React.createElement("div",{className:"sales-join"},React.createElement("button",{className:"btn primary block",disabled:!0},"\u05D4\u05D4\u05E8\u05E9\u05DE\u05D4 \u05E0\u05E4\u05EA\u05D7\u05EA \u05DE\u05DE\u05E9 \u05D1\u05E7\u05E8\u05D5\u05D1"))}function m(){return React.createElement("div",{className:"sales-price","aria-label":`\u05D1\u05DE\u05E7\u05D5\u05DD ${890} \u05E9\u05E7\u05DC\u05D9\u05DD, \u05E2\u05DB\u05E9\u05D9\u05D5 ${449} \u05E9\u05E7\u05DC\u05D9\u05DD`},React.createElement("span",{className:"was"},"\u20AA",890),React.createElement("span",{className:"now"},"\u20AA",449),React.createElement("span",{className:"note"},"\u05DE\u05D7\u05D9\u05E8 \u05DE\u05D9\u05D5\u05D7\u05D3 \u05DC\u05DE\u05E6\u05D8\u05E8\u05E4\u05D5\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5"))}var b=[{emoji:"\u{1F3AC}",title:"\u05E1\u05E8\u05D8\u05D5\u05DF \u05D1\u05D5\u05E7\u05E8 \u05E7\u05E6\u05E8",text:"\u05DB\u05DC \u05D1\u05D5\u05E7\u05E8 \u05E0\u05E4\u05EA\u05D7 \u05D1\u05E9\u05D0\u05DC\u05D4 \u05D0\u05D7\u05EA \u05D5\u05D1\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DE\u05DB\u05E0\u05D9\u05E1 \u05D0\u05D5\u05EA\u05DA \u05DC\u05D9\u05D5\u05DD."},{emoji:"\u270D\uFE0F",title:"\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D7\u05EA",text:"\u05E0\u05D9\u05E1\u05D5\u05D9 \u05E7\u05D8\u05DF \u05D5\u05E4\u05E8\u05E7\u05D8\u05D9 \u05D1\u05D7\u05D9\u05D9\u05DD \u05D4\u05D0\u05DE\u05D9\u05EA\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA. \u05DC\u05D0 \u05E2\u05D5\u05D3 \u05EA\u05D9\u05D0\u05D5\u05E8\u05D9\u05D4."},{emoji:"\u{1F3B2}",title:"\u05D4\u05DE\u05E9\u05D7\u05E7 \u05E9\u05DC \u05D4\u05D9\u05D5\u05DD",text:"\u05DE\u05E9\u05D4\u05D5 \u05E7\u05DC\u05D9\u05DC \u05E9\u05DC\u05D5\u05E7\u05D7\u05D9\u05DD \u05D0\u05D9\u05EA\u05DA \u05DC\u05D0\u05D5\u05E8\u05DA \u05D4\u05D9\u05D5\u05DD \u05D5\u05DE\u05E9\u05E0\u05D4 \u05D0\u05EA \u05E0\u05E7\u05D5\u05D3\u05EA \u05D4\u05DE\u05D1\u05D8."},{emoji:"\u{1F4AC}",title:"\u05E7\u05D4\u05D9\u05DC\u05D4",text:"\u05E0\u05E9\u05D9\u05DD \u05E9\u05E2\u05D5\u05D1\u05E8\u05D5\u05EA \u05D0\u05EA \u05D4\u05DE\u05E1\u05E2 \u05D9\u05D7\u05D3 \u05D0\u05D9\u05EA\u05DA, \u05DE\u05E9\u05EA\u05E4\u05D5\u05EA \u05D5\u05DE\u05E4\u05E8\u05D2\u05E0\u05D5\u05EA."},{emoji:"\u{1F3A7}",title:"\u05E1\u05E4\u05E8\u05D9\u05D9\u05D4",text:"\u05D4\u05E7\u05DC\u05D8\u05D5\u05EA, \u05DE\u05E9\u05D7\u05E7\u05D9\u05DD \u05D5\u05D3\u05E4\u05D9\u05DD \u05DC\u05D4\u05D3\u05E4\u05E1\u05D4, \u05DC\u05D7\u05D6\u05D5\u05E8 \u05D0\u05DC\u05D9\u05D4\u05DD \u05DE\u05EA\u05D9 \u05E9\u05E6\u05E8\u05D9\u05DA."},{emoji:"\u{1F512}",title:"\u05DE\u05E8\u05D7\u05D1 \u05D0\u05D9\u05E9\u05D9",text:"\u05D4\u05E1\u05E8\u05D8\u05D5\u05E0\u05D9\u05DD, \u05D4\u05EA\u05E9\u05D5\u05D1\u05D5\u05EA \u05D5\u05D4\u05D8\u05E7\u05E1 \u05E9\u05DC\u05DA. \u05E8\u05E7 \u05D0\u05EA \u05E8\u05D5\u05D0\u05D4 \u05D0\u05D5\u05EA\u05DD."}],d=[{title:"\u05DE\u05E6\u05D8\u05E8\u05E4\u05EA \u05D5\u05DE\u05E9\u05DC\u05DE\u05EA",text:"\u05EA\u05E9\u05DC\u05D5\u05DD \u05DE\u05D0\u05D5\u05D1\u05D8\u05D7, \u05DC\u05D5\u05E7\u05D7 \u05D3\u05E7\u05D4."},{title:"\u05DE\u05E7\u05D1\u05DC\u05EA \u05DE\u05D9\u05D9\u05DC \u05DB\u05E0\u05D9\u05E1\u05D4",text:"\u05E7\u05D9\u05E9\u05D5\u05E8 \u05D0\u05D9\u05E9\u05D9, \u05D1\u05DC\u05D9 \u05E1\u05D9\u05E1\u05DE\u05D0\u05D5\u05EA. \u05DC\u05D7\u05D9\u05E6\u05D4 \u05D0\u05D7\u05EA \u05D5\u05D0\u05EA \u05D1\u05E4\u05E0\u05D9\u05DD."},{title:"\u05D9\u05D5\u05DD 1 \u05E0\u05E4\u05EA\u05D7 \u05DE\u05D9\u05D3",text:"\u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05EA\u05D7\u05D9\u05DC \u05D1\u05D0\u05D5\u05EA\u05D5 \u05E8\u05D2\u05E2."},{title:"\u05DB\u05DC \u05D1\u05D5\u05E7\u05E8 \u05D1\u05BE08:00",text:"\u05E0\u05E4\u05EA\u05D7 \u05D9\u05D5\u05DD \u05D7\u05D3\u05E9 \u05D5\u05DE\u05D2\u05D9\u05E2\u05D4 \u05D0\u05DC\u05D9\u05D9\u05DA \u05EA\u05D6\u05DB\u05D5\u05E8\u05EA. 9 \u05D1\u05E7\u05E8\u05D9\u05DD, \u05E2\u05D3 \u05D9\u05D5\u05DD 9."}],p=["\u05D0\u05EA \u05D1\u05EA\u05E7\u05D5\u05E4\u05D4 \u05E9\u05DC \u05D7\u05D5\u05E1\u05E8 \u05D1\u05D4\u05D9\u05E8\u05D5\u05EA: \u05D1\u05E2\u05D1\u05D5\u05D3\u05D4, \u05D1\u05D6\u05D5\u05D2\u05D9\u05D5\u05EA, \u05D1\u05DB\u05E1\u05E3 \u05D0\u05D5 \u05D1\u05DB\u05D9\u05D5\u05D5\u05DF \u05D1\u05D7\u05D9\u05D9\u05DD.","\u05D4\u05E8\u05D0\u05E9 \u05DC\u05D0 \u05DE\u05E4\u05E1\u05D9\u05E7 \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05E4\u05EA\u05D5\u05E8, \u05DC\u05EA\u05DB\u05E0\u05DF \u05D5\u05DC\u05D3\u05D0\u05D5\u05D2.","\u05E0\u05DE\u05D0\u05E1 \u05DC\u05DA \u05DC\u05D7\u05DB\u05D5\u05EA \u05E9\u05D4\u05DB\u05D5\u05DC \u05D9\u05E1\u05EA\u05D3\u05E8 \u05DB\u05D3\u05D9 \u05DC\u05D4\u05EA\u05D7\u05D9\u05DC \u05DC\u05D7\u05D9\u05D5\u05EA.","\u05D1\u05D0 \u05DC\u05DA \u05DE\u05E9\u05D4\u05D5 \u05E7\u05D8\u05DF, \u05D9\u05D5\u05DE\u05D9\u05D5\u05DE\u05D9 \u05D5\u05DE\u05E2\u05E9\u05D9. \u05DC\u05D0 \u05E2\u05D5\u05D3 \u05E7\u05D5\u05E8\u05E1 \u05D0\u05E8\u05D5\u05DA \u05E9\u05DC\u05D0 \u05DE\u05E1\u05D9\u05D9\u05DE\u05D9\u05DD."],N=[{q:"\u05DB\u05DE\u05D4 \u05D6\u05DE\u05DF \u05D6\u05D4 \u05DC\u05D5\u05E7\u05D7 \u05D1\u05D9\u05D5\u05DD?",a:"\u05DC\u05D0 \u05D4\u05E8\u05D1\u05D4: \u05E1\u05E8\u05D8\u05D5\u05DF \u05E7\u05E6\u05E8 \u05D5\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D7\u05EA. \u05D4\u05DE\u05E9\u05D7\u05E7 \u05E9\u05DC \u05D4\u05D9\u05D5\u05DD \u05DB\u05D1\u05E8 \u05E7\u05D5\u05E8\u05D4 \u05EA\u05D5\u05DA \u05DB\u05D3\u05D9 \u05D4\u05D7\u05D9\u05D9\u05DD, \u05D1\u05DC\u05D9 \u05DC\u05E4\u05E0\u05D5\u05EA \u05DC\u05D5 \u05D6\u05DE\u05DF \u05DE\u05D9\u05D5\u05D7\u05D3."},{q:"\u05DE\u05EA\u05D9 \u05D0\u05E0\u05D9 \u05DE\u05EA\u05D7\u05D9\u05DC\u05D4?",a:"\u05DE\u05D9\u05D3. \u05D1\u05E8\u05D2\u05E2 \u05E9\u05D4\u05EA\u05E9\u05DC\u05D5\u05DD \u05E2\u05D5\u05D1\u05E8, \u05E0\u05E9\u05DC\u05D7 \u05D0\u05DC\u05D9\u05D9\u05DA \u05DE\u05D9\u05D9\u05DC \u05DB\u05E0\u05D9\u05E1\u05D4 \u05D5\u05D9\u05D5\u05DD 1 \u05E4\u05EA\u05D5\u05D7. \u05D9\u05D5\u05DD 2 \u05E0\u05E4\u05EA\u05D7 \u05DC\u05DE\u05D7\u05E8\u05EA \u05D1\u05BE08:00, \u05D5\u05DB\u05DA \u05DB\u05DC \u05D1\u05D5\u05E7\u05E8 \u05E2\u05D3 \u05D9\u05D5\u05DD 9."},{q:"\u05DE\u05D4 \u05D0\u05DD \u05E4\u05E1\u05E4\u05E1\u05EA\u05D9 \u05D1\u05D5\u05E7\u05E8?",a:"\u05E9\u05D5\u05DD \u05D3\u05D1\u05E8 \u05DC\u05D0 \u05E0\u05E2\u05DC\u05DD. \u05D9\u05DE\u05D9\u05DD \u05E9\u05DB\u05D1\u05E8 \u05E0\u05E4\u05EA\u05D7\u05D5 \u05E0\u05E9\u05D0\u05E8\u05D9\u05DD \u05E4\u05EA\u05D5\u05D7\u05D9\u05DD, \u05D5\u05D0\u05E4\u05E9\u05E8 \u05DC\u05D7\u05D6\u05D5\u05E8 \u05D0\u05DC\u05D9\u05D4\u05DD \u05DE\u05EA\u05D9 \u05E9\u05E0\u05D5\u05D7 \u05DC\u05DA."},{q:"\u05E6\u05E8\u05D9\u05DA \u05DC\u05D4\u05D5\u05E8\u05D9\u05D3 \u05D0\u05E4\u05DC\u05D9\u05E7\u05E6\u05D9\u05D4?",a:"\u05DC\u05D0. JOURNEY \u05E2\u05D5\u05D1\u05D3 \u05DE\u05D4\u05D3\u05E4\u05D3\u05E4\u05DF \u05D1\u05D8\u05DC\u05E4\u05D5\u05DF \u05D0\u05D5 \u05D1\u05DE\u05D7\u05E9\u05D1. \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05D0\u05D5\u05EA\u05D5 \u05DC\u05DE\u05E1\u05DA \u05D4\u05D1\u05D9\u05EA \u05D5\u05D0\u05D6 \u05D4\u05D5\u05D0 \u05DE\u05E8\u05D2\u05D9\u05E9 \u05D1\u05D3\u05D9\u05D5\u05E7 \u05DB\u05DE\u05D5 \u05D0\u05E4\u05DC\u05D9\u05E7\u05E6\u05D9\u05D4."},{q:"\u05DE\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05D0\u05EA \u05DE\u05D4 \u05E9\u05D0\u05E0\u05D9 \u05DB\u05D5\u05EA\u05D1\u05EA \u05D5\u05DE\u05E6\u05DC\u05DE\u05EA?",a:"\u05D4\u05E1\u05E8\u05D8\u05D5\u05E0\u05D9\u05DD, \u05D4\u05EA\u05E9\u05D5\u05D1\u05D5\u05EA \u05D5\u05D4\u05D8\u05E7\u05E1 \u05D1\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05D2\u05DC\u05D5\u05D9\u05D9\u05DD \u05E8\u05E7 \u05DC\u05DA. \u05D1\u05E7\u05D4\u05D9\u05DC\u05D4 \u05E8\u05D5\u05D0\u05D9\u05DD \u05E8\u05E7 \u05DE\u05D4 \u05E9\u05D1\u05D7\u05E8\u05EA \u05DC\u05E9\u05EA\u05E3."},{q:"\u05D0\u05D9\u05DA \u05E0\u05DB\u05E0\u05E1\u05D9\u05DD?",a:"\u05E2\u05DD \u05D4\u05DE\u05D9\u05D9\u05DC \u05E9\u05D0\u05D9\u05EA\u05D5 \u05E9\u05D9\u05DC\u05DE\u05EA. \u05DE\u05E7\u05D1\u05DC\u05D9\u05DD \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DB\u05E0\u05D9\u05E1\u05D4 \u05DC\u05DE\u05D9\u05D9\u05DC, \u05D1\u05DC\u05D9 \u05E1\u05D9\u05E1\u05DE\u05D4."}];function c(){return React.createElement("div",{className:"app sales"},React.createElement("header",{className:"gate sales-hero"},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"gate-title"},React.createElement("p",{className:"brand",dir:"ltr"},"JOURNEY"),React.createElement("h1",null,a),React.createElement("p",null,s)),React.createElement("p",{className:"key-line"},t[0],React.createElement("br",null),t[1]),React.createElement(m,null),React.createElement(r,null),React.createElement("a",{className:"link sales-signin",href:"../"},"\u05DB\u05D1\u05E8 \u05D4\u05E6\u05D8\u05E8\u05E4\u05EA\u05D9, \u05DC\u05DB\u05E0\u05D9\u05E1\u05D4")),React.createElement("main",{className:"sales-body"},React.createElement("section",{className:"sales-section prose"},React.createElement("p",null,"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05EA\u05E7\u05D5\u05E4\u05D4 \u05D4\u05D6\u05D0\u05EA \u05D4\u05D9\u05D0 \u05DC\u05D0 \u05EA\u05E7\u05DC\u05D4?"),React.createElement("p",null,"\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E4\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05E9\u05D5\u05DD \u05D3\u05D1\u05E8 \u05DC\u05D0 \u05D1\u05E8\u05D5\u05E8. \u05DC\u05D0 \u05D9\u05D5\u05D3\u05E2\u05D5\u05EA \u05DE\u05D4 \u05D9\u05D4\u05D9\u05D4 \u05E2\u05DD \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4, \u05E2\u05DD \u05D4\u05DB\u05E1\u05E3, \u05E2\u05DD \u05D4\u05D6\u05D5\u05D2\u05D9\u05D5\u05EA, \u05E2\u05DD \u05D4\u05DB\u05D9\u05D5\u05D5\u05DF. \u05D4\u05E8\u05D0\u05E9 \u05E8\u05E5, \u05D4\u05D2\u05D5\u05E3 \u05DE\u05EA\u05DB\u05D5\u05D5\u05E5, \u05D5\u05E0\u05D3\u05DE\u05D4 \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05D9\u05EA\u05D7\u05D9\u05DC\u05D5 \u05E8\u05E7 \u05D0\u05D7\u05E8\u05D9 \u05E9\u05D4\u05DB\u05D5\u05DC \u05D9\u05E1\u05EA\u05D3\u05E8."),React.createElement("p",null,"JOURNEY \u05D4\u05D5\u05D0 \u05DE\u05E1\u05E2 \u05E9\u05DC 9 \u05D1\u05E7\u05E8\u05D9\u05DD \u05E9\u05D1\u05D5 \u05D0\u05EA \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D4 \u05E9\u05D4\u05D5\u05D5\u05D3\u05D0\u05D5\u05EA \u05EA\u05D2\u05D9\u05E2. \u05D1\u05DB\u05DC \u05D1\u05D5\u05E7\u05E8 \u05E0\u05D9\u05E1\u05D5\u05D9 \u05E7\u05D8\u05DF \u05D0\u05D7\u05D3 \u05D1\u05D7\u05D9\u05D9\u05DD \u05D4\u05D0\u05DE\u05D9\u05EA\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA: \u05DC\u05D4\u05D5\u05E8\u05D9\u05D3 \u05E8\u05E2\u05E9, \u05DC\u05D7\u05D6\u05D5\u05E8 \u05DC\u05D2\u05D5\u05E3, \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA \u05D2\u05DD \u05D1\u05D0\u05DE\u05E6\u05E2, \u05D5\u05DC\u05D2\u05DC\u05D5\u05EA \u05E9\u05D0\u05E4\u05E9\u05E8 \u05DC\u05E9\u05D2\u05E9\u05D2 \u05D1\u05D3\u05D9\u05D5\u05E7 \u05DE\u05DB\u05D0\u05DF.")),React.createElement("section",{className:"sales-section"},React.createElement("p",{className:"eyebrow"},"\u05DC\u05DE\u05D9 \u05D6\u05D4 \u05DE\u05EA\u05D0\u05D9\u05DD"),React.createElement("h2",null,"JOURNEY \u05D1\u05E9\u05D1\u05D9\u05DC\u05DA \u05D0\u05DD"),React.createElement("ul",{className:"sales-list"},p.map(e=>React.createElement("li",{key:e},e)))),React.createElement("section",{className:"sales-section"},React.createElement("p",{className:"eyebrow"},"9 \u05D1\u05E7\u05E8\u05D9\u05DD"),React.createElement("h2",null,"\u05D4\u05DE\u05E1\u05E2, \u05D9\u05D5\u05DD \u05D0\u05D7\u05E8\u05D9 \u05D9\u05D5\u05DD"),React.createElement("ol",{className:"sales-days"},i.map(e=>React.createElement("li",{key:e.number},React.createElement("span",{className:"num"},e.number),React.createElement("div",null,React.createElement("p",{className:"title"},e.title," ",React.createElement("span",{"aria-hidden":"true"},e.emoji)),React.createElement("p",{className:"q"},e.question))))),React.createElement("p",{className:"note sales-center"},"\u05D5\u05D1\u05D9\u05D5\u05DD 9 \u05D0\u05EA \u05E4\u05D5\u05D2\u05E9\u05EA \u05E9\u05D5\u05D1 \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05E6\u05D9\u05DC\u05DE\u05EA \u05D1\u05D9\u05D5\u05DD \u05D4\u05E8\u05D0\u05E9\u05D5\u05DF.")),React.createElement("section",{className:"sales-section"},React.createElement("p",{className:"eyebrow"},"\u05DE\u05D4 \u05DE\u05D7\u05DB\u05D4 \u05DC\u05DA \u05D1\u05E4\u05E0\u05D9\u05DD"),React.createElement("h2",null,"\u05DB\u05DC \u05D1\u05D5\u05E7\u05E8 \u05D1\u05D0\u05D5\u05EA\u05D5 \u05DE\u05D1\u05E0\u05D4, \u05DB\u05D3\u05D9 \u05E9\u05EA\u05DE\u05D9\u05D3 \u05EA\u05D3\u05E2\u05D9 \u05D0\u05D9\u05E4\u05D4 \u05D0\u05EA"),React.createElement("div",{className:"sales-grid"},b.map(e=>React.createElement("div",{className:"sales-card",key:e.title},React.createElement("span",{className:"emoji","aria-hidden":"true"},e.emoji),React.createElement("p",{className:"title"},e.title),React.createElement("p",null,e.text))))),React.createElement("section",{className:"sales-section"},React.createElement("p",{className:"eyebrow"},"\u05D0\u05D9\u05DA \u05D6\u05D4 \u05E2\u05D5\u05D1\u05D3"),React.createElement("h2",null,"\u05DE\u05D4\u05E8\u05D2\u05E2 \u05E9\u05D0\u05EA \u05DE\u05E6\u05D8\u05E8\u05E4\u05EA"),React.createElement("ol",{className:"sales-steps"},d.map(e=>React.createElement("li",{key:e.title},React.createElement("p",{className:"title"},e.title),React.createElement("p",null,e.text))))),React.createElement("section",{className:"sales-section sales-offer"},React.createElement("h2",null,"\u05DE\u05D5\u05DB\u05E0\u05D4 \u05DC\u05D1\u05D5\u05E7\u05E8 \u05D4\u05E8\u05D0\u05E9\u05D5\u05DF?"),React.createElement(m,null),React.createElement(r,null)),React.createElement("section",{className:"sales-section"},React.createElement("p",{className:"eyebrow"},"\u05E9\u05D0\u05DC\u05D5\u05EA"),React.createElement("h2",null,"\u05E9\u05D0\u05DC\u05D5\u05EA \u05E0\u05E4\u05D5\u05E6\u05D5\u05EA"),React.createElement("div",{className:"sales-faq"},N.map(e=>React.createElement("details",{key:e.q},React.createElement("summary",null,e.q),React.createElement("p",null,e.a))))),React.createElement("footer",{className:"sales-footer"},React.createElement("p",{className:"brand small-brand",dir:"ltr"},"JOURNEY"),React.createElement("a",{className:"link",href:"../"},"\u05DB\u05D1\u05E8 \u05D4\u05E6\u05D8\u05E8\u05E4\u05EA\u05D9, \u05DC\u05DB\u05E0\u05D9\u05E1\u05D4"))))}document.documentElement.lang="he";document.documentElement.dir="rtl";ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(c,null));})();
+
+</script>
