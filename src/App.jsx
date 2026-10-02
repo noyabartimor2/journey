@@ -7,12 +7,14 @@ import { RitualCard } from './components/widgets.jsx';
 import { Journey } from './screens/Journey.jsx';
 import { Community, ComposeSheet, CommentsSheet } from './screens/Community.jsx';
 import { Library, LibrarySheet } from './screens/Library.jsx';
+import { Home } from './screens/Home.jsx';
 import { SignIn, Waiting, Closed, Loading } from './screens/Gate.jsx';
 import { EditBar, useUnsavedWarning } from './components/edit.jsx';
 import { clean } from './lib/content.js';
 const { useState, useMemo, useEffect, useCallback, useRef } = React;
 
 const TABS = [
+  { id: 'home', label: 'בית' },
   { id: 'today', label: 'היום' },
   { id: 'journey', label: 'המסע' },
   { id: 'community', label: 'קהילה' },
@@ -57,7 +59,7 @@ export function App({ api }) {
   const [library, setLibrary] = useState([]);
   const [libLoading, setLibLoading] = useState(true);
 
-  const [tab, setTab] = useState('today');
+  const [tab, setTab] = useState('home');
   const [openDay, setOpenDay] = useState(null);
   const [sheet, setSheet] = useState(null);
   const [toast, showToast] = useToast();
@@ -177,7 +179,7 @@ export function App({ api }) {
   };
   const exitEdit = () => { setEditMode(false); discardEdits(); };
 
-  const signOut = async () => { setSheet(null); await api.signOut(); setUser(null); setTab('today'); };
+  const signOut = async () => { setSheet(null); await api.signOut(); setUser(null); setTab('home'); };
 
   const shareCount = (n) => posts.filter((p) => p.mine && p.day === n && p.label).length;
   const ctx = useMemo(() => ({ api, isPreview: api.isPreview }), [api]);
@@ -198,7 +200,7 @@ export function App({ api }) {
     <button className={`preview-pill ${!approved ? 'on-gate' : ''}`} onClick={() => setSheet({ type: 'preview' })}>תצוגה מקדימה</button>
   );
   const previewSheet = sheet && sheet.type === 'preview' && (
-    <PreviewSheet api={api} onClose={() => setSheet(null)} onChanged={() => { setSheet(null); setTab('today'); setOpenDay(null); setVersion((v) => v + 1); }} />
+    <PreviewSheet api={api} onClose={() => setSheet(null)} onChanged={() => { setSheet(null); setTab('home'); setOpenDay(null); setVersion((v) => v + 1); }} />
   );
 
   // ---------- Screens before the journey ----------
@@ -222,7 +224,12 @@ export function App({ api }) {
   return (
     <AppContext.Provider value={ctx}>
       <div className="app">
-        <header className="topbar">
+        {tab === 'home' && !editMode && (
+          <Home name={myName} greeting={greeting(now, myName)} today={today} todayDay={dayByNumber[today]} doneCount={completed.size}
+            profile={profile} onGo={setTab} onSpace={() => setSheet({ type: 'space' })} />
+        )}
+
+        {tab !== 'home' && <header className="topbar">
           <span className="wordmark" dir="ltr">JOURNEY</span>
           <span className="topbar-actions">
             {canEdit && !editMode && (
@@ -234,7 +241,7 @@ export function App({ api }) {
               <Avatar name={profile.name} photo={profile.photo} />
             </button>
           </span>
-        </header>
+        </header>}
 
         {tab === 'today' && (
           <div className="screen" key={`today-${today}`}>
