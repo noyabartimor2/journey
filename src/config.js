@@ -16,9 +16,10 @@ export const JOIN_URL = '';
 export const THANKS_URL = 'https://noyabartimor2.github.io/journey/join/thanks/';
 
 // Who the sign-in emails come from, shown so she can search her inbox.
-// These are Supabase's defaults; change both once a custom email sender (e.g. "JOURNEY") is set up.
-export const EMAIL_SENDER_NAME = 'Supabase Auth';
-export const EMAIL_SENDER_ADDRESS = 'noreply@mail.app.supabase.io';
+// Must match Supabase > Authentication > SMTP (sender) and the Magic Link template (subject).
+export const EMAIL_SENDER_NAME = 'JOURNEY';
+export const EMAIL_SENDER_ADDRESS = 'noyabartimor2@gmail.com';
+export const EMAIL_SUBJECT = 'הכניסה שלך ל-JOURNEY ✨';
 
 // Community videos
 export const MAX_VIDEO_SECONDS = 180;
