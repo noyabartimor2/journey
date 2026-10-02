@@ -2,7 +2,7 @@
 // The light drifts on its own, leans toward the finger / cursor, and blooms where she taps.
 const { useRef, useEffect, useState } = React;
 
-export const HOME_LINE = 'מסע קהילתי מחוסר ודאות לשגשוג';
+export const HOME_LINE = 'מסע קהילתי של 9 ימים מחרדה לפריחה בחוסר בהירות';
 const WORD = 'JOURNEY';
 
 const reducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
