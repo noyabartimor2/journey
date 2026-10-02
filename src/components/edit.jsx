@@ -89,12 +89,12 @@ export function PieceTools({ items, index, onChange }) {
 }
 
 // Bottom bar while editing: how many days changed, save / discard / finish.
-export function EditBar({ changed, saving, error, onSave, onDiscard, onExit, isPreview }) {
+export function EditBar({ changed, saving, error, onSave, onDiscard, onExit, isPreview, changedLabel }) {
   return (
     <div className="edit-bar" role="region" aria-label="עריכת תוכן">
       <div className="edit-bar-text">
         <strong>מצב עריכה</strong>
-        <span>{error ? error : saving ? 'שומרת…' : changed ? `${changed === 1 ? 'יום אחד' : `${changed} ימים`} עם שינויים שלא נשמרו` : 'לוחצים על כל טקסט ומקלידים. **כוכביות** = הדגשה.'}</span>
+        <span>{error ? error : saving ? 'שומרת…' : changed ? (changedLabel || `${changed === 1 ? 'יום אחד' : `${changed} ימים`} עם שינויים שלא נשמרו`) : 'לוחצים על כל טקסט ומקלידים. **כוכביות** = הדגשה.'}</span>
         {isPreview && <span className="note">בתצוגה המקדימה השינויים לא נשמרים באמת.</span>}
       </div>
       <div className="edit-bar-actions">

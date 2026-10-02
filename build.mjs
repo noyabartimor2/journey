@@ -111,6 +111,7 @@ ${joinHead}
 <body>
 <div id="root" dir="rtl" lang="he"></div>
 ${REACT}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="app.js?v=${stamp}"></script>
 </body>
 </html>
