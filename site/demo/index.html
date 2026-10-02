@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<title>לשגשג בחוסר בהירות</title>
+<meta name="theme-color" content="#FAF7F2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&family=Frank+Ruhl+Libre:wght@300;400;500&display=swap">
+<style>
+/* Layout concept: a single quiet column, like a private morning journal.
+   "Today" opens on a soft dawn whose sun rises a little higher each day of the nine. */
+:root {
+  --paper: #FAF7F2;      /* warm off-white page */
+  --cream: #F3ECE2;      /* cream surfaces */
+  --shell: #EEE7DD;      /* around the app on large screens */
+  --blush: #F2E2DB;      /* very soft blush */
+  --blush-deep: #C58F82; /* blush for small accents */
+  --sage: #E1E8DC;       /* soft sage surface */
+  --sage-deep: #5F735C;  /* main action colour */
+  --mist: #E2EAEF;       /* subtle light blue */
+  --mist-deep: #7E98A8;
+  --ink: #3A3631;        /* warm charcoal text, never black */
+  --ink-2: #6F685F;
+  --ink-3: #A0978B;
+  --line: #E8E0D4;
+  --white: #FFFDF9;
+
+  --font-display: "Frank Ruhl Libre", "David", "Times New Roman", serif;
+  --font-body: "Assistant", "Arial Hebrew", "Segoe UI", system-ui, sans-serif;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.0625rem;
+  --step-2: 1.375rem;
+  --step-3: 1.75rem;
+  --step-4: 2.375rem;
+
+  --radius: 22px;
+  --nav-h: 64px;
+  --col: 460px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--shell);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--mist-deep); outline-offset: 3px; border-radius: 8px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; letter-spacing: -0.005em; }
+
+.app {
+  position: relative;
+  max-width: var(--col);
+  min-height: 100%;
+  margin: 0 auto;
+  background: var(--paper);
+}
+@media (min-width: 520px) {
+  .app { box-shadow: 0 0 0 1px var(--line), 0 30px 80px -40px rgba(80, 64, 48, 0.25); }
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px 10px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-1);
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--blush);
+  color: var(--ink-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar.sage { background: var(--sage); }
+.avatar.mist { background: var(--mist); }
+.avatar.cream { background: var(--cream); }
+.avatar.lg { width: 72px; height: 72px; font-size: var(--step-2); }
+
+/* ---------- Screens ---------- */
+.screen {
+  padding-inline: 20px;
+  padding-block: 4px calc(var(--nav-h) + 48px + env(safe-area-inset-bottom, 0px));
+  animation: fadeIn 0.5s ease both;
+}
+@keyframes fadeIn { from { opacity: 0.001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.page-head { display: grid; gap: 4px; padding-block: 18px 22px; }
+.page-head h1 { font-size: var(--step-4); line-height: 1.1; }
+.page-head p { color: var(--ink-2); }
+
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+/* ---------- Dawn (Today's heart) ---------- */
+.greeting { color: var(--ink-2); padding-block: 6px 14px; font-size: var(--step-1); }
+.dawn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  min-height: 330px;
+  padding: 28px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  background:
+    linear-gradient(180deg, var(--mist) 0%, color-mix(in srgb, var(--mist) 45%, var(--blush)) 52%, var(--cream) 100%);
+  isolation: isolate;
+}
+.dawn.compact { min-height: 250px; }
+.dawn .sun {
+  position: absolute;
+  z-index: -1;
+  width: 230px; height: 230px;
+  left: 50%;
+  translate: -50% 0;
+  bottom: calc(18% + var(--rise) * 46%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #FBEDE4 0%, #F3D5C8 38%, rgba(242, 214, 202, 0.0) 70%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.dawn .horizon {
+  position: absolute;
+  z-index: -1;
+  inset-inline: 0;
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(180deg, rgba(250, 247, 242, 0) 0%, color-mix(in srgb, var(--cream) 80%, transparent) 55%, var(--cream) 100%);
+}
+@keyframes breathe { 0%, 100% { scale: 1; opacity: 0.92; } 50% { scale: 1.06; opacity: 1; } }
+
+.day-dots { display: flex; gap: 6px; align-items: center; }
+.day-dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: color-mix(in srgb, var(--ink-3) 30%, transparent);
+}
+.day-dots span.done { background: var(--sage-deep); }
+.day-dots span.now { background: transparent; box-shadow: 0 0 0 1.5px var(--blush-deep); width: 9px; height: 9px; }
+
+.dawn h1 { font-size: clamp(2.125rem, 9vw, 2.75rem); line-height: 1.08; font-weight: 400; }
+.dawn .intention { font-size: var(--step-1); color: var(--ink-2); max-width: 30ch; }
+.dawn .eyebrow { color: var(--ink-2); }
+
+/* What's waiting today */
+.agenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  padding-block: 20px 4px;
+  color: var(--ink-2);
+  font-size: var(--step-0);
+}
+.agenda button { padding: 4px 0; color: var(--ink-2); }
+.agenda button:hover { color: var(--ink); }
+.agenda .sep { padding-inline: 10px; color: var(--ink-3); }
+
+/* ---------- Content blocks ---------- */
+.blocks { display: grid; gap: 40px; padding-block: 32px 8px; }
+.block { display: grid; gap: 12px; scroll-margin-top: 80px; }
+.block .eyebrow { padding-inline-start: 2px; }
+.prose { display: grid; gap: 14px; font-size: var(--step-1); line-height: 1.8; max-width: 62ch; }
+.prose p:first-child { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.5; color: var(--ink); }
+.prose p { color: var(--ink-2); }
+
+.media-frame {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--cream);
+}
+.media-frame iframe, .media-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.art { position: absolute; inset: 0; }
+.play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 64px; height: 64px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--white) 78%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--ink);
+  transition: transform 0.3s ease;
+}
+.play:hover { transform: scale(1.05); }
+.media-meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.media-meta strong { font-weight: 600; }
+.media-meta span { color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: var(--step--1); }
+.media-note {
+  position: absolute; inset-inline: 16px; bottom: 14px;
+  padding: 8px 14px; border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 85%, transparent);
+  font-size: var(--step--1); color: var(--ink-2); text-align: center;
+}
+
+.audio {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--mist);
+}
+.audio .round {
+  grid-row: span 2;
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--white);
+  color: var(--ink);
+}
+.audio strong { font-weight: 600; }
+.audio .track { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.audio .bar { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--mist-deep) 25%, transparent); overflow: hidden; }
+.audio .bar i { display: block; height: 100%; background: var(--mist-deep); transition: width 0.25s linear; }
+.audio .time { font-size: var(--step--1); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.figure { display: grid; gap: 10px; margin: 0; }
+.figure .media-frame { aspect-ratio: 4 / 3; }
+.figure figcaption { color: var(--ink-3); font-size: var(--step--1); text-align: center; }
+
+.exercise {
+  display: grid;
+  gap: 14px;
+  padding: 24px 22px;
+  border-radius: var(--radius);
+  background: var(--sage);
+}
+.exercise h3 { font-size: var(--step-2); line-height: 1.3; }
+.exercise ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; counter-reset: s; }
+.exercise li { display: grid; grid-template-columns: 26px 1fr; gap: 8px; counter-increment: s; color: var(--ink-2); }
+.exercise li::before {
+  content: counter(s);
+  font-family: var(--font-display);
+  color: var(--sage-deep);
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+/* ---------- Completion ---------- */
+.finish { display: grid; gap: 14px; padding-block: 44px 8px; text-align: center; }
+.finish .hint { color: var(--ink-3); font-size: var(--step--1); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 54px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: var(--step-1);
+  transition: background-color 0.25s ease, transform 0.2s ease, opacity 0.2s;
+}
+.btn:active { transform: scale(0.985); }
+.btn.primary { background: var(--sage-deep); color: var(--white); }
+.btn.primary:hover { background: color-mix(in srgb, var(--sage-deep) 88%, var(--ink)); }
+.btn.soft { background: var(--blush); color: var(--ink); }
+.btn.quiet { background: transparent; color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.white { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.block { width: 100%; }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.link { color: var(--ink-2); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line); font-size: var(--step--1); padding: 6px; }
+
+.done-card {
+  display: grid; gap: 8px; justify-items: center;
+  padding: 30px 22px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--sage) 0%, var(--paper) 100%);
+  animation: fadeIn 0.6s ease both;
+}
+.done-card .check {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--sage-deep); color: var(--white);
+  margin-bottom: 6px;
+}
+.done-card h2 { font-size: var(--step-3); }
+.done-card p { color: var(--ink-2); }
+
+.share { display: grid; gap: 12px; padding: 24px 22px; border-radius: var(--radius); background: var(--blush); text-align: center; margin-top: 4px; }
+.share p { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.4; }
+
+/* ---------- Journey ---------- */
+.journey { list-style: none; margin: 0; padding: 0; display: grid; }
+.journey li { position: relative; }
+.journey li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 27px;
+  top: 58px; bottom: -6px;
+  width: 1px;
+  background: var(--line);
+}
+.jrow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 0;
+  text-align: start;
+  border-radius: 18px;
+}
+.jrow:disabled { cursor: default; }
+.jrow .num {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink-2);
+  position: relative; z-index: 1;
+}
+.jrow.done .num { background: var(--sage); box-shadow: none; color: var(--sage-deep); }
+.jrow.today .num { background: var(--blush); box-shadow: inset 0 0 0 1.5px var(--blush-deep); color: var(--ink); }
+.jrow.locked .num { color: var(--ink-3); box-shadow: inset 0 0 0 1px var(--line); background: transparent; }
+.jrow .txt { display: grid; gap: 1px; min-width: 0; }
+.jrow .t { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.3; }
+.jrow.locked .t { color: var(--ink-3); }
+.jrow .s { font-size: var(--step--1); color: var(--ink-3); }
+.jrow.today .s { color: var(--blush-deep); font-weight: 600; }
+.jrow .chev { color: var(--ink-3); }
+.jrow.today { background: color-mix(in srgb, var(--blush) 45%, transparent); padding-inline-end: 14px; }
+
+.progress-line { display: grid; gap: 8px; margin-bottom: 26px; }
+.progress-line .bar { height: 4px; border-radius: 4px; background: var(--cream); overflow: hidden; }
+.progress-line .bar i { display: block; height: 100%; background: var(--sage-deep); border-radius: 4px; }
+.progress-line .row { display: flex; justify-content: space-between; color: var(--ink-2); font-size: var(--step--1); }
+
+/* ---------- Day page (opened from Journey) ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  background: var(--paper);
+  max-width: var(--col);
+  margin: 0 auto;
+  animation: slideIn 0.35s ease both;
+}
+@keyframes slideIn { from { opacity: 0.001; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+.backbar { display: flex; align-items: center; gap: 6px; color: var(--ink-2); padding: 6px 0; }
+
+/* ---------- Community ---------- */
+.composer {
+  width: 100%;
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  border-radius: 999px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink-3);
+  text-align: start;
+  margin-bottom: 24px;
+}
+.feed { display: grid; gap: 14px; }
+.post {
+  display: grid; gap: 14px;
+  padding: 20px 18px 14px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: 0 1px 0 var(--line);
+}
+.post-head { display: flex; gap: 12px; align-items: center; }
+.post-head .who { display: grid; min-width: 0; }
+.post-head strong { font-weight: 600; }
+.post-head span { font-size: var(--step--1); color: var(--ink-3); }
+.post .text { font-size: var(--step-1); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.post .photo { aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; position: relative; background: var(--cream); }
+.post .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.post-actions { display: flex; gap: 6px; border-top: 1px solid var(--line); padding-top: 8px; }
+.post-actions button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 999px; color: var(--ink-2); font-size: var(--step--1); }
+.post-actions button:hover { background: var(--cream); }
+.post-actions .liked { color: var(--blush-deep); }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--cream); color: var(--ink-2); font-size: var(--step--1); }
+
+/* ---------- Library ---------- */
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin: 0 -20px 18px; padding-inline: 20px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; padding: 8px 16px; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); font-size: var(--step--1); font-weight: 600; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
+.lib { display: grid; gap: 4px; }
+.lib-item {
+  width: 100%;
+  display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center;
+  padding: 12px 0;
+  text-align: start;
+  border-bottom: 1px solid var(--line);
+}
+.lib-item .swatch { width: 64px; height: 64px; border-radius: 16px; position: relative; overflow: hidden; }
+.lib-item .txt { display: grid; gap: 2px; min-width: 0; }
+.lib-item strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); line-height: 1.35; }
+.lib-item p { color: var(--ink-3); font-size: var(--step--1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sw-audio { background: var(--mist); }
+.sw-video { background: var(--blush); }
+.sw-text { background: var(--sage); }
+.sw-pdf { background: var(--cream); }
+.swatch::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: radial-gradient(circle, rgba(255,253,249,0.9), rgba(255,253,249,0) 70%); }
+
+.file-card { display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: var(--radius); background: var(--cream); }
+.file-card .doc { width: 44px; height: 54px; border-radius: 8px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); display: grid; place-items: center; font-size: 11px; font-weight: 600; color: var(--ink-3); flex: none; }
+.file-card .txt { display: grid; min-width: 0; }
+.file-card span { color: var(--ink-3); font-size: var(--step--1); }
+
+/* ---------- Bottom tabs ---------- */
+.tabs {
+  position: fixed;
+  z-index: 30;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, var(--col));
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 6px 12px env(safe-area-inset-bottom, 0px);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+}
+.tabs button {
+  height: var(--nav-h);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  color: var(--ink-3);
+  font-size: var(--step-0);
+  font-weight: 600;
+}
+.tabs button::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: transparent; transition: background 0.3s; }
+.tabs button[aria-current="page"] { color: var(--ink); }
+.tabs button[aria-current="page"]::after { background: var(--blush-deep); }
+
+/* ---------- Bottom sheet ---------- */
+.sheet-wrap { position: fixed; inset: 0; z-index: 60; display: grid; align-items: end; justify-items: center; }
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(58, 54, 49, 0.28); animation: fade 0.3s ease both; }
+@keyframes fade { from { opacity: 0; } }
+.sheet {
+  position: relative;
+  width: min(100%, var(--col));
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border-radius: 28px 28px 0 0;
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  animation: rise 0.38s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes rise { from { transform: translateY(40px); opacity: 0.001; } }
+.sheet .handle { width: 40px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 14px; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.sheet-head h2 { font-size: var(--step-3); }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-2); flex: none; }
+.icon-btn:hover { background: var(--cream); }
+.stack { display: grid; gap: 14px; }
+
+.field { display: grid; gap: 6px; }
+.field label { font-size: var(--step--1); color: var(--ink-2); font-weight: 600; }
+.input, .textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line);
+  padding: 14px 16px;
+  font-size: var(--step-1);
+  outline: none;
+}
+.input:focus, .textarea:focus { box-shadow: inset 0 0 0 1.5px var(--mist-deep); }
+.textarea { min-height: 140px; resize: none; line-height: 1.7; }
+.thumb { position: relative; width: 100%; aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb .icon-btn { position: absolute; top: 10px; inset-inline-end: 10px; background: color-mix(in srgb, var(--white) 85%, transparent); }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.add-photo { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); font-weight: 600; font-size: var(--step--1); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.comments { display: grid; gap: 16px; margin-bottom: 18px; }
+.comment { display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+.comment .avatar { width: 32px; height: 32px; font-size: 12px; }
+.comment .bubble { background: var(--white); border-radius: 16px; padding: 10px 14px; box-shadow: inset 0 0 0 1px var(--line); min-width: 0; }
+.comment strong { font-weight: 600; font-size: var(--step--1); }
+.comment p { overflow-wrap: anywhere; }
+.comment span { font-size: 12px; color: var(--ink-3); }
+.comment-form { display: flex; gap: 8px; align-items: center; position: sticky; bottom: 0; background: var(--paper); padding-top: 8px; }
+.comment-form .input { border-radius: 999px; }
+.empty { color: var(--ink-3); text-align: center; padding: 24px 0; }
+
+/* ---------- Welcome / waiting ---------- */
+.gate {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  align-content: end;
+  gap: 28px;
+  padding: 40px 24px calc(40px + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, var(--mist) 0%, color-mix(in srgb, var(--mist) 40%, var(--blush)) 45%, var(--paper) 78%);
+}
+.gate .sun {
+  position: absolute; z-index: -1;
+  width: 340px; height: 340px; border-radius: 50%;
+  top: 12%; left: 50%; translate: -50% 0;
+  background: radial-gradient(circle, #FBEDE4 0%, #F3D5C8 40%, rgba(242,214,202,0) 70%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.gate-title { display: grid; gap: 12px; text-align: center; }
+.gate-title h1 { font-size: clamp(2.25rem, 10vw, 3rem); line-height: 1.1; }
+.gate-title p { color: var(--ink-2); font-size: var(--step-1); max-width: 30ch; margin-inline: auto; }
+.gate-form { display: grid; gap: 12px; }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--ink-3); font-size: var(--step--1); }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.gate .small { text-align: center; color: var(--ink-3); font-size: var(--step--1); }
+.sent { display: grid; gap: 10px; text-align: center; padding: 22px; border-radius: var(--radius); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+
+/* ---------- Preview tool (not part of the real app) ---------- */
+.preview-pill {
+  position: fixed;
+  z-index: 50;
+  inset-inline-end: max(12px, calc(50% - var(--col) / 2 + 12px));
+  bottom: calc(var(--nav-h) + 22px + env(safe-area-inset-bottom, 0px));
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.82;
+  box-shadow: 0 6px 20px -8px rgba(58,54,49,0.5);
+}
+.preview-pill.on-gate { bottom: auto; top: calc(16px + env(safe-area-inset-top, 0px)); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.seg.nine { grid-template-columns: repeat(9, 1fr); }
+.seg button { min-height: 44px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); font-weight: 600; font-size: var(--step--1); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
+.note { color: var(--ink-3); font-size: var(--step--1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ===================== JOURNEY copy update ===================== */
+.wordmark { font-size: 0.9375rem; letter-spacing: 0.32em; font-weight: 500; }
+.day-of {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--ink-2);
+  text-align: right;
+}
+.day-of.plain { color: var(--ink-3); }
+.emoji { font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; font-size: 0.8em; }
+.dawn .question {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 28ch;
+  text-wrap: balance;
+}
+
+/* Short rich text used across the days */
+.rich { display: grid; gap: 10px; font-size: var(--step-1); line-height: 1.7; color: var(--ink-2); }
+.rich strong { color: var(--ink); font-weight: 600; }
+.rich .em {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--ink);
+  padding-block: 4px;
+  text-wrap: balance;
+}
+.rich h4 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--step-2);
+  color: var(--ink);
+}
+.rich .lines { display: grid; gap: 2px; padding-inline-start: 14px; border-inline-start: 1px solid color-mix(in srgb, var(--ink-3) 35%, transparent); }
+.rich .quotes { display: grid; gap: 6px; }
+.rich .quotes p { font-family: var(--font-display); font-style: normal; color: var(--ink-2); font-size: var(--step-1); }
+.rich-media { padding-block: 8px; }
+
+.intro { padding-block: 26px 6px; }
+.intro .rich { font-size: var(--step-1); }
+.block { padding-top: 26px; }
+
+/* Opening cards: the task, the game */
+.folds { display: grid; gap: 12px; padding-top: 30px; }
+.fold { border-radius: var(--radius); overflow: hidden; transition: background-color 0.3s; }
+.fold.sage { background: var(--sage); }
+.fold.blush { background: var(--blush); }
+.fold.mist { background: var(--mist); }
+.fold-head {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 20px 22px;
+  text-align: start;
+}
+.fold-titles { display: grid; gap: 2px; min-width: 0; }
+.fold-title { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.3; color: var(--ink); }
+.fold-chev {
+  flex: none; width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--white) 70%, transparent);
+  color: var(--ink-2);
+  transition: transform 0.35s ease;
+}
+.fold.open .fold-chev { transform: rotate(180deg); }
+.fold-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(.2,.8,.2,1); }
+.fold.open .fold-body { grid-template-rows: 1fr; }
+.fold-inner { overflow: hidden; min-height: 0; }
+.fold-inner > :first-child { padding: 0 22px 24px; }
+.fold.open .fold-inner { padding-bottom: 2px; }
+.fold .fold-inner > .share-task { padding: 0 22px 24px; }
+
+.share-task { display: grid; gap: 10px; }
+.shared-note { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--sage-deep); font-weight: 600; flex-wrap: wrap; }
+
+.finish { padding-block: 36px 8px; }
+.done-card .next { color: var(--ink-3); font-size: var(--step--1); margin-top: 6px; }
+.done-card { text-align: center; }
+.done-card.final { background: linear-gradient(180deg, var(--blush) 0%, var(--paper) 100%); gap: 14px; }
+.done-card.final .check { background: var(--blush-deep); }
+.done-card.final h2 { font-size: var(--step-3); line-height: 1.35; }
+
+.key-line {
+  margin-top: 28px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* Private things */
+.private { display: grid; gap: 10px; }
+.private-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.lock-note { font-size: var(--step--1); color: var(--ink-3); }
+.lock-note.center { text-align: center; }
+.meet .meet-text {
+  position: absolute; inset: auto 14px 14px;
+  display: grid; gap: 2px; padding: 12px 16px; border-radius: 16px;
+  background: color-mix(in srgb, var(--white) 86%, transparent);
+  text-align: center;
+}
+.meet .meet-text strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); color: var(--ink); }
+.meet .meet-text span { font-size: var(--step--1); color: var(--ink-3); }
+
+.answers { display: grid; gap: 14px; }
+.answers .q { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); color: var(--ink); line-height: 1.4; }
+.textarea.small { min-height: 72px; font-size: var(--step-0); }
+
+.ritual { display: grid; gap: 16px; }
+.pick-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick-chips .chip { background: var(--white); box-shadow: none; }
+.pick-chips .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.custom-row { display: flex; gap: 8px; }
+.custom-row .input { border-radius: 999px; padding-block: 11px; font-size: var(--step-0); }
+.custom-row .btn { min-height: 46px; padding: 0 18px; font-size: var(--step-0); flex: none; }
+.ritual .stack .field label { font-size: var(--step-0); color: var(--ink); font-weight: 600; }
+.ritual .stack .input { font-size: var(--step-0); padding-block: 11px; }
+
+.ritual-card {
+  display: grid; gap: 10px;
+  padding: 24px 22px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.ritual-card h3 { font-size: var(--step-2); line-height: 1.35; }
+.ritual-card ol { margin: 6px 0 4px; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: r; }
+.ritual-card li { display: grid; grid-template-columns: 24px 1fr; column-gap: 8px; counter-increment: r; }
+.ritual-card li::before { content: counter(r); grid-row: span 2; font-family: var(--font-display); color: var(--blush-deep); font-size: var(--step-1); line-height: 1.4; }
+.ritual-card li strong { font-weight: 600; }
+.ritual-card li span { color: var(--ink-2); font-size: var(--step-0); }
+.ritual-card .link { justify-self: start; }
+
+/* Personal space */
+.space-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.space-video { display: grid; gap: 6px; min-width: 0; }
+.space-video .media-frame { aspect-ratio: 3 / 4; }
+.space-block { display: grid; gap: 14px; }
+.qa { display: grid; gap: 2px; }
+.qa strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); }
+.qa p { color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; }
+.space-empty { text-align: start; padding: 0; color: var(--ink-2); }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 4px 0; width: 100%; }
+
+/* Community labels */
+.post-head .tag { margin-inline-start: auto; flex: none; max-width: 48%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Brand on the welcome screens */
+.brand {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  letter-spacing: 0.42em;
+  padding-inline-start: 0.42em;
+  color: var(--ink);
+  text-align: center;
+}
+.brand.small-brand { font-size: var(--step-0); color: var(--ink-2); }
+.gate-title h1 { font-size: clamp(1.875rem, 8.5vw, 2.5rem); line-height: 1.2; }
+.gate .key-line { margin-top: 0; font-size: var(--step-1); }
+
+/* ---------- Day 9: the Day 1 → Day 9 moment ---------- */
+.moment {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 30px -8px 0;
+  padding: 44px 24px 32px;
+  border-radius: 32px;
+  display: grid;
+  gap: 22px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--blush) 0%, color-mix(in srgb, var(--blush) 40%, var(--mist)) 55%, var(--paper) 100%);
+}
+.moment-glow {
+  position: absolute; z-index: -1;
+  width: 320px; height: 320px; border-radius: 50%;
+  top: -60px; left: 50%; translate: -50% 0;
+  background: radial-gradient(circle, rgba(255, 248, 240, 0.95) 0%, rgba(255, 248, 240, 0) 68%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.moment-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.24em; color: var(--blush-deep); }
+.moment-opening {
+  font-size: clamp(1.75rem, 7.6vw, 2.25rem);
+  line-height: 1.3;
+  color: var(--ink);
+  max-width: 16ch;
+  margin-inline: auto;
+}
+.moment.step-closed { padding-block: 64px 36px; min-height: 420px; align-content: center; }
+.moment-closed { display: grid; gap: 22px; animation: fadeIn 0.6s ease both; }
+.moment-guide .rich { text-align: center; justify-items: center; }
+.moment-open { display: grid; gap: 16px; animation: unveil 1.1s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes unveil { from { opacity: 0.001; transform: scale(0.96); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.moment-video {
+  position: relative;
+  width: min(100%, 340px);
+  max-width: 100%;
+  aspect-ratio: 9 / 14;
+  max-height: 68vh;
+  margin-inline: auto;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 30px 60px -30px rgba(120, 80, 64, 0.45), 0 0 0 6px color-mix(in srgb, var(--white) 70%, transparent);
+}
+.moment-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--ink); }
+.moment-empty-text {
+  position: absolute; inset: auto 14px 14px;
+  display: grid; gap: 4px; padding: 14px 16px; border-radius: 18px;
+  background: color-mix(in srgb, var(--white) 88%, transparent);
+}
+.moment-empty-text strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); }
+.moment-empty-text span { font-size: var(--step--1); color: var(--ink-3); }
+.moment-hush { color: var(--ink-2); font-family: var(--font-display); font-size: var(--step-1); }
+.moment-next {
+  display: grid; gap: 12px;
+  text-align: start;
+  padding-top: 26px;
+  border-top: 1px solid color-mix(in srgb, var(--blush-deep) 25%, transparent);
+  scroll-margin-top: 80px;
+  animation: fadeIn 0.7s ease both;
+}
+.moment-next h3 { font-size: var(--step-3); }
+
+/* ---------- Real-data states: errors, toasts, uploads ---------- */
+.error-note { color: #A2574A; font-size: var(--step--1); }
+.error-note.center { text-align: center; }
+.soft-error { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 18px; border-radius: 18px; background: var(--blush); color: var(--ink-2); margin-bottom: 16px; }
+.toast {
+  position: fixed; z-index: 80;
+  left: 50%; transform: translateX(-50%);
+  bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom, 0px));
+  max-width: min(92vw, 420px);
+  padding: 12px 20px; border-radius: 999px;
+  background: var(--ink); color: var(--paper);
+  font-size: var(--step--1); font-weight: 600; text-align: center;
+  box-shadow: 0 10px 30px -12px rgba(58,54,49,0.5);
+  animation: fadeIn 0.3s ease both;
+}
+.post-actions .push-end { margin-inline-start: auto; color: var(--ink-3); }
+.post-actions .confirm-row { margin-inline-start: auto; display: inline-flex; gap: 2px; }
+.post-actions .danger { color: #A2574A; font-weight: 600; }
+.inline-link { color: var(--ink-3); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.post .photo.video { aspect-ratio: auto; background: var(--ink); }
+.post .photo.video video { width: 100%; max-height: 70vh; display: block; background: var(--ink); }
+.thumb video { width: 100%; height: 100%; object-fit: cover; background: var(--ink); }
+.thumb-badge { position: absolute; bottom: 10px; inset-inline-start: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(58,54,49,0.7); color: var(--paper); font-size: 12px; font-variant-numeric: tabular-nums; direction: ltr; }
+.audio .round.muted { opacity: 0.45; }
+.add-photo:disabled { opacity: 0.45; }
+a.btn { text-decoration: none; }
+
+/* ===================== Sales page (site/join/) ===================== */
+.sales { padding-bottom: 40px; }
+.sales-hero { min-height: auto; align-content: start; padding-top: 72px; gap: 22px; }
+.sales-hero .key-line { margin-top: 4px; }
+.sales-signin { justify-self: center; }
+.sales-price { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 12px; text-align: center; }
+.sales-price .was { color: var(--ink-3); text-decoration: line-through; font-size: var(--step-1); }
+.sales-price .now { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--ink); }
+.sales-price .note { flex-basis: 100%; color: var(--blush-deep); font-weight: 600; }
+.sales-join { display: grid; }
+.sales-join a.btn { text-decoration: none; }
+.sales-body { display: grid; gap: 48px; padding: 8px 24px 0; }
+.sales-section { display: grid; gap: 14px; }
+.sales-section h2 { font-size: var(--step-3); line-height: 1.25; }
+.sales-center { text-align: center; }
+.sales-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.sales-list li { position: relative; padding: 14px 44px 14px 18px; border-radius: 16px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); }
+.sales-list li::before { content: "✓"; position: absolute; inset-inline-start: 18px; top: 14px; color: var(--sage-deep); font-weight: 600; }
+.sales-days { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.sales-days li { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.sales-days li:last-child { border-bottom: 0; }
+.sales-days .num { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--blush); font-family: var(--font-display); font-size: var(--step-1); }
+.sales-days .title, .sales-card .title, .sales-steps .title { font-weight: 600; color: var(--ink); }
+.sales-days .q { color: var(--ink-2); font-size: var(--step--1); }
+.sales-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sales-card { display: grid; gap: 4px; align-content: start; padding: 16px; border-radius: 18px; background: var(--cream); color: var(--ink-2); font-size: var(--step--1); }
+.sales-card .emoji { font-size: 1.4rem; }
+.sales-card .title { font-size: var(--step-0); }
+.sales-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 12px; }
+.sales-steps li { counter-increment: step; position: relative; padding-inline-start: 48px; color: var(--ink-2); }
+.sales-steps li::before { content: counter(step); position: absolute; inset-inline-start: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--sage); color: var(--sage-deep); font-weight: 600; }
+.sales-offer { padding: 32px 22px; border-radius: var(--radius); background: linear-gradient(180deg, var(--blush) 0%, var(--paper) 100%); text-align: center; gap: 18px; }
+.sales-faq { display: grid; gap: 8px; }
+.sales-faq details { border-radius: 16px; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); padding: 0 18px; }
+.sales-faq summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.sales-faq summary::-webkit-details-marker { display: none; }
+.sales-faq summary::after { content: "+"; color: var(--ink-3); font-weight: 400; }
+.sales-faq details[open] summary::after { content: "−"; }
+.sales-faq details p { padding-bottom: 16px; color: var(--ink-2); }
+.sales-footer { display: grid; gap: 6px; justify-items: center; padding-top: 8px; }
+@media (max-width: 360px) { .sales-grid { grid-template-columns: 1fr; } }
+
+</style>
+<div id="root" dir="rtl" lang="he"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+(()=>{var O=["\u05D0\u05EA \u05DC\u05D0 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D3\u05E2\u05EA \u05DE\u05D4 \u05DE\u05D2\u05D9\u05E2 \u05DE\u05D7\u05E8.","\u05EA\u05E4\u05D2\u05E9\u05D9 \u05D0\u05D5\u05EA\u05D5 \u05DB\u05E9\u05D4\u05D5\u05D0 \u05D9\u05D2\u05D9\u05E2."],te="9 \u05D1\u05E7\u05E8\u05D9\u05DD. 9 \u05E0\u05D9\u05E1\u05D5\u05D9\u05D9\u05DD \u05E7\u05D8\u05E0\u05D9\u05DD \u05D1\u05D7\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA.",Oe="\u05DE\u05D7\u05E8\u05D3\u05D4 \u05DC\u05E9\u05D2\u05E9\u05D5\u05D2 \u05D1\u05EA\u05D5\u05DA \u05D0\u05D9\u05BE\u05D5\u05D3\u05D0\u05D5\u05EA \u05D1\u05BE9 \u05D9\u05DE\u05D9\u05DD",Te=[{number:1,title:"\u05D4\u05D9\u05D9 \u05D5\u05D1\u05D9\u05D9 \u05DC\u05D7\u05E8\u05D3\u05D4",emoji:"\u{1F44B}",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05EA\u05E7\u05D5\u05E4\u05D4 \u05D4\u05D6\u05D0\u05EA \u05D4\u05D9\u05D0 \u05DC\u05D0 \u05EA\u05E7\u05DC\u05D4?",intro:["\u05D5\u05DE\u05D4 \u05D0\u05DD \u05DE\u05E1\u05EA\u05EA\u05E8\u05D5\u05EA \u05D1\u05D4 \u05DE\u05EA\u05E0\u05D5\u05EA \u05E9\u05D0\u05EA \u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05DE\u05E1\u05D5\u05D2\u05DC\u05EA \u05DC\u05E8\u05D0\u05D5\u05EA?","\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05DE\u05E0\u05E1\u05D5\u05EA \u05DC\u05E4\u05EA\u05D5\u05E8 \u05D4\u05DB\u05D5\u05DC.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E7\u05D5\u05D3\u05DD \u05DB\u05D5\u05DC \u05DE\u05D5\u05E8\u05D9\u05D3\u05D5\u05EA \u05E7\u05E6\u05EA \u05E8\u05E2\u05E9, \u05D7\u05D5\u05D6\u05E8\u05D5\u05EA \u05DC\u05D2\u05D5\u05E3 \u05D5\u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05DC\u05DC\u05DE\u05D5\u05D3 \u05E9\u05E4\u05D4 \u05D7\u05D3\u05E9\u05D4:",{b:"\u05DE\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9 \u2014 \u05D5\u05DE\u05D4 \u05DE\u05DB\u05D5\u05D5\u05E5 \u05D0\u05D5\u05EA\u05D9?"}],video:{art:1},task:{title:"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05E0\u05E4\u05D2\u05D5\u05E9 \u05E9\u05D5\u05D1",body:["\u05E6\u05DC\u05DE\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DC\u05DA \u05E2\u05DB\u05E9\u05D9\u05D5.",{lines:["\u05D1\u05DC\u05D9 \u05DC\u05D4\u05D9\u05D5\u05EA \u05E8\u05D5\u05D7\u05E0\u05D9\u05EA.","\u05D1\u05DC\u05D9 \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05E8\u05D0\u05D5\u05EA \u05D0\u05EA \u05D4\u05D8\u05D5\u05D1.","\u05D1\u05DC\u05D9 \u05DC\u05E1\u05D3\u05E8 \u05D0\u05EA \u05D4\u05DE\u05D7\u05E9\u05D1\u05D5\u05EA \u05DC\u05E4\u05E0\u05D9."]},"\u05E1\u05E4\u05E8\u05D9 \u05D0\u05D9\u05E4\u05D4 \u05D0\u05EA \u05E0\u05DE\u05E6\u05D0\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5.",{lines:["\u05DE\u05D4 \u05E7\u05E9\u05D4?","\u05DE\u05D4 \u05DE\u05E4\u05D7\u05D9\u05D3?","\u05DE\u05D4 \u05DE\u05D1\u05DC\u05D1\u05DC?","\u05DE\u05D4 \u05E0\u05DE\u05D0\u05E1 \u05DC\u05DA?","\u05DE\u05D4 \u05D0\u05EA \u05DC\u05D0 \u05D9\u05D5\u05D3\u05E2\u05EA?"]},{b:"\u05E9\u05E4\u05DB\u05D9 \u05D4\u05DB\u05D5\u05DC."},"\u05EA\u05E2\u05DC\u05D9 \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05DC\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05DA \u05DB\u05D0\u05DF.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E0\u05D7\u05D6\u05D5\u05E8 \u05D0\u05DC\u05D9\u05D5 \u05D1\u05D4\u05DE\u05E9\u05DA \u05D4\u05D2\u05F3\u05E8\u05E0\u05D9 :)",{widget:"day1Video"}]},game:{title:"\u05D4\u05EA\u05E8\u05D7\u05D1\u05D5\u05EA / \u05D4\u05EA\u05DB\u05D5\u05D5\u05E6\u05D5\u05EA",body:["\u05D4\u05D9\u05D5\u05DD \u05D4\u05D2\u05D5\u05E3 \u05E9\u05DC\u05DA \u05D4\u05D5\u05E4\u05DA \u05DC\u05DE\u05E6\u05E4\u05DF.","\u05DC\u05E4\u05E0\u05D9 \u05D4\u05D7\u05DC\u05D8\u05D5\u05EA \u05E7\u05D8\u05E0\u05D5\u05EA \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9 \u05D0\u05D5 \u05DE\u05DB\u05D5\u05D5\u05E5 \u05D0\u05D5\u05EA\u05D9?"},{lines:["\u05DE\u05D4 \u05D1\u05D0 \u05DC\u05D9 \u05DC\u05D0\u05DB\u05D5\u05DC?","\u05DE\u05D4 \u05DC\u05DC\u05D1\u05D5\u05E9?","\u05E2\u05DD \u05DE\u05D9 \u05D1\u05D0 \u05DC\u05D9 \u05DC\u05D4\u05D9\u05E4\u05D2\u05E9?","\u05D4\u05D0\u05DD \u05D1\u05D0 \u05DC\u05D9 \u05DC\u05E6\u05D0\u05EA \u05D0\u05D5 \u05DC\u05D4\u05D9\u05E9\u05D0\u05E8 \u05D1\u05D1\u05D9\u05EA?","\u05DC\u05E2\u05E0\u05D5\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5 \u05D0\u05D5 \u05D0\u05D7\u05E8 \u05DB\u05DA?"]},"\u05D0\u05DC \u05EA\u05EA\u05D7\u05D9\u05DC\u05D9 \u05D1\u05D4\u05D7\u05DC\u05D8\u05D5\u05EA \u05D2\u05D5\u05E8\u05DC\u05D9\u05D5\u05EA :)","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05E7 \u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05DC\u05D4\u05DB\u05D9\u05E8 \u05D0\u05EA \u05D4\u05E9\u05E4\u05D4 \u05E9\u05DC \u05D4\u05D2\u05D5\u05E3.",{b:"\u05D4\u05D9\u05D5\u05DD \u05D0\u05DC \u05EA\u05D7\u05E4\u05E9\u05D9 \u05EA\u05E9\u05D5\u05D1\u05D5\u05EA. \u05EA\u05D0\u05E1\u05E4\u05D9 \u05DE\u05D9\u05D3\u05E2."}]}},{number:2,title:"\u05D2\u05DD \u05D6\u05D4 \u05D9\u05E2\u05D1\u05D5\u05E8",emoji:"\u{1F30A}",question:"\u05DE\u05D9 \u05D0\u05EA \u05DB\u05E9\u05D0\u05EA \u05DE\u05E4\u05E1\u05D9\u05E7\u05D4 \u05DC\u05DE\u05D3\u05D5\u05D3 \u05D0\u05EA \u05E2\u05E6\u05DE\u05DA \u05DC\u05E4\u05D9 \u05DE\u05D4 \u05E9\u05D4\u05E9\u05D2\u05EA?",intro:["\u05D4\u05D7\u05D9\u05D9\u05DD \u05D6\u05D6\u05D9\u05DD \u05D1\u05D2\u05DC\u05D9\u05DD.","\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E4\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05D4\u05DB\u05D5\u05DC \u05D8\u05E1, \u05D5\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E4\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05D4\u05DB\u05D5\u05DC \u05DE\u05E8\u05D2\u05D9\u05E9 \u05EA\u05E7\u05D5\u05E2, \u05DC\u05D0 \u05D1\u05E8\u05D5\u05E8 \u05D0\u05D5 \u05D1\u05EA\u05E0\u05D5\u05E2\u05D4 \u05E4\u05E0\u05D9\u05DE\u05D9\u05EA.","\u05D0\u05E3 \u05D0\u05D7\u05EA \u05DE\u05D4\u05DF \u05DC\u05D0 \u05DE\u05D2\u05D3\u05D9\u05E8\u05D4 \u05D0\u05EA \u05D4\u05E2\u05E8\u05DA \u05E9\u05DC\u05DA."],video:{art:2},task:{title:"\u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D9?",body:["\u05EA\u05E2\u05DC\u05D9 \u05DC\u05E7\u05D4\u05D9\u05DC\u05D4:",{b:"10 \u05D3\u05D1\u05E8\u05D9\u05DD \u05E9\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05E2\u05E6\u05DE\u05D9 \u05E2\u05DC\u05D9\u05D4\u05DD \u05E9\u05DC\u05D0 \u05E7\u05E9\u05D5\u05E8\u05D9\u05DD \u05DC\u05D4\u05D9\u05E9\u05D2\u05D9\u05DD \u05E9\u05DC\u05D9."},"\u05D6\u05D4 \u05D9\u05DB\u05D5\u05DC \u05DC\u05D4\u05D9\u05D5\u05EA:",{lines:["\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05DE\u05E1\u05E2 \u05D4\u05E8\u05D2\u05E9\u05D9 \u05E9\u05E2\u05D1\u05E8\u05EA\u05D9.","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D3\u05E8\u05DA \u05E9\u05D1\u05D4 \u05DC\u05DE\u05D3\u05EA\u05D9 \u05DC\u05E9\u05D9\u05DD \u05D2\u05D1\u05D5\u05DC\u05D5\u05EA.","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05E9\u05DC\u05D0 \u05D3\u05D9\u05D1\u05E8\u05EA\u05D9 \u05E2\u05DD \u05D4\u05D0\u05E7\u05E1 \u05E9\u05DC\u05D9 \u05DB\u05D1\u05E8 \u05E9\u05D1\u05D5\u05E2 \u{1F602}","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D3\u05E8\u05DA \u05E9\u05D1\u05D4 \u05D0\u05E0\u05D9 \u05D0\u05D5\u05D4\u05D1\u05EA \u05D0\u05EA \u05D4\u05D0\u05E0\u05E9\u05D9\u05DD \u05E9\u05DC\u05D9.","\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05E2\u05E6\u05DE\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DB\u05D0\u05DF."]},"\u05D0\u05D7\u05E8\u05D9 \u05E9\u05D4\u05E2\u05DC\u05D9\u05EA \u05D0\u05EA \u05D4\u05E8\u05E9\u05D9\u05DE\u05D4 \u05E9\u05DC\u05DA:",{b:"\u05EA\u05D9\u05DB\u05E0\u05E1\u05D9 \u05DC\u05E9\u05D9\u05EA\u05D5\u05E4\u05D9\u05DD \u05E9\u05DC 3 \u05E0\u05E9\u05D9\u05DD \u05D0\u05D7\u05E8\u05D5\u05EA \u05D5\u05EA\u05E4\u05E8\u05D2\u05E0\u05D9 \u05DC\u05D4\u05DF \u05E2\u05DC \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D0\u05EA \u05E8\u05D5\u05D0\u05D4 \u05D1\u05D4\u05DF."}]},share:{cta:"\u05DC\u05E9\u05EA\u05E3 \u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u2728",label:"\u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4",placeholder:"\u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05E2\u05E6\u05DE\u05D9 \u05E9\u2026"},game:{title:"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05EA\u05D5\u05E4\u05E1\u05EA \u05D4\u05D9\u05D5\u05DD \u05DE\u05D7\u05E9\u05D1\u05D4 \u05DB\u05DE\u05D5:",{quotes:["\u05D0\u05E0\u05D9 \u05DE\u05D0\u05D7\u05D5\u05E8.","\u05D1\u05D2\u05D9\u05DC\u05D9 \u05DB\u05D1\u05E8 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E6\u05E8\u05D9\u05DB\u05D4\u2026","\u05DC\u05DB\u05D5\u05DC\u05DF \u05DB\u05D1\u05E8 \u05D9\u05E9 \u05D5\u05E8\u05E7 \u05DC\u05D9 \u05D0\u05D9\u05DF.","\u05DB\u05E0\u05E8\u05D0\u05D4 \u05E2\u05E9\u05D9\u05EA\u05D9 \u05D8\u05E2\u05D5\u05EA.","\u05D0\u05E0\u05D9 \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DB\u05D1\u05E8 \u05DC\u05D3\u05E2\u05EA \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4."]},"\u05D0\u05DC \u05EA\u05EA\u05D5\u05D5\u05DB\u05D7\u05D9 \u05D0\u05D9\u05EA\u05D4.","\u05D0\u05DC \u05EA\u05E0\u05E1\u05D9 \u05D1\u05DB\u05D5\u05D7 \u05DC\u05D7\u05E9\u05D5\u05D1 \u05D7\u05D9\u05D5\u05D1\u05D9.","\u05E4\u05E9\u05D5\u05D8 \u05EA\u05D2\u05D9\u05D3\u05D9:",{b:'"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA \u05D4\u05D9\u05D0 \u05E8\u05E7 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA."'},"\u05D0\u05D5\u05DC\u05D9 \u05D6\u05D5 \u05D0\u05DE\u05EA.","\u05D5\u05D0\u05D5\u05DC\u05D9 \u05D6\u05D5 \u05E4\u05E9\u05D5\u05D8 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05E9\u05D7\u05D6\u05E8\u05EA \u05E2\u05DC\u05D9\u05D4 \u05DE\u05E1\u05E4\u05D9\u05E7 \u05E4\u05E2\u05DE\u05D9\u05DD \u05E2\u05D3 \u05E9\u05D4\u05D9\u05D0 \u05D4\u05EA\u05D7\u05D9\u05DC\u05D4 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05DB\u05DE\u05D5 \u05D0\u05DE\u05EA.","\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05D7\u05D9\u05D9\u05D1\u05D5\u05EA \u05DC\u05D4\u05D0\u05DE\u05D9\u05DF \u05DC\u05DB\u05DC \u05DE\u05D7\u05E9\u05D1\u05D4 \u05E9\u05E2\u05D5\u05D1\u05E8\u05EA \u05DC\u05E0\u05D5 \u05D1\u05E8\u05D0\u05E9."]}},{number:3,title:"\u05D4\u05D7\u05D6\u05E8\u05EA \u05D4\u05E8\u05D9\u05D1\u05D5\u05E0\u05D5\u05EA",emoji:"\u{1F451}",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D0\u05EA \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D4 \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05D9\u05E9\u05EA\u05E0\u05D5 \u2014 \u05D0\u05DC\u05D0 \u05D4\u05D7\u05D9\u05D9\u05DD \u05DE\u05D7\u05DB\u05D9\u05DD \u05E9\u05EA\u05D6\u05D5\u05D6\u05D9?",intro:["\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05E2\u05D5\u05D1\u05E8\u05D5\u05EA \u05DE:",{quotes:["\u05DC\u05DE\u05D4 \u05D6\u05D4 \u05E7\u05D5\u05E8\u05D4 \u05DC\u05D9?"]},"\u05DC:",{b:'"\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05E8\u05D0\u05EA \u05DE\u05DB\u05D0\u05DF?"'},"\u05DC\u05D0 \u05DB\u05D3\u05D9 \u05DC\u05D4\u05D0\u05E9\u05D9\u05DD \u05D0\u05EA \u05E2\u05E6\u05DE\u05DA.","\u05D1\u05D3\u05D9\u05D5\u05E7 \u05DC\u05D4\u05E4\u05DA.","\u05D0\u05DD \u05D9\u05E9 \u05DC\u05DA \u05D7\u05DC\u05E7 \u05D1\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05DE\u05E6\u05D9\u05D0\u05D5\u05EA \u05E9\u05DC\u05DA \u2014 \u05D9\u05E9 \u05DC\u05DA \u05D2\u05DD \u05DB\u05D5\u05D7 \u05DC\u05D4\u05E9\u05EA\u05EA\u05E3 \u05D1\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05D3\u05D1\u05E8 \u05D4\u05D1\u05D0."],video:{art:3},task:{title:"5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05DC \u05D4\u05D9\u05D6\u05DB\u05E8\u05D5\u05EA",body:["\u05E9\u05D9\u05DE\u05D9 \u05D0\u05D5\u05D6\u05E0\u05D9\u05D5\u05EA.","\u05D9\u05E9 \u05DB\u05D0\u05DF \u05E7\u05D5\u05D1\u05E5 \u05E7\u05E6\u05E8 \u05E9\u05D4\u05DB\u05E0\u05EA\u05D9 \u05DC\u05DA.","5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05D1\u05D4\u05DF \u05D0\u05EA \u05DC\u05D0 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E4\u05EA\u05D5\u05E8, \u05DC\u05D4\u05D1\u05D9\u05DF \u05D0\u05D5 \u05DC\u05E2\u05E9\u05D5\u05EA.","\u05E8\u05E7 \u05DC\u05D4\u05D9\u05D6\u05DB\u05E8:",{b:"\u05D0\u05E0\u05D9 \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D4 \u05DC\u05E0\u05E1. \u05D0\u05E0\u05D9 \u05DE\u05E9\u05EA\u05EA\u05E4\u05EA \u05D1\u05D9\u05E6\u05D9\u05E8\u05D4 \u05E9\u05DC\u05D5."},{audio:{title:"5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05DC \u05D4\u05D9\u05D6\u05DB\u05E8\u05D5\u05EA",duration:"5:00"}}]},game:{title:"\u05D5\u05DE\u05D4 \u05DB\u05DF \u05D1\u05E9\u05DC\u05D9\u05D8\u05EA\u05D9?",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05EA\u05D5\u05E4\u05E1\u05EA \u05D0\u05EA \u05E2\u05E6\u05DE\u05DA \u05D4\u05D9\u05D5\u05DD \u05DE\u05EA\u05E2\u05E1\u05E7\u05EA \u05D1\u05DE\u05E9\u05D4\u05D5 \u05E9\u05D0\u05D9\u05DF \u05DC\u05DA \u05E9\u05DC\u05D9\u05D8\u05D4 \u05E2\u05DC\u05D9\u05D5, \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D0\u05D5\u05E7\u05D9\u05D9. \u05D5\u05DE\u05D4 \u05DB\u05DF \u05D1\u05E9\u05DC\u05D9\u05D8\u05EA\u05D9 \u05E2\u05DB\u05E9\u05D9\u05D5?"},{lines:["\u05DC\u05D0 \u05DE\u05D7\u05E8.","\u05DC\u05D0 \u05DB\u05DC \u05D4\u05D7\u05D9\u05D9\u05DD."]},{b:"\u05E2\u05DB\u05E9\u05D9\u05D5."},"\u05D5\u05D0\u05DD \u05E2\u05D5\u05DC\u05D4 \u05DE\u05E9\u05D4\u05D5 \u05E7\u05D8\u05DF \u05E9\u05D0\u05EA \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05E2\u05E9\u05D5\u05EA \u2014 \u05EA\u05E2\u05E9\u05D9 \u05D0\u05D5\u05EA\u05D5."]}},{number:4,title:"\u05E4\u05E2\u05D5\u05DC\u05D5\u05EA \u05DE\u05E7\u05D3\u05DE\u05D5\u05EA",emoji:"\u2192",question:"\u05D0\u05D9\u05DA \u05D0\u05EA \u05E8\u05D5\u05E6\u05D4 \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA \u05D9\u05E8\u05D2\u05D9\u05E9\u05D5 \u2014 \u05E2\u05D5\u05D3 \u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05EA \u05D9\u05D5\u05D3\u05E2\u05EA \u05D0\u05D9\u05DA \u05D4\u05DD \u05D9\u05D9\u05E8\u05D0\u05D5?",intro:["\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05D2\u05D9\u05DC\u05D5\u05EA \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05E4\u05EA\u05D5\u05E8:",{lines:["\u05D0\u05D9\u05D6\u05D5 \u05E2\u05D1\u05D5\u05D3\u05D4?","\u05D0\u05D9\u05D6\u05D4 \u05E2\u05E1\u05E7?","\u05D0\u05D9\u05D6\u05D4 \u05D2\u05D1\u05E8?","\u05D0\u05D9\u05D6\u05D5 \u05E2\u05D9\u05E8?"]},'\u05D4\u05D9\u05D5\u05DD \u05E4\u05D7\u05D5\u05EA \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05E0\u05D5 \u05D4"\u05D0\u05D9\u05DA".',"\u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05E0\u05D5:",{b:"\u05D0\u05D9\u05DA \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9?"}],video:{art:4},task:{title:"\u05E9\u05EA\u05D9 \u05E8\u05E9\u05D9\u05DE\u05D5\u05EA",body:["\u05E4\u05EA\u05D7\u05D9 \u05E9\u05EA\u05D9 \u05E8\u05E9\u05D9\u05DE\u05D5\u05EA:",{h:"\u05D0\u05E0\u05D9 \u05DC\u05D0 \u05DE\u05D5\u05DB\u05E0\u05D4 \u05D9\u05D5\u05EA\u05E8 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9\u2026"},"\u05D5\u05D0\u05D6:",{h:"\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05D9\u05D5\u05EA\u05E8\u2026"},"\u05DC\u05D3\u05D5\u05D2\u05DE\u05D4:",{lines:["\u05D7\u05D5\u05E4\u05E9.","\u05D1\u05D9\u05D8\u05D7\u05D5\u05DF.","\u05EA\u05E9\u05D5\u05E7\u05D4.","\u05DE\u05E9\u05D7\u05E7\u05D9\u05D5\u05EA.","\u05E9\u05D9\u05D9\u05DB\u05D5\u05EA.","\u05E2\u05D5\u05E6\u05DE\u05D4.","\u05E9\u05E7\u05D8."]},"\u05E2\u05DB\u05E9\u05D9\u05D5 \u05E2\u05E6\u05DE\u05D9 \u05E2\u05D9\u05E0\u05D9\u05D9\u05DD.","\u05E2\u05DC \u05DB\u05DC \u05E8\u05D2\u05E9 \u05E9\u05D1\u05D7\u05E8\u05EA \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:'"\u05D2\u05D5\u05E3, \u05EA\u05E8\u05D0\u05D4 \u05DC\u05D9 \u05D0\u05D9\u05DA \u05D6\u05D4 \u05DE\u05E8\u05D2\u05D9\u05E9."'},"\u05EA\u05E0\u05D9 \u05DC\u05E2\u05E6\u05DE\u05DA \u05DB\u05DE\u05D4 \u05E9\u05E0\u05D9\u05D5\u05EA \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05D0\u05D5\u05EA\u05D5.","\u05D5\u05D0\u05D6 \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05DE\u05D4 \u05E4\u05E2\u05D5\u05DC\u05D4 \u05D0\u05D7\u05EA \u05E7\u05D8\u05E0\u05D4 \u05E9\u05D0\u05E0\u05D9 \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05E2\u05E9\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD \u05E9\u05EA\u05D5\u05D0\u05DE\u05EA \u05D0\u05EA \u05D4\u05D7\u05D9\u05D9\u05DD \u05D4\u05D0\u05DC\u05D4?"},"\u05EA\u05E2\u05E9\u05D9 \u05D0\u05D5\u05EA\u05D4.","\u05DC\u05D0 \u05E6\u05E8\u05D9\u05DA \u05EA\u05D5\u05DB\u05E0\u05D9\u05EA \u05D7\u05D5\u05DE\u05E9.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05E7 \u05DE\u05D6\u05D9\u05D6\u05D5\u05EA \u05D0\u05EA \u05D4\u05D7\u05D9\u05D9\u05DD \u05DE\u05D9\u05DC\u05D9\u05DE\u05D8\u05E8 \u05DC\u05DB\u05D9\u05D5\u05D5\u05DF \u05E9\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05D5\u05E6\u05D5\u05EA."]},game:{title:"\u05D0\u05DD \u05D4\u05D9\u05D9\u05EA\u05D9 \u05DB\u05D1\u05E8 \u05D4\u05D9\u05D0",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E2\u05D5\u05DE\u05D3\u05EA \u05DC\u05E2\u05E9\u05D5\u05EA \u05DE\u05E9\u05D4\u05D5 \u05DE\u05EA\u05D5\u05DA \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8, \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D0\u05DD \u05D4\u05D9\u05D9\u05EA\u05D9 \u05DB\u05D1\u05E8 \u05D4\u05D0\u05D9\u05E9\u05D4 \u05E9\u05DE\u05E8\u05D2\u05D9\u05E9\u05D4 \u05DB\u05DE\u05D5 \u05E9\u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u2014 \u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5?"}]}},{number:5,title:"\u05DC\u05D4\u05E8\u05D2\u05D9\u05E9 \u05D0\u05EA \u05D4\u05E9\u05D9\u05E4\u05D8",emoji:"\u2728",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05DE\u05E6\u05D9\u05D0\u05D5\u05EA \u05DB\u05D1\u05E8 \u05D4\u05EA\u05D7\u05D9\u05DC\u05D4 \u05DC\u05D6\u05D5\u05D6 \u2014 \u05D5\u05E4\u05E9\u05D5\u05D8 \u05DC\u05D0 \u05E9\u05DE\u05EA \u05DC\u05D1?",intro:["\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05D4\u05D5\u05E4\u05DB\u05D5\u05EA \u05DC\u05D1\u05DC\u05E9\u05D9\u05D5\u05EA \u05E9\u05DC \u05E9\u05E4\u05E2.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D5\u05EA \u05E8\u05E7 \u05DC\u05E0\u05E1 \u05D4\u05E2\u05E0\u05E7.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05DC\u05D6\u05D4\u05D5\u05EA \u05D0\u05EA \u05DB\u05DC \u05D4\u05DE\u05E7\u05D5\u05DE\u05D5\u05EA \u05E9\u05D1\u05D4\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD \u05DB\u05D1\u05E8 \u05D0\u05D5\u05DE\u05E8\u05D9\u05DD:",{b:"\u05D4\u05D9\u05D9 \u05DE\u05D0\u05DE\u05D9, \u05D0\u05E0\u05D9 \u05E4\u05D4."}],video:{art:5},task:{title:"\u05EA\u05D9\u05E7 \u05D4\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA",body:["\u05E4\u05EA\u05D7\u05D9 \u05D1\u05E4\u05EA\u05E7\u05D9\u05DD \u05D1\u05D8\u05DC\u05E4\u05D5\u05DF \u05E8\u05E9\u05D9\u05DE\u05D4 \u05D7\u05D3\u05E9\u05D4:",{b:'"\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05D0\u05D9\u05EA\u05D9"'},"\u05D5\u05DE\u05E2\u05DB\u05E9\u05D9\u05D5 \u2014 \u05D0\u05EA \u05DE\u05EA\u05E2\u05D3\u05EA.",{lines:["\u05E7\u05D9\u05D1\u05DC\u05EA \u05E7\u05E4\u05D4?","\u05DE\u05D9\u05E9\u05D4\u05D5 \u05D4\u05E6\u05D9\u05E2 \u05DC\u05E2\u05D6\u05D5\u05E8 \u05DC\u05DA?","\u05D4\u05D2\u05D9\u05E2\u05D4 \u05D4\u05D6\u05D3\u05DE\u05E0\u05D5\u05EA \u05DE\u05E9\u05D5\u05DD \u05DE\u05E7\u05D5\u05DD?","\u05E0\u05DB\u05E0\u05E1 \u05DB\u05E1\u05E3 \u05E9\u05DC\u05D0 \u05E6\u05D9\u05E4\u05D9\u05EA \u05DC\u05D5?","\u05E4\u05D2\u05E9\u05EA \u05D1\u05D3\u05D9\u05D5\u05E7 \u05D0\u05EA \u05D4\u05D0\u05D3\u05DD \u05E9\u05D4\u05D9\u05D9\u05EA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E4\u05D2\u05D5\u05E9?","\u05E7\u05E8\u05D4 \u05E6\u05D9\u05E8\u05D5\u05E3 \u05DE\u05E7\u05E8\u05D9\u05DD \u05DE\u05E6\u05D7\u05D9\u05E7?","\u05DE\u05E9\u05D4\u05D5 \u05D4\u05E1\u05EA\u05D3\u05E8 \u05D1\u05E7\u05DC\u05D5\u05EA?"]},{b:"\u05DC\u05E4\u05EA\u05E7\u05D9\u05DD."},"\u05D0\u05D1\u05DC \u05D6\u05D4 \u05DC\u05D0 \u05E0\u05E9\u05D0\u05E8 \u05E8\u05E7 \u05D1\u05E4\u05EA\u05E7\u05D9\u05DD.","\u05D1\u05DE\u05D4\u05DC\u05DA \u05D4\u05D9\u05D5\u05DD, \u05EA\u05E2\u05DC\u05D9 \u05D0\u05EA \u05D4\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05DC\u05DA \u05D2\u05DD \u05DC\u05DB\u05D0\u05DF.","\u05DB\u05E9\u05D0\u05EA \u05DE\u05E9\u05EA\u05E4\u05EA \u05DE\u05E9\u05D4\u05D5 \u05E9\u05E7\u05E8\u05D4 \u05DC\u05DA, \u05DE\u05D9\u05E9\u05D4\u05D9 \u05D0\u05D7\u05E8\u05EA \u05D1\u05DE\u05E1\u05E2 \u05DE\u05E7\u05D1\u05DC\u05EA \u05D4\u05D5\u05DB\u05D7\u05D4 \u05E9\u05D6\u05D4 \u05D0\u05E4\u05E9\u05E8\u05D9 \u05D2\u05DD \u05E2\u05D1\u05D5\u05E8\u05D4.","\u05D5\u05DB\u05E9\u05D0\u05EA \u05E0\u05DB\u05E0\u05E1\u05EA \u05D5\u05E8\u05D5\u05D0\u05D4 \u05E0\u05E9\u05D9\u05DD \u05D0\u05D7\u05E8\u05D5\u05EA \u05DE\u05E9\u05EA\u05E4\u05D5\u05EA \u05D1\u05DE\u05D4 \u05E9\u05E7\u05D5\u05E8\u05D4 \u05DC\u05D4\u05DF, \u05D2\u05DD \u05D0\u05EA \u05DE\u05EA\u05D7\u05D9\u05DC\u05D4 \u05DC\u05E8\u05D0\u05D5\u05EA \u05E9\u05D9\u05E9 \u05D4\u05E8\u05D1\u05D4 \u05D9\u05D5\u05EA\u05E8 \u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05DE\u05DE\u05D4 \u05E9\u05D7\u05E9\u05D1\u05EA.","\u05DC\u05DB\u05DF \u05D4\u05D9\u05D5\u05DD:",{b:"\u05E9\u05D9\u05DE\u05D9 \u05DC\u05D1 \u2190 \u05EA\u05EA\u05E2\u05D3\u05D9 \u2190 \u05EA\u05E9\u05EA\u05E4\u05D9 \u2190 \u05EA\u05E7\u05E8\u05D0\u05D9 \u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05DC \u05D0\u05D7\u05E8\u05D5\u05EA."}]},share:{cta:"\u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05D4\u05D5\u05DB\u05D7\u05EA \u05E9\u05E4\u05E2 \u2728",label:"\u05D4\u05D5\u05DB\u05D7\u05EA \u05E9\u05E4\u05E2",placeholder:"\u05D4\u05E0\u05D4 \u05D6\u05D4. \u05D4\u05D9\u05D5\u05DD\u2026",repeatable:!0,again:"\u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05E2\u05D5\u05D3 \u05D4\u05D5\u05DB\u05D7\u05D4 \u2728"},game:{title:'"\u05D4\u05E0\u05D4 \u05D6\u05D4."',body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E7\u05D5\u05DC\u05D8\u05EA \u05DE\u05E9\u05D4\u05D5 \u05D8\u05D5\u05D1 \u2014 \u05E7\u05D8\u05DF \u05DB\u05DB\u05DC \u05E9\u05D9\u05D4\u05D9\u05D4 \u2014 \u05EA\u05D2\u05D9\u05D3\u05D9:",{b:'"\u05D4\u05E0\u05D4 \u05D6\u05D4."'},"\u05D5\u05D0\u05D6 \u05EA\u05EA\u05E2\u05D3\u05D9 \u05D0\u05D5\u05EA\u05D5."]}},{number:6,title:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05E8\u05D0\u05D5\u05D9\u05D4",emoji:"\u{1F352}",question:"\u05DE\u05D9 \u05D0\u05DE\u05E8 \u05E9\u05D0\u05EA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D7\u05DB\u05D5\u05EA \u05E9\u05D4\u05DB\u05D5\u05DC \u05D9\u05E1\u05EA\u05D3\u05E8 \u05DB\u05D3\u05D9 \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA?",intro:["\u05D9\u05E9 \u05D7\u05D5\u05D6\u05D4 \u05DE\u05D5\u05D6\u05E8 \u05E9\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05E4\u05E2\u05DE\u05D9\u05DD \u05D7\u05D5\u05EA\u05DE\u05D5\u05EA \u05E2\u05DC\u05D9\u05D5:",{lines:["\u05E7\u05D5\u05D3\u05DD \u05D0\u05E4\u05EA\u05D5\u05E8 \u05D0\u05EA \u05D4\u05DB\u05E1\u05E3.","\u05D0\u05DE\u05E6\u05D0 \u05D6\u05D5\u05D2\u05D9\u05D5\u05EA.","\u05D0\u05D1\u05D9\u05DF \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E2\u05D5\u05E9\u05D4 \u05D1\u05D7\u05D9\u05D9\u05DD.","\u05D0\u05E6\u05D0 \u05DE\u05D4\u05EA\u05E7\u05D5\u05E4\u05D4 \u05D4\u05D6\u05D0\u05EA."]},"**\u05D5\u05D0\u05D6** \u05D9\u05D4\u05D9\u05D4 \u05DC\u05D9 \u05DE\u05D5\u05EA\u05E8 \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA.","\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05E9\u05D7\u05E7\u05D5\u05EA \u05E2\u05DD \u05D0\u05E4\u05E9\u05E8\u05D5\u05EA \u05D0\u05D7\u05E8\u05EA:",{b:"\u05DE\u05D5\u05EA\u05E8 \u05DC\u05D9 \u05DC\u05D9\u05D4\u05E0\u05D5\u05EA \u05D2\u05DD \u05D1\u05D0\u05DE\u05E6\u05E2."}],video:{art:6},task:{title:"Pleasure Mission",body:["\u05D4\u05D9\u05D5\u05DD \u05D9\u05E9 \u05DC\u05DA \u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D7\u05EA:",{b:"\u05DC\u05E2\u05E9\u05D5\u05EA \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D4\u05D5\u05D0 \u05E0\u05D8\u05D5 \u05D1\u05E9\u05D1\u05D9\u05DC \u05D4\u05DB\u05D9\u05E3."},{lines:["\u05DC\u05D0 \u05DE\u05E7\u05D3\u05DD \u05D0\u05D5\u05EA\u05DA.","\u05DC\u05D0 \u05E4\u05E8\u05D5\u05D3\u05D5\u05E7\u05D8\u05D9\u05D1\u05D9.",'\u05DC\u05D0 "\u05D8\u05D5\u05D1 \u05DC\u05D4\u05EA\u05E4\u05EA\u05D7\u05D5\u05EA \u05E9\u05DC\u05DA".']},"\u05DE\u05E9\u05D4\u05D5 \u05E9\u05D4\u05D2\u05E8\u05E1\u05D4 \u05D1\u05EA \u05D4\u05BE8 \u05E9\u05DC\u05DA \u05D4\u05D9\u05D9\u05EA\u05D4 \u05D0\u05D5\u05DE\u05E8\u05EA \u05E2\u05DC\u05D9\u05D5:",{b:"\u05D9\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0\u05D0."},"\u05D0\u05D7\u05E8\u05D9 \u05E9\u05E2\u05E9\u05D9\u05EA \u05D0\u05D5\u05EA\u05D5 \u2014 \u05EA\u05E2\u05DC\u05D9 \u05DC\u05E7\u05D4\u05D9\u05DC\u05D4 \u05EA\u05DE\u05D5\u05E0\u05D4 \u05D0\u05D5 \u05E9\u05D9\u05EA\u05D5\u05E3 \u05E7\u05D8\u05DF \u05DE\u05D4\u05D3\u05D9\u05D9\u05D8 \u05E9\u05DC\u05DA \u05E2\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD."]},share:{cta:"\u05DC\u05E9\u05EA\u05E3 \u05E8\u05D2\u05E2 \u05E9\u05DC \u05DB\u05D9\u05E3 \u{1F352}",label:"\u05E8\u05D2\u05E2 \u05E9\u05DC \u05DB\u05D9\u05E3",placeholder:"\u05D4\u05D3\u05D9\u05D9\u05D8 \u05E9\u05DC\u05D9 \u05E2\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD \u05D4\u05D9\u05D5\u05DD\u2026"},game:{title:"10% \u05D9\u05D5\u05EA\u05E8 \u05DB\u05D9\u05E3",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E2\u05D5\u05E9\u05D4 \u05DE\u05E9\u05D4\u05D5 \u05D4\u05D9\u05D5\u05DD \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D0\u05D9\u05DA \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05E4\u05D5\u05DA \u05D0\u05EA \u05D6\u05D4 \u05DC\u05BE10% \u05D9\u05D5\u05EA\u05E8 \u05DB\u05D9\u05E3?"},{lines:["\u05DE\u05D5\u05D6\u05D9\u05E7\u05D4 \u05D1\u05DE\u05E7\u05DC\u05D7\u05EA?","\u05E7\u05E4\u05D4 \u05D1\u05DB\u05D5\u05E1 \u05D4\u05D9\u05E4\u05D4?","\u05DC\u05E8\u05E7\u05D5\u05D3 \u05D1\u05D3\u05E8\u05DA \u05DC\u05E1\u05D5\u05E4\u05E8?","\u05DC\u05D4\u05EA\u05DC\u05D1\u05E9 \u05D9\u05E4\u05D4 \u05E1\u05EA\u05DD?"]},"\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DC\u05D0 \u05DE\u05D7\u05DB\u05D5\u05EA \u05DC\u05D7\u05D9\u05D9\u05DD \u05D4\u05D8\u05D5\u05D1\u05D9\u05DD.","\u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05DB\u05E0\u05D9\u05E1\u05D5\u05EA \u05D0\u05D5\u05EA\u05DD \u05E4\u05E0\u05D9\u05DE\u05D4 \u05E2\u05DB\u05E9\u05D9\u05D5."]}},{number:7,title:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05D6\u05D9\u05D1\u05D9",emoji:"\u{1F48B}",question:"\u05DB\u05DE\u05D4 \u05DE\u05D4\u05D7\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA \u05D1\u05E0\u05D5\u05D9\u05D9\u05DD \u05E2\u05DC \u05E0\u05E7\u05D5\u05D3\u05D5\u05EA \u05DE\u05D1\u05D8 \u05E9\u05D1\u05DB\u05DC\u05DC \u05DC\u05D0 \u05D1\u05D7\u05E8\u05EA?",intro:[{lines:["\u05D0\u05D9\u05DA \u05D0\u05D9\u05E9\u05D4 \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DC\u05D4\u05D9\u05E8\u05D0\u05D5\u05EA.",'\u05DB\u05DE\u05D4 \u05DB\u05E1\u05E3 "\u05E0\u05D5\u05E8\u05DE\u05DC\u05D9" \u05DC\u05D4\u05E8\u05D5\u05D5\u05D9\u05D7.',"\u05D1\u05D0\u05D9\u05D6\u05D4 \u05D2\u05D9\u05DC \u05E6\u05E8\u05D9\u05DA \u05DC\u05D4\u05EA\u05D7\u05EA\u05DF.","\u05D0\u05D9\u05DA \u05E7\u05E8\u05D9\u05D9\u05E8\u05D4 \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DC\u05D4\u05D9\u05E8\u05D0\u05D5\u05EA.","\u05DE\u05D4 \u05D4\u05DE\u05E9\u05E4\u05D7\u05D4 \u05E9\u05DC\u05DA \u05D7\u05D5\u05E9\u05D1\u05EA \u05E9\u05D0\u05E4\u05E9\u05E8\u05D9 \u05E2\u05D1\u05D5\u05E8\u05DA.","\u05DE\u05D4 \u05DE\u05E2\u05E8\u05DB\u05EA \u05D9\u05D7\u05E1\u05D9\u05DD \u05E7\u05D5\u05D3\u05DE\u05EA \u05D2\u05E8\u05DE\u05D4 \u05DC\u05DA \u05DC\u05D4\u05D0\u05DE\u05D9\u05DF \u05E2\u05DC \u05E2\u05E6\u05DE\u05DA.",'\u05DE\u05D4 \u05E0\u05D7\u05E9\u05D1 "\u05D0\u05D7\u05E8\u05D0\u05D9".']},{b:"\u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05EA\u05D2\u05E8\u05E9\u05D5\u05EA \u05DE\u05DB\u05DC \u05D7\u05D5\u05D6\u05D4 \u05E9\u05DE\u05E6\u05DE\u05E6\u05DD \u05D0\u05D5\u05EA\u05E0\u05D5."}],video:{art:7},task:{title:"I CHOOSE TO BE FREE TODAY",body:["\u05EA\u05EA\u05D7\u05D9\u05DC\u05D9 \u05D1\u05DE\u05E9\u05E4\u05D8:",{h:"I choose to be free from\u2026"},"\u05D5\u05EA\u05D5\u05E6\u05D9\u05D0\u05D9 \u05D4\u05DB\u05D5\u05DC.","\u05DC\u05D3\u05D5\u05D2\u05DE\u05D4:",{lines:["\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05E6\u05D5\u05E8\u05DA \u05E9\u05DB\u05D5\u05DC\u05DD \u05D9\u05D1\u05D9\u05E0\u05D5 \u05D0\u05D5\u05EA\u05D9.","\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05D8\u05D9\u05D9\u05DE\u05DC\u05D9\u05D9\u05DF \u05E9\u05D3\u05DE\u05D9\u05D9\u05E0\u05EA\u05D9 \u05DC\u05E2\u05E6\u05DE\u05D9.","\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05E8\u05E2\u05D9\u05D5\u05DF \u05E9\u05DB\u05E1\u05E3 \u05D7\u05D9\u05D9\u05D1 \u05DC\u05D4\u05D2\u05D9\u05E2 \u05D1\u05D3\u05E8\u05DA \u05DE\u05E1\u05D5\u05D9\u05DE\u05EA.","\u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DE\u05D4\u05E1\u05D8\u05E0\u05D3\u05E8\u05D8\u05D9\u05DD \u05E9\u05DC\u05D9\u05DE\u05D3\u05D5 \u05D0\u05D5\u05EA\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E2\u05DE\u05D5\u05D3 \u05D1\u05D4\u05DD."]},"\u05D5\u05E2\u05DB\u05E9\u05D9\u05D5:",{h:"I choose to be free to\u2026"},{lines:["\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05E9\u05E0\u05D5\u05EA \u05D0\u05EA \u05D3\u05E2\u05EA\u05D9.","\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05D4\u05EA\u05D7\u05D9\u05DC \u05DE\u05D7\u05D3\u05E9.","\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05D4\u05E8\u05D5\u05D5\u05D9\u05D7 \u05D1\u05D3\u05E8\u05DA \u05E9\u05E0\u05E2\u05D9\u05DE\u05D4 \u05DC\u05D9.","\u05D0\u05E0\u05D9 \u05D7\u05D5\u05E4\u05E9\u05D9\u05D9\u05D4 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05D7\u05D9\u05D9\u05DD \u05E9\u05D0\u05E0\u05E9\u05D9\u05DD \u05D0\u05D7\u05E8\u05D9\u05DD \u05DC\u05D0 \u05DE\u05D1\u05D9\u05E0\u05D9\u05DD."]},{b:"\u05D5\u05DB\u05E9\u05E1\u05D9\u05D9\u05DE\u05EA, \u05EA\u05E2\u05DC\u05D9 \u05D0\u05EA \u05D4\u05E8\u05E9\u05D9\u05DE\u05D4 \u05E9\u05DC\u05DA \u05DC\u05DB\u05D0\u05DF."},"\u05D4\u05E8\u05E9\u05D9\u05DE\u05D4 \u05DC\u05D0 \u05E0\u05E9\u05D0\u05E8\u05EA \u05E8\u05E7 \u05D0\u05E6\u05DC\u05DA.","\u05D9\u05DB\u05D5\u05DC \u05DC\u05D4\u05D9\u05D5\u05EA \u05E9\u05D4\u05D7\u05D5\u05E4\u05E9 \u05E9\u05D0\u05EA \u05E0\u05D5\u05EA\u05E0\u05EA \u05DC\u05E2\u05E6\u05DE\u05DA \u05D4\u05D9\u05D5\u05DD \u05D9\u05D4\u05D9\u05D4 \u05D1\u05D3\u05D9\u05D5\u05E7 \u05D4\u05BEpermission slip \u05E9\u05DE\u05D9\u05E9\u05D4\u05D9 \u05D0\u05D7\u05E8\u05EA \u05D1\u05DE\u05E1\u05E2 \u05D4\u05D9\u05D9\u05EA\u05D4 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E7\u05E8\u05D5\u05D0."]},share:{cta:"\u05DC\u05E9\u05EA\u05E3 \u05D0\u05EA \u05D4\u05E6\u05D4\u05E8\u05EA \u05D4\u05D7\u05D5\u05E4\u05E9 \u05E9\u05DC\u05D9 \u{1F48B}",label:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05D6\u05D9\u05D1\u05D9",placeholder:"I choose to be free from\u2026"},game:{title:"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA",body:["\u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05E9\u05D5\u05DE\u05E2\u05EA \u05D1\u05E8\u05D0\u05E9:",{quotes:["\u05D0\u05D1\u05DC \u05E6\u05E8\u05D9\u05DA\u2026","\u05D0\u05D9 \u05D0\u05E4\u05E9\u05E8\u2026","\u05D6\u05D4 \u05DC\u05D0 \u05E0\u05D5\u05E8\u05DE\u05DC\u05D9\u2026","\u05DE\u05D4 \u05D9\u05D7\u05E9\u05D1\u05D5 \u05E2\u05DC\u05D9\u05D9?","\u05DB\u05DB\u05D4 \u05DC\u05D0 \u05E2\u05D5\u05E9\u05D9\u05DD \u05D3\u05D1\u05E8\u05D9\u05DD\u2026"]},"\u05EA\u05D2\u05D9\u05D3\u05D9:",{b:'"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA \u05D4\u05D9\u05D0 \u05E8\u05E7 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA."'},"\u05D5\u05D0\u05D6 \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D5\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA?"}]}},{number:8,title:"\u05DC\u05DE\u05E6\u05D5\u05D0 \u05D0\u05EA \u05D4\u05D9\u05D9\u05E2\u05D5\u05D3 \u05E9\u05DC\u05DA",emoji:"\u{1F9ED}",question:"\u05D5\u05DE\u05D4 \u05D0\u05DD \u05D4\u05D9\u05D9\u05E2\u05D5\u05D3 \u05E9\u05DC\u05DA \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D0\u05EA \u05D0\u05DE\u05D5\u05E8\u05D4 \u05DC\u05DE\u05E6\u05D5\u05D0?",intro:["\u05D0\u05D5\u05DC\u05D9 \u05D9\u05D9\u05E2\u05D5\u05D3 \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05DE\u05E7\u05E6\u05D5\u05E2 \u05D0\u05D7\u05D3 \u05E9\u05DE\u05E1\u05EA\u05EA\u05E8 \u05D0\u05D9\u05E4\u05E9\u05D4\u05D5 \u05D5\u05D0\u05EA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E0\u05D7\u05E9 \u05D0\u05D5\u05EA\u05D5 \u05E0\u05DB\u05D5\u05DF.","\u05D0\u05D5\u05DC\u05D9 \u05D4\u05D5\u05D0 \u05E0\u05D1\u05E0\u05D4 \u05D1\u05DB\u05DC \u05E4\u05E2\u05DD \u05E9\u05D0\u05EA \u05DE\u05E1\u05DB\u05D9\u05DE\u05D4 \u05DC\u05D4\u05D9\u05D5\u05EA \u05D9\u05D5\u05EA\u05E8 \u05D0\u05EA."],video:{art:8},task:{title:"\u05E9\u05D0\u05DC\u05D5\u05EA \u05E9\u05E4\u05D5\u05EA\u05D7\u05D5\u05EA \u05DE\u05E8\u05D7\u05D1",body:["\u05E7\u05D7\u05D9 \u05DB\u05DE\u05D4 \u05D3\u05E7\u05D5\u05EA \u05D5\u05EA\u05E2\u05E0\u05D9 \u05D1\u05DC\u05D9 \u05DC\u05E0\u05E1\u05D5\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D4\u05D2\u05D9\u05D5\u05E0\u05D9\u05EA.",{widget:"purposeAnswers"},"\u05D0\u05DC \u05EA\u05D7\u05E4\u05E9\u05D9 \u05DE\u05E7\u05E6\u05D5\u05E2.",{b:"\u05EA\u05D7\u05E4\u05E9\u05D9 \u05D7\u05D9\u05D5\u05EA."}]},game:{title:"\u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9?",body:["\u05DC\u05E4\u05E0\u05D9 \u05D4\u05D7\u05DC\u05D8\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD \u05EA\u05E9\u05D0\u05DC\u05D9:",{b:"\u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9?"},"\u05E4\u05D7\u05D5\u05EA:",{lines:["\u05D4\u05D0\u05DD \u05D6\u05D4 \u05D4\u05D3\u05D1\u05E8 \u05D4\u05DE\u05D5\u05E9\u05DC\u05DD?","\u05D4\u05D0\u05DD \u05D0\u05E0\u05E9\u05D9\u05DD \u05D9\u05D1\u05D9\u05E0\u05D5?","\u05D4\u05D0\u05DD \u05D0\u05E0\u05D9 \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05D4\u05D1\u05D8\u05D9\u05D7 \u05E9\u05D6\u05D4 \u05D9\u05E2\u05D1\u05D5\u05D3?"]},"\u05D5\u05D9\u05D5\u05EA\u05E8:",{b:"\u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9?"}]}},{number:9,title:"\u05DC\u05D4\u05D9\u05D5\u05EA \u05D4\u05DE\u05D2\u05D3\u05DC\u05D5\u05E8",emoji:"\u2600\uFE0F",question:"\u05D0\u05EA \u05E7\u05D5\u05DC\u05D8\u05EA \u05E9\u05D0\u05EA \u05DB\u05D1\u05E8 \u05DC\u05D0 \u05D1\u05D3\u05D9\u05D5\u05E7 \u05D0\u05D5\u05EA\u05D4 \u05D0\u05D9\u05E9\u05D4 \u05E9\u05E0\u05DB\u05E0\u05E1\u05D4 \u05DC\u05DB\u05D0\u05DF \u05DC\u05E4\u05E0\u05D9 9 \u05D9\u05DE\u05D9\u05DD?",intro:["\u05D6\u05D5\u05DB\u05E8\u05EA \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05D4\u05D4\u05D5\u05D0 \u05DE\u05D9\u05D5\u05DD 1?","\u05D4\u05D2\u05D9\u05E2 \u05D4\u05D6\u05DE\u05DF \u05DC\u05E4\u05EA\u05D5\u05D7 \u05D0\u05D5\u05EA\u05D5."],video:{art:9},moment:{opening:"\u05D9\u05E9 \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D4\u05E9\u05D0\u05E8\u05EA \u05DC\u05E2\u05E6\u05DE\u05DA \u05DC\u05E4\u05E0\u05D9 8 \u05D9\u05DE\u05D9\u05DD\u2026",reveal:"\u05DC\u05E4\u05EA\u05D5\u05D7 \u05D0\u05D5\u05EA\u05D5",before:["\u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05EA \u05DC\u05D5\u05D7\u05E6\u05EA:","\u05DC\u05D0 \u05DC\u05E9\u05E4\u05D5\u05D8 \u05D0\u05EA \u05D4\u05D0\u05D9\u05E9\u05D4 \u05E9\u05D4\u05D9\u05D9\u05EA \u05E9\u05DD.",{b:"\u05DC\u05D4\u05E1\u05EA\u05DB\u05DC \u05E2\u05DC\u05D9\u05D4 \u05DB\u05DE\u05D5 \u05E9\u05D4\u05D9\u05D9\u05EA \u05DE\u05E1\u05EA\u05DB\u05DC\u05EA \u05E2\u05DC \u05DE\u05D9\u05E9\u05D4\u05D9 \u05E9\u05D0\u05EA \u05D0\u05D5\u05D4\u05D1\u05EA."}],watched:"\u05E8\u05D0\u05D9\u05EA\u05D9 \u05D0\u05D5\u05EA\u05D4",next:{label:"\u05D5\u05E2\u05DB\u05E9\u05D9\u05D5, \u05EA\u05D5\u05E8\u05DA",title:"\u05DC\u05E4\u05D2\u05D5\u05E9 \u05D0\u05D5\u05EA\u05D4",body:[{b:"\u05E6\u05DC\u05DE\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05D7\u05D3\u05E9."},"\u05E2\u05E0\u05D9 \u05D1\u05D5:",{lines:["\u05DE\u05D4 \u05D4\u05E9\u05EA\u05E0\u05D4 \u05D1\u05D9?","\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05D4\u05D9\u05D5\u05DD \u05E9\u05DC\u05D0 \u05E8\u05D0\u05D9\u05EA\u05D9 \u05D0\u05D6?","\u05E2\u05DC \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E1\u05D5\u05DE\u05DB\u05EA \u05D9\u05D5\u05EA\u05E8?","\u05DE\u05D4 \u05DC\u05DE\u05D3\u05EA\u05D9 \u05E2\u05DC \u05E2\u05E6\u05DE\u05D9?","\u05D5\u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05D2\u05D9\u05D3 \u05DC\u05D2\u05E8\u05E1\u05D4 \u05E9\u05DC\u05D9 \u05DE\u05D9\u05D5\u05DD 1?"]},"\u05D1\u05E1\u05D5\u05E3, \u05D0\u05DD \u05D1\u05D0 \u05DC\u05DA, \u05EA\u05D2\u05D9\u05D3\u05D9 \u05DC\u05D4:",{b:'"\u05D0\u05E0\u05D9 \u05D9\u05D5\u05D3\u05E2\u05EA \u05E9\u05D0\u05EA \u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D9\u05D5\u05D3\u05E2\u05EA \u05DE\u05D4 \u05DE\u05D2\u05D9\u05E2 \u05DE\u05D7\u05E8. \u05D0\u05D1\u05DC \u05D7\u05DB\u05D9 \u05E9\u05EA\u05E8\u05D0\u05D9 \u05DE\u05D9 \u05D0\u05EA \u05D4\u05D5\u05DC\u05DB\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA."'},{widget:"day9Video"}]}},extra:{label:"\u05D8\u05E7\u05E1 \u05D4\u05E1\u05D9\u05D5\u05DD",title:"\u05D5\u05D3\u05D0\u05D5\u05EA \u05DC\u05E4\u05E0\u05D9 \u05D4\u05E2\u05D5\u05DC\u05DD",body:["\u05E2\u05DB\u05E9\u05D9\u05D5 \u05D0\u05E0\u05D7\u05E0\u05D5 \u05D1\u05D5\u05E0\u05D5\u05EA \u05D8\u05E7\u05E1 \u05D1\u05D5\u05E7\u05E8 \u05E7\u05D8\u05DF \u05E9\u05EA\u05D5\u05DB\u05DC\u05D9 \u05DC\u05E7\u05D7\u05EA \u05D0\u05D9\u05EA\u05DA \u05D2\u05DD \u05D0\u05D7\u05E8\u05D9 \u05E9\u05D4\u05BEJOURNEY \u05DE\u05E1\u05EA\u05D9\u05D9\u05DD.","\u05DC\u05D0 \u05E9\u05D2\u05E8\u05EA \u05D1\u05D5\u05E7\u05E8 \u05E9\u05DC \u05E9\u05E2\u05D4 \u05D5\u05D7\u05E6\u05D9 \u05E9\u05EA\u05E2\u05E9\u05D9 \u05E9\u05DC\u05D5\u05E9\u05D4 \u05D9\u05DE\u05D9\u05DD \u05D5\u05D0\u05D6 \u05EA\u05E9\u05E0\u05D0\u05D9 :)",{b:"5\u201310 \u05D3\u05E7\u05D5\u05EA."},"\u05D1\u05D7\u05E8\u05D9 \u05DC\u05E2\u05E6\u05DE\u05DA \u05DB\u05DE\u05D4 \u05D0\u05DC\u05DE\u05E0\u05D8\u05D9\u05DD. \u05D4\u05D8\u05E7\u05E1 \u05E6\u05E8\u05D9\u05DA \u05DC\u05E2\u05E0\u05D5\u05EA \u05E2\u05DC \u05D4\u05E9\u05D0\u05DC\u05D4:",{b:"\u05D0\u05D9\u05DA \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05E4\u05D2\u05D5\u05E9 \u05D0\u05EA \u05E2\u05E6\u05DE\u05D9 \u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E4\u05D5\u05D2\u05E9\u05EA \u05D0\u05EA \u05D4\u05E2\u05D5\u05DC\u05DD?"},{widget:"ritual"}]},game:{label:"\u05D4\u05DE\u05E9\u05D7\u05E7 \u05D4\u05D0\u05D7\u05E8\u05D5\u05DF",title:"\u05DE\u05D9 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA",body:["\u05D4\u05D9\u05D5\u05DD \u05D0\u05DC \u05EA\u05E9\u05D0\u05DC\u05D9:",{quotes:["\u05DE\u05D4 \u05D4\u05D5\u05DC\u05DA \u05DC\u05E7\u05E8\u05D5\u05EA?"]},"\u05EA\u05E9\u05D0\u05DC\u05D9:",{b:'"\u05DE\u05D9 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05DC\u05D4\u05D9\u05D5\u05EA \u05D1\u05EA\u05D5\u05DA \u05DE\u05D4 \u05E9\u05D9\u05E7\u05E8\u05D4?"'}]}}],ae=["\u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E2\u05D5\u05E9\u05D4 \u05D2\u05DD \u05D0\u05DD \u05D0\u05E3 \u05D0\u05D7\u05D3 \u05DC\u05D0 \u05D4\u05D9\u05D4 \u05DE\u05D5\u05D7\u05D0 \u05DC\u05D9 \u05DB\u05E4\u05D9\u05D9\u05DD?","\u05E2\u05DC \u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05D3\u05D1\u05E8 \u05E9\u05E2\u05D5\u05EA?","\u05DE\u05EA\u05D9 \u05D0\u05E0\u05D9 \u05DE\u05E8\u05D2\u05D9\u05E9\u05D4 \u05D4\u05DB\u05D9 \u05D0\u05E0\u05D9?","\u05D0\u05D9\u05D6\u05D4 \u05D7\u05DC\u05E7 \u05D1\u05D9 \u05D0\u05E0\u05D9 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DE\u05E4\u05D7\u05D3\u05EA \u05DC\u05D4\u05D1\u05D9\u05D0 \u05DC\u05E2\u05D5\u05DC\u05DD?","\u05D0\u05DD \u05DB\u05E1\u05E3, \u05D2\u05D9\u05DC \u05D5\u05D3\u05E2\u05D5\u05EA \u05E9\u05DC \u05D0\u05E0\u05E9\u05D9\u05DD \u05DC\u05D0 \u05D4\u05D9\u05D5 \u05E9\u05D9\u05E7\u05D5\u05DC \u2014 \u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05D7\u05D5\u05E7\u05E8\u05EA \u05E2\u05DB\u05E9\u05D9\u05D5?","\u05DE\u05D4 \u05DE\u05E1\u05E7\u05E8\u05DF \u05D0\u05D5\u05EA\u05D9 \u05D1\u05EA\u05E7\u05D5\u05E4\u05D4 \u05D4\u05D6\u05D0\u05EA?","\u05DE\u05D4 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E2\u05D5\u05E9\u05D4 \u05D9\u05D5\u05EA\u05E8 \u05D0\u05DD \u05DC\u05D0 \u05D4\u05D9\u05D9\u05EA\u05D9 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D3\u05E2\u05EA \u05DC\u05D0\u05DF \u05D6\u05D4 \u05DE\u05D5\u05D1\u05D9\u05DC?"],Fe=[{id:"breath",label:"\u05E0\u05E9\u05D9\u05DE\u05D4",hint:"\u05DC\u05DE\u05E9\u05DC: 3 \u05E0\u05E9\u05D9\u05DE\u05D5\u05EA \u05E2\u05DE\u05D5\u05E7\u05D5\u05EA \u05DC\u05D9\u05D3 \u05D4\u05D7\u05DC\u05D5\u05DF"},{id:"gratitude",label:"\u05D4\u05D5\u05D3\u05D9\u05D4",hint:"\u05DC\u05DE\u05E9\u05DC: \u05D3\u05D1\u05E8 \u05D0\u05D7\u05D3 \u05E9\u05D0\u05E0\u05D9 \u05DE\u05D5\u05D3\u05D4 \u05E2\u05DC\u05D9\u05D5 \u05D4\u05D1\u05D5\u05E7\u05E8"},{id:"body",label:"\u05E9\u05D0\u05DC\u05D4 \u05D0\u05D7\u05EA \u05DC\u05D2\u05D5\u05E3",hint:"\u05DC\u05DE\u05E9\u05DC: \u05DE\u05D4 \u05D9\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9 \u05D4\u05D9\u05D5\u05DD?"},{id:"intention",label:"\u05DB\u05D5\u05D5\u05E0\u05D4 \u05DC\u05D9\u05D5\u05DD",hint:"\u05DC\u05DE\u05E9\u05DC: \u05D4\u05D9\u05D5\u05DD \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA \u05E7\u05DC\u05D9\u05DC\u05D5\u05EA"},{id:"choice",label:"\u05D1\u05D7\u05D9\u05E8\u05D4 \u05D0\u05D7\u05EA",hint:"\u05DC\u05DE\u05E9\u05DC: \u05D3\u05D1\u05E8 \u05D0\u05D7\u05D3 \u05E9\u05D0\u05E0\u05D9 \u05E2\u05D5\u05E9\u05D4 \u05D4\u05D9\u05D5\u05DD \u05D1\u05E9\u05D1\u05D9\u05DC\u05D9"},{id:"sentence",label:"\u05DE\u05E9\u05E4\u05D8 \u05E9\u05DE\u05D7\u05D6\u05D9\u05E8 \u05D0\u05D5\u05EA\u05D9 \u05DC\u05D5\u05D5\u05D3\u05D0\u05D5\u05EA",hint:"\u05DC\u05DE\u05E9\u05DC: \u05D0\u05E0\u05D9 \u05DC\u05D0 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D3\u05E2\u05EA. \u05D0\u05E0\u05D9 \u05D0\u05E4\u05D2\u05D5\u05E9 \u05D0\u05EA \u05D6\u05D4."},{id:"quiet",label:"\u05E8\u05D2\u05E2 \u05E9\u05DC \u05E9\u05E7\u05D8",hint:"\u05DC\u05DE\u05E9\u05DC: \u05D3\u05E7\u05D4 \u05D1\u05DC\u05D9 \u05D8\u05DC\u05E4\u05D5\u05DF, \u05E2\u05DD \u05D4\u05E7\u05E4\u05D4"},{id:"move",label:"\u05EA\u05E0\u05D5\u05E2\u05D4 \u05E7\u05E6\u05E8\u05D4",hint:"\u05DC\u05DE\u05E9\u05DC: \u05E9\u05D9\u05E8 \u05D0\u05D7\u05D3 \u05E9\u05DC \u05E8\u05D9\u05E7\u05D5\u05D3 \u05D1\u05DE\u05D8\u05D1\u05D7"}];var fe="Asia/Jerusalem";var xt=new Intl.DateTimeFormat("en-US",{timeZone:fe,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"});function ve(e){let a={};for(let t of xt.formatToParts(e))a[t.type]=t.value;return{y:+a.year,m:+a.month,d:+a.day,h:+a.hour%24,mi:+a.minute,s:+a.second}}function je(e){let a=ve(e);return Date.UTC(a.y,a.m-1,a.d,a.h,a.mi,a.s)-Math.floor(e.getTime()/1e3)*1e3}function _e(e,a,t,s=0,n=0){let i=Date.UTC(e,a-1,t,s,n),o=i-je(new Date(i)),r=i-je(new Date(o));return r!==o&&(o=r),new Date(o)}function se(e){let a=ve(e);return{y:a.y,m:a.m,d:a.d}}function he(e){return ve(e).h}function ye({y:e,m:a,d:t},s){let n=new Date(Date.UTC(e,a-1,t+s));return{y:n.getUTCFullYear(),m:n.getUTCMonth()+1,d:n.getUTCDate()}}function Ve(e,a){return e.y===a.y&&e.m===a.m&&e.d===a.d}function He(e,a){let t=new Date(a);if(e<=1)return t;let s=ye(se(t),e-1);return _e(s.y,s.m,s.d,8,0)}function At(e,a,t=new Date){return He(e,a).getTime()<=t.getTime()}function qe(e,a=new Date){let t=1;for(let s=2;s<=9&&At(s,e,a);s++)t=s;return t}var Et=new Intl.DateTimeFormat("he-IL",{timeZone:fe,weekday:"long"}),Dt=new Intl.DateTimeFormat("he-IL",{timeZone:fe,day:"numeric",month:"numeric"});function Ye(e,a,t=new Date){let s=He(e,a),n=se(s),i=se(t),o=`${String(8).padStart(2,"0")}:00`;return Ve(n,i)?`\u05D4\u05D9\u05D5\u05DD \u05D1\u05BE${o}`:Ve(n,ye(i,1))?`\u05DE\u05D7\u05E8 \u05D1\u05BE${o}`:Math.round((Date.UTC(n.y,n.m-1,n.d)-Date.UTC(i.y,i.m-1,i.d))/864e5)<7?`\u05D1${Et.format(s)} \u05D1\u05BE${o}`:`\u05D1\u05BE${Dt.format(s)}`}function We(e,a=new Date){if(e<=1)return new Date(a.getTime()-60*1e3);let t=se(a),s=he(a)<8,n=ye(t,-(e-1)-(s?1:0));return _e(n.y,n.m,n.d,15,0)}var ne=React.createContext({api:null,isPreview:!0}),$=()=>React.useContext(ne);var{useState:ca,useEffect:St,useRef:Lt}=React,ze=[["#E2EAEF","#F2E2DB","#F8EFE6"],["#E1E8DC","#F3ECE2","#FBF4EC"],["#F2E2DB","#E2EAEF","#FAF4EE"],["#DCE5E9","#EBDDD4","#F7EFE7"],["#E8D9CF","#DCE5D8","#FAF5EF"],["#F0E4DA","#D9E3E8","#FBF6F0"]];function It(e=1){let a=ze[e%ze.length],t=20+e*37%60,s=18+e*53%50;return{background:[`radial-gradient(circle at ${t}% ${s}%, rgba(255,250,244,0.95) 0%, rgba(255,250,244,0) 32%)`,`radial-gradient(ellipse at ${100-t}% ${100-s/2}%, ${a[0]} 0%, rgba(255,255,255,0) 60%)`,`linear-gradient(${140+e*17}deg, ${a[1]} 0%, ${a[2]} 55%, ${a[0]} 100%)`].join(",")}}function j({seed:e}){return React.createElement("div",{className:"art",style:It(e),"aria-hidden":"true"})}var D={play:()=>React.createElement("svg",{width:"20",height:"20",viewBox:"0 0 20 20","aria-hidden":"true"},React.createElement("path",{d:"M6.5 4.2v11.6L16 10z",fill:"currentColor"})),pause:()=>React.createElement("svg",{width:"20",height:"20",viewBox:"0 0 20 20","aria-hidden":"true"},React.createElement("rect",{x:"5",y:"4",width:"3.2",height:"12",rx:"1.2",fill:"currentColor"}),React.createElement("rect",{x:"11.8",y:"4",width:"3.2",height:"12",rx:"1.2",fill:"currentColor"})),heart:({filled:e})=>React.createElement("svg",{width:"18",height:"18",viewBox:"0 0 24 24","aria-hidden":"true"},React.createElement("path",{d:"M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z",fill:e?"currentColor":"none",stroke:"currentColor",strokeWidth:"1.5",strokeLinejoin:"round"})),check:()=>React.createElement("svg",{width:"22",height:"22",viewBox:"0 0 24 24","aria-hidden":"true"},React.createElement("path",{d:"M5 12.5l4.5 4.5L19 7.5",fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"})),close:()=>React.createElement("svg",{width:"18",height:"18",viewBox:"0 0 24 24","aria-hidden":"true"},React.createElement("path",{d:"M6 6l12 12M18 6L6 18",stroke:"currentColor",strokeWidth:"1.6",strokeLinecap:"round"})),back:()=>React.createElement("svg",{width:"20",height:"20",viewBox:"0 0 24 24","aria-hidden":"true"},React.createElement("path",{d:"M9 6l6 6-6 6",fill:"none",stroke:"currentColor",strokeWidth:"1.6",strokeLinecap:"round",strokeLinejoin:"round"})),chevronDown:()=>React.createElement("svg",{width:"18",height:"18",viewBox:"0 0 24 24","aria-hidden":"true"},React.createElement("path",{d:"M6 9l6 6 6-6",fill:"none",stroke:"currentColor",strokeWidth:"1.6",strokeLinecap:"round",strokeLinejoin:"round"})),chevron:()=>React.createElement("svg",{width:"16",height:"16",viewBox:"0 0 24 24","aria-hidden":"true"},React.createElement("path",{d:"M15 6l-6 6 6 6",fill:"none",stroke:"currentColor",strokeWidth:"1.6",strokeLinecap:"round",strokeLinejoin:"round"}))},Je=["","sage","mist","cream"];function Y({name:e="",photo:a,size:t}){let s=e.split(" ").map(o=>o[0]).filter(Boolean).slice(0,2).join(""),n=0;for(let o of e)n=(n+o.charCodeAt(0))%997;let i=Je[n%Je.length];return React.createElement("span",{className:`avatar ${i} ${t||""}`,"aria-hidden":"true"},a?React.createElement("img",{src:a,alt:""}):s)}function ge(e,a=Date.now()){let t=Math.max(0,Math.round((a-e)/6e4));if(t<1)return"\u05E2\u05DB\u05E9\u05D9\u05D5";if(t<60)return t===1?"\u05DC\u05E4\u05E0\u05D9 \u05D3\u05E7\u05D4":`\u05DC\u05E4\u05E0\u05D9 ${t} \u05D3\u05E7\u05D5\u05EA`;let s=Math.round(t/60);if(s<24)return s===1?"\u05DC\u05E4\u05E0\u05D9 \u05E9\u05E2\u05D4":s===2?"\u05DC\u05E4\u05E0\u05D9 \u05E9\u05E2\u05EA\u05D9\u05D9\u05DD":`\u05DC\u05E4\u05E0\u05D9 ${s} \u05E9\u05E2\u05D5\u05EA`;let n=Math.round(s/24);return n===1?"\u05D0\u05EA\u05DE\u05D5\u05DC":n===2?"\u05DC\u05E4\u05E0\u05D9 \u05D9\u05D5\u05DE\u05D9\u05D9\u05DD":`\u05DC\u05E4\u05E0\u05D9 ${n} \u05D9\u05DE\u05D9\u05DD`}function V({title:e,onClose:a,children:t}){let s=Lt(null);return St(()=>{let n=o=>o.key==="Escape"&&a();document.addEventListener("keydown",n);let i=document.body.style.overflow;return document.body.style.overflow="hidden",s.current&&s.current.focus(),()=>{document.removeEventListener("keydown",n),document.body.style.overflow=i}},[]),React.createElement("div",{className:"sheet-wrap"},React.createElement("div",{className:"sheet-backdrop",onClick:a}),React.createElement("div",{className:"sheet",role:"dialog","aria-modal":"true","aria-label":e,tabIndex:-1,ref:s},React.createElement("div",{className:"handle"}),React.createElement("div",{className:"sheet-head"},React.createElement("h2",null,e),React.createElement("button",{className:"icon-btn",onClick:a,"aria-label":"\u05E1\u05D2\u05D9\u05E8\u05D4"},React.createElement(D.close,null))),t))}var{useState:oe,useEffect:Pt,useRef:$t}=React;function Mt(e=""){try{let a=new URL(String(e).trim()),t=a.hostname.replace(/^(www\.|m\.|music\.)/,"");if(t==="youtu.be")return a.pathname.split("/")[1]||null;if(t==="youtube.com"||t==="youtube-nocookie.com"){if(a.searchParams.get("v"))return a.searchParams.get("v");let s=a.pathname.split("/").filter(Boolean);if(["embed","shorts","live","v"].includes(s[0])&&s[1])return s[1]}}catch{}return null}function Bt(e=""){let a=Mt(e);if(a&&/^[\w-]{6,20}$/.test(a))return`https://www.youtube-nocookie.com/embed/${a}?rel=0&modestbranding=1&playsinline=1`;try{let t=new URL(e);if(t.hostname.replace(/^www\./,"").endsWith("vimeo.com")){let s=t.pathname.split("/").filter(Boolean),n=s.find(o=>/^\d+$/.test(o)),i=s[s.indexOf(n)+1];if(n)return`https://player.vimeo.com/video/${n}${i?`?h=${i}`:""}`}}catch{}return null}function ie({title:e,duration:a,source:t,art:s}){let[n,i]=oe(!1),o=null,r=t&&t.kind==="link"?Bt(t.url):null;return r?o=React.createElement("iframe",{src:r,title:e||"\u05E1\u05E8\u05D8\u05D5\u05DF",loading:"lazy",allow:"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen",allowFullScreen:!0,referrerPolicy:"strict-origin-when-cross-origin"}):t&&t.kind==="upload"&&t.url&&(o=React.createElement("video",{src:t.url,controls:!0,playsInline:!0,preload:"metadata"})),React.createElement("div",{className:"stack",style:{gap:12}},React.createElement("div",{className:"media-frame"},o||React.createElement(React.Fragment,null,React.createElement(j,{seed:s||1}),React.createElement("button",{className:"play",onClick:()=>i(!0),"aria-label":`\u05D4\u05E4\u05E2\u05DC\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF ${e||""}`},React.createElement(D.play,null)),n&&React.createElement("div",{className:"media-note"},"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DC \u05D4\u05D9\u05D5\u05DD \u05D9\u05E2\u05DC\u05D4 \u05DC\u05DB\u05D0\u05DF \u05D1\u05E7\u05E8\u05D5\u05D1."))),a&&React.createElement("div",{className:"media-meta"},React.createElement("strong",null,e),React.createElement("span",null,a)))}function Rt(e="0:00"){let[a,t]=String(e).split(":").map(Number);return(a||0)*60+(t||0)}function Ge(e){let a=Math.floor(e/60),t=Math.floor(e%60);return`${a}:${String(t).padStart(2,"0")}`}function re({title:e,duration:a,src:t,loading:s}){let{isPreview:n}=$(),i=$t(null),[o,r]=oe(Rt(a)),[d,u]=oe(!1),[c,f]=oe(0);Pt(()=>{if(t||!d)return;let v=setInterval(()=>f(w=>w+1>=o?0:w+1),1e3);return()=>clearInterval(v)},[d,o,t]);let y=()=>{if(!t)return u(!d);let v=i.current;v&&(v.paused?v.play().catch(()=>{}):v.pause())},N=v=>{if(!t||!i.current||!o)return;let w=v.currentTarget.getBoundingClientRect(),m=Math.min(1,Math.max(0,(w.right-v.clientX)/w.width));i.current.currentTime=m*o};return!t&&!n?React.createElement("div",{className:"audio"},React.createElement("span",{className:"round muted","aria-hidden":"true"},React.createElement(D.play,null)),React.createElement("strong",null,e),React.createElement("span",{className:"time"},s?"\u05D8\u05D5\u05E2\u05E0\u05EA\u2026":"\u05D4\u05D4\u05E7\u05DC\u05D8\u05D4 \u05EA\u05E2\u05DC\u05D4 \u05DC\u05DB\u05D0\u05DF \u05D1\u05E7\u05E8\u05D5\u05D1")):React.createElement("div",{className:"audio"},t&&React.createElement("audio",{ref:i,src:t,preload:"metadata",onLoadedMetadata:v=>isFinite(v.target.duration)&&r(v.target.duration),onTimeUpdate:v=>f(v.target.currentTime),onPlay:()=>u(!0),onPause:()=>u(!1),onEnded:()=>{u(!1),f(0)}}),React.createElement("button",{className:"round",onClick:y,"aria-label":d?"\u05D4\u05E9\u05D4\u05D9\u05D4":`\u05D4\u05D0\u05D6\u05E0\u05D4 \u05DC${e}`},React.createElement(d?D.pause:D.play,null)),React.createElement("strong",null,e),React.createElement("div",{className:"track"},React.createElement("div",{className:"bar",onClick:N},React.createElement("i",{style:{width:`${o?c/o*100:0}%`}})),React.createElement("span",{className:"time"},d||c?Ge(c):a||(o?Ge(o):""))))}var{useState:Ut,useEffect:Ot}=React;function Tt({title:e,duration:a,file_path:t}){let{api:s}=$(),[n,i]=Ut(null);return Ot(()=>{let o=!0;return t&&s&&s.fileUrl("content",t).then(r=>o&&i(r)),()=>{o=!1}},[t]),React.createElement(re,{title:e,duration:a,src:n,loading:!!t&&!n})}function Z({text:e}){return String(e).split("**").map((t,s)=>s%2?React.createElement("strong",{key:s},t):t)}function _({items:e,renderWidget:a}){return React.createElement("div",{className:"rich"},e.map((t,s)=>typeof t=="string"?React.createElement("p",{key:s,dir:"auto"},React.createElement(Z,{text:t})):t.b?React.createElement("p",{key:s,className:"em",dir:"auto"},React.createElement(Z,{text:t.b})):t.h?React.createElement("h4",{key:s,dir:"auto"},t.h):t.lines?React.createElement("div",{key:s,className:"lines"},t.lines.map((n,i)=>React.createElement("p",{key:i,dir:"auto"},React.createElement(Z,{text:n})))):t.quotes?React.createElement("div",{key:s,className:"quotes"},t.quotes.map((n,i)=>React.createElement("p",{key:i},"\u05F4",n,"\u05F4"))):t.audio?React.createElement("div",{key:s,className:"rich-media"},React.createElement(Tt,{...t.audio})):t.widget?React.createElement("div",{key:s,className:"rich-media"},a?a(t.widget):null):null))}var{useState:L,useRef:Ke}=React;function Xe({url:e,portrait:a}){let{isPreview:t}=$(),[s,n]=L(!1);return s||!e?React.createElement("div",{className:a?"moment-video empty":"media-frame"},React.createElement(j,{seed:9}),React.createElement("div",{className:"media-note"},t?"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E0\u05E9\u05DE\u05E8. \u05D4\u05EA\u05E6\u05D5\u05D2\u05D4 \u05D4\u05DE\u05E7\u05D3\u05D9\u05DE\u05D4 \u05DC\u05D0 \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05D4\u05E6\u05D9\u05D2 \u05D0\u05D5\u05EA\u05D5 \u05DB\u05D0\u05DF.":"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E0\u05E9\u05DE\u05E8, \u05D0\u05D1\u05DC \u05DC\u05D0 \u05D4\u05E6\u05DC\u05D7\u05E0\u05D5 \u05DC\u05D4\u05E6\u05D9\u05D2 \u05D0\u05D5\u05EA\u05D5 \u05DB\u05E8\u05D2\u05E2. \u05E0\u05E1\u05D9 \u05DC\u05E8\u05E2\u05E0\u05DF \u05D0\u05EA \u05D4\u05D3\u05E3.")):React.createElement("div",{className:a?"moment-video":"media-frame"},React.createElement("video",{src:e,controls:!0,playsInline:!0,preload:"metadata",onError:()=>n(!0)}))}function Ne({video:e,onSave:a,cta:t,savedText:s}){let n=Ke(null),[i,o]=L(!1),[r,d]=L("");return React.createElement("div",{className:"private"},React.createElement("input",{ref:n,type:"file",accept:"video/*",className:"sr",onChange:async c=>{let f=c.target.files&&c.target.files[0];if(c.target.value="",!!f){o(!0),d("");try{await a(f)}catch(y){d(y.message)}o(!1)}},tabIndex:-1,"aria-hidden":"true"}),e&&!i?React.createElement(React.Fragment,null,React.createElement(Xe,{url:e.url}),React.createElement("div",{className:"private-row"},React.createElement("span",{className:"lock-note"},"\u{1F512} ",s),React.createElement("button",{className:"link",onClick:()=>n.current.click()},"\u05DC\u05D4\u05D7\u05DC\u05D9\u05E3 \u05E1\u05E8\u05D8\u05D5\u05DF"))):React.createElement(React.Fragment,null,React.createElement("button",{className:"btn soft block",onClick:()=>n.current.click(),disabled:i},i?"\u05DE\u05E2\u05DC\u05D4 \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF\u2026 \u05D6\u05D4 \u05D9\u05DB\u05D5\u05DC \u05DC\u05E7\u05D7\u05EA \u05D3\u05E7\u05D4":t),React.createElement("p",{className:"lock-note center"},"\u{1F512} \u05E4\u05E8\u05D8\u05D9 \u05DC\u05D2\u05DE\u05E8\u05D9. \u05E8\u05E7 \u05D0\u05EA \u05E8\u05D5\u05D0\u05D4 \u05D0\u05D5\u05EA\u05D5. \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05E2\u05D5\u05DC\u05D4 \u05DC\u05E7\u05D4\u05D9\u05DC\u05D4.")),r&&React.createElement("p",{className:"error-note",role:"alert"},r))}function Ze({answers:e,onSave:a}){let[t,s]=L(()=>({...e})),[n,i]=L("idle"),[o,r]=L("");return React.createElement("form",{className:"answers",onSubmit:async u=>{u.preventDefault(),i("saving"),r("");try{await a(t),i("saved")}catch(c){r(c.message),i("error")}}},ae.map((u,c)=>React.createElement("div",{className:"field",key:c},React.createElement("label",{htmlFor:`purpose-${c}`,className:"q"},u),React.createElement("textarea",{id:`purpose-${c}`,className:"textarea small",rows:2,dir:"auto",value:t[c]||"",onChange:f=>{i("idle"),s({...t,[c]:f.target.value})}}))),React.createElement("button",{type:"submit",className:"btn primary block",disabled:n==="saving"},n==="saving"?"\u05E9\u05D5\u05DE\u05E8\u05EA\u2026":n==="saved"?"\u05E0\u05E9\u05DE\u05E8 \u05D1\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05DA \u2713":"\u05DC\u05E9\u05DE\u05D5\u05E8 \u05D0\u05EA \u05D4\u05EA\u05E9\u05D5\u05D1\u05D5\u05EA \u05E9\u05DC\u05D9"),o&&React.createElement("p",{className:"error-note",role:"alert"},o),React.createElement("p",{className:"lock-note center"},"\u{1F512} \u05D4\u05EA\u05E9\u05D5\u05D1\u05D5\u05EA \u05E4\u05E8\u05D8\u05D9\u05D5\u05EA \u05D5\u05E0\u05E9\u05DE\u05E8\u05D5\u05EA \u05E8\u05E7 \u05D0\u05E6\u05DC\u05DA."))}function Qe({ritual:e,onSave:a}){let[t,s]=L(()=>e?e.items.map(b=>b.id):[]),[n,i]=L(()=>Object.fromEntries((e?e.items:[]).map(b=>[b.id,b.note]))),[o,r]=L(""),[d,u]=L(()=>e?e.items.filter(b=>b.custom):[]),[c,f]=L(!e),[y,N]=L(!1),[v,w]=L(""),m=[...Fe,...d.map(b=>({id:b.id,label:b.label,custom:!0}))],p=b=>s(A=>A.includes(b)?A.filter(B=>B!==b):[...A,b]),k=()=>{let b=o.trim();if(!b)return;let A=`c${Date.now()}`;u([...d,{id:A,label:b,custom:!0}]),s([...t,A]),r("")},I=async()=>{let b=t.map(A=>{let B=m.find(de=>de.id===A);return{id:A,label:B.label,note:(n[A]||"").trim(),custom:!!B.custom}});N(!0),w("");try{await a({items:b,at:Date.now()}),f(!1)}catch(A){w(A.message)}N(!1)};return!c&&e?React.createElement(ke,{ritual:e,onEdit:()=>f(!0)}):React.createElement("div",{className:"ritual"},React.createElement("div",{className:"pick-chips",role:"group","aria-label":"\u05D4\u05D0\u05DC\u05DE\u05E0\u05D8\u05D9\u05DD \u05E9\u05DC \u05D4\u05D8\u05E7\u05E1"},m.map(b=>React.createElement("button",{key:b.id,className:"chip","aria-pressed":t.includes(b.id),onClick:()=>p(b.id)},b.label))),React.createElement("div",{className:"custom-row"},React.createElement("label",{className:"sr",htmlFor:"ritual-custom"},"\u05D0\u05DC\u05DE\u05E0\u05D8 \u05DE\u05E9\u05DC\u05DA"),React.createElement("input",{id:"ritual-custom",className:"input",placeholder:"\u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05DE\u05E9\u05D4\u05D5 \u05DE\u05E9\u05DC\u05D9\u2026",value:o,onChange:b=>r(b.target.value),onKeyDown:b=>{b.key==="Enter"&&(b.preventDefault(),k())}}),React.createElement("button",{className:"btn quiet",onClick:k,disabled:!o.trim()},"\u05D4\u05D5\u05E1\u05E4\u05D4")),t.length>0&&React.createElement("div",{className:"stack"},React.createElement("p",{className:"eyebrow"},"\u05D5\u05D0\u05D9\u05DA \u05D6\u05D4 \u05E0\u05E8\u05D0\u05D4 \u05D0\u05E6\u05DC\u05DA? (\u05DC\u05D0 \u05D7\u05D5\u05D1\u05D4)"),t.map(b=>{let A=m.find(B=>B.id===b);return React.createElement("div",{className:"field",key:b},React.createElement("label",{htmlFor:`note-${b}`},A.label),React.createElement("input",{id:`note-${b}`,className:"input",dir:"auto",placeholder:A.hint||"",value:n[b]||"",onChange:B=>i({...n,[b]:B.target.value})}))})),React.createElement("button",{className:"btn primary block",onClick:I,disabled:t.length===0||y},y?"\u05E9\u05D5\u05DE\u05E8\u05EA\u2026":"\u05DC\u05D9\u05E6\u05D5\u05E8 \u05D0\u05EA \u05D8\u05E7\u05E1 \u05D4\u05D5\u05D5\u05D3\u05D0\u05D5\u05EA \u05E9\u05DC\u05D9"),v&&React.createElement("p",{className:"error-note",role:"alert"},v))}function ke({ritual:e,onEdit:a}){return React.createElement("div",{className:"ritual-card"},React.createElement("p",{className:"eyebrow"},"\u05D8\u05E7\u05E1 \u05D4\u05D5\u05D5\u05D3\u05D0\u05D5\u05EA \u05E9\u05DC\u05D9"),React.createElement("h3",null,"\u05D0\u05D9\u05DA \u05D0\u05E0\u05D9 \u05E4\u05D5\u05D2\u05E9\u05EA \u05D0\u05EA \u05E2\u05E6\u05DE\u05D9 \u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05E0\u05D9 \u05E4\u05D5\u05D2\u05E9\u05EA \u05D0\u05EA \u05D4\u05E2\u05D5\u05DC\u05DD"),React.createElement("ol",null,e.items.map(t=>React.createElement("li",{key:t.id},React.createElement("strong",null,t.label),t.note&&React.createElement("span",null,t.note)))),a&&React.createElement("button",{className:"link",onClick:a},"\u05DC\u05E9\u05E0\u05D5\u05EA \u05D0\u05EA \u05D4\u05D8\u05E7\u05E1"))}function Ft({video:e}){let{isPreview:a}=$();return e?React.createElement(Xe,{url:e.url,portrait:!0}):React.createElement("div",{className:"moment-video empty"},React.createElement(j,{seed:1}),React.createElement("div",{className:"moment-empty-text"},React.createElement("strong",null,a?"\u05DB\u05D0\u05DF \u05D9\u05D5\u05E4\u05D9\u05E2 \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DC\u05DA \u05DE\u05D9\u05D5\u05DD 1":"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05DE\u05D9\u05D5\u05DD 1 \u05DC\u05D0 \u05E0\u05E9\u05DE\u05E8"),React.createElement("span",null,a?"\u05D1\u05EA\u05E6\u05D5\u05D2\u05D4 \u05D4\u05DE\u05E7\u05D3\u05D9\u05DE\u05D4: \u05D7\u05D6\u05E8\u05D9 \u05DC\u05D9\u05D5\u05DD 1, \u05D4\u05E2\u05DC\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05E7\u05E6\u05E8, \u05D5\u05D7\u05D6\u05E8\u05D9 \u05DC\u05DB\u05D0\u05DF.":"\u05D6\u05D4 \u05D1\u05E1\u05D3\u05E8 \u05D2\u05DE\u05D5\u05E8. \u05D4\u05D9\u05D0 \u05E2\u05D3\u05D9\u05D9\u05DF \u05E9\u05DD, \u05D1\u05D6\u05D9\u05DB\u05E8\u05D5\u05DF \u05E9\u05DC\u05DA. \u05EA\u05E0\u05D9 \u05DC\u05E2\u05E6\u05DE\u05DA \u05E8\u05D2\u05E2 \u05DC\u05D6\u05DB\u05D5\u05E8 \u05D0\u05D9\u05DA \u05D4\u05E8\u05D2\u05E9\u05EA \u05DC\u05E4\u05E0\u05D9 8 \u05D9\u05DE\u05D9\u05DD.")))}function et({moment:e,day1Video:a,renderWidget:t,startAt:s}){let[n,i]=L(s||"closed"),o=Ke(null),r=()=>{i("next"),setTimeout(()=>o.current&&o.current.scrollIntoView({behavior:"smooth",block:"start"}),80)};return React.createElement("section",{className:`moment step-${n}`,"aria-label":"\u05D4\u05DE\u05E4\u05D2\u05E9 \u05E2\u05DD \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05DE\u05D9\u05D5\u05DD 1"},React.createElement("div",{className:"moment-glow","aria-hidden":"true"}),React.createElement("p",{className:"moment-eyebrow",dir:"ltr"},"DAY 1 \u2192 DAY 9"),React.createElement("h2",{className:"moment-opening"},e.opening),n==="closed"&&React.createElement("div",{className:"moment-closed"},React.createElement("div",{className:"moment-guide"},React.createElement(_,{items:e.before})),React.createElement("button",{className:"btn primary block",onClick:()=>i("open")},e.reveal)),n!=="closed"&&React.createElement("div",{className:"moment-open"},React.createElement(Ft,{video:a}),n==="open"&&React.createElement(React.Fragment,null,React.createElement("p",{className:"moment-hush"},"\u05E7\u05D7\u05D9 \u05D0\u05EA \u05D4\u05D6\u05DE\u05DF. \u05D0\u05D9\u05DF \u05DC\u05D0\u05DF \u05DC\u05DE\u05D4\u05E8."),React.createElement("button",{className:"btn white block",onClick:r},e.watched))),n==="next"&&React.createElement("div",{className:"moment-next",ref:o},React.createElement("p",{className:"eyebrow"},e.next.label),React.createElement("h3",null,e.next.title),React.createElement(_,{items:e.next.body,renderWidget:t})))}var{useState:jt}=React;function we({tone:e,label:a,title:t,children:s,defaultOpen:n}){let[i,o]=jt(!!n);return React.createElement("section",{className:`fold ${e} ${i?"open":""}`},React.createElement("button",{className:"fold-head",onClick:()=>o(!i),"aria-expanded":i},React.createElement("span",{className:"fold-titles"},React.createElement("span",{className:"eyebrow"},a),React.createElement("span",{className:"fold-title",dir:"auto"},t)),React.createElement("span",{className:"fold-chev","aria-hidden":"true"},React.createElement(D.chevronDown,null))),React.createElement("div",{className:"fold-body"},React.createElement("div",{className:"fold-inner"},s)))}function Ce({day:e,isToday:a,today:t,completed:s,onComplete:n,onUndo:i,onShare:o,shareCount:r,personal:d,onSaveVideo:u,onSaveData:c,onGoCommunity:f}){let y=e.number,N=s.has(y),v=r(y),w=m=>m==="day1Video"?React.createElement(Ne,{video:d.day1Video,cta:"\u05DC\u05E6\u05DC\u05DD \u05D0\u05D5 \u05DC\u05D4\u05E2\u05DC\u05D5\u05EA \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DC\u05D9",savedText:"\u05E0\u05E9\u05DE\u05E8 \u05D1\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05DA. \u05E0\u05D7\u05D6\u05D5\u05E8 \u05D0\u05DC\u05D9\u05D5.",onSave:p=>u("day1_video",p)}):m==="day9Video"?React.createElement(Ne,{video:d.day9Video,cta:"\u05DC\u05E6\u05DC\u05DD \u05D0\u05D5 \u05DC\u05D4\u05E2\u05DC\u05D5\u05EA \u05D0\u05EA \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05D4\u05D7\u05D3\u05E9",savedText:"\u05E0\u05E9\u05DE\u05E8 \u05DC\u05E6\u05D3 \u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05DE\u05D9\u05D5\u05DD 1, \u05D1\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05DA.",onSave:p=>u("day9_video",p)}):m==="purposeAnswers"?React.createElement(Ze,{answers:d.answers,onSave:p=>c("purpose_answers",{answers:p})}):m==="ritual"?React.createElement(Qe,{ritual:d.ritual,onSave:p=>c("ritual",p)}):null;return React.createElement(React.Fragment,null,React.createElement("section",{className:`dawn ${a?"":"compact"}`,style:{"--rise":(y-1)/8}},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"horizon"}),React.createElement("div",{className:"day-dots","aria-hidden":"true"},Array.from({length:9},(m,p)=>React.createElement("span",{key:p,className:s.has(p+1)?"done":p+1===y?"now":""}))),React.createElement("p",{className:"day-of",dir:"ltr"},"DAY ",y," OF ",9),React.createElement("h1",null,e.title," ",React.createElement("span",{className:"emoji"},e.emoji)),React.createElement("p",{className:"question"},e.question)),React.createElement("div",{className:"intro"},React.createElement(_,{items:e.intro})),e.moment&&React.createElement(et,{moment:e.moment,day1Video:d.day1Video,renderWidget:w,startAt:d.day9Video?"next":"closed"}),React.createElement("section",{className:"block"},React.createElement("p",{className:"eyebrow"},"\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05E9\u05DC \u05D4\u05D9\u05D5\u05DD"),React.createElement(ie,{title:e.title,duration:"",art:e.video.art,source:e.video.source})),React.createElement("div",{className:"folds"},e.task&&React.createElement(we,{tone:"sage",label:"\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E9\u05DC\u05DA",title:e.task.title},React.createElement(_,{items:e.task.body,renderWidget:w}),e.share&&React.createElement("div",{className:"share-task"},v>0&&React.createElement("p",{className:"shared-note"},"\u05E9\u05D9\u05EA\u05E4\u05EA ",v>1?`${v} \u05E4\u05E2\u05DE\u05D9\u05DD`:""," \u2713 ",React.createElement("button",{className:"link",onClick:f},"\u05DC\u05E8\u05D0\u05D5\u05EA \u05D1\u05E7\u05D4\u05D9\u05DC\u05D4")),(!v||e.share.repeatable)&&React.createElement("button",{className:"btn primary block",onClick:()=>o(e)},v&&e.share.again?e.share.again:e.share.cta))),e.extra&&React.createElement(we,{tone:"mist",label:e.extra.label,title:e.extra.title},React.createElement(_,{items:e.extra.body,renderWidget:w})),React.createElement(we,{tone:"blush",label:e.game.label||"\u05D4\u05DE\u05E9\u05D7\u05E7 \u05E9\u05DC \u05D4\u05D9\u05D5\u05DD",title:e.game.title},React.createElement(_,{items:e.game.body}))),React.createElement("section",{className:"finish"},N?y===9?React.createElement("div",{className:"done-card final"},React.createElement("div",{className:"check"},React.createElement(D.check,null)),React.createElement("p",null,"\u05DC\u05E4\u05E0\u05D9 9 \u05D9\u05DE\u05D9\u05DD \u05D1\u05D9\u05E7\u05E9\u05EA\u05D9 \u05DE\u05DE\u05DA \u05DC\u05D0 \u05DC\u05D3\u05E2\u05EA \u05DE\u05D4 \u05DE\u05D2\u05D9\u05E2 \u05DE\u05D7\u05E8.",React.createElement("br",null),"\u05E2\u05DB\u05E9\u05D9\u05D5 \u05D0\u05EA \u05D9\u05D5\u05D3\u05E2\u05EA \u05DC\u05DE\u05D4."),React.createElement("h2",null,O[0],React.createElement("br",null),O[1]," \u2600\uFE0F"),React.createElement("button",{className:"link",onClick:()=>i(y)},"\u05E1\u05D9\u05DE\u05E0\u05EA\u05D9 \u05D1\u05D8\u05E2\u05D5\u05EA")):React.createElement("div",{className:"done-card"},React.createElement("div",{className:"check"},React.createElement(D.check,null)),React.createElement("h2",null,"\u05D6\u05D4\u05D5. \u05D1\u05D0\u05DE\u05EA."),React.createElement("p",null,"\u05D0\u05EA \u05DC\u05D0 \u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05E2\u05E9\u05D5\u05EA \u05E2\u05D5\u05D3 \u05DB\u05D3\u05D9 \u05F4\u05DC\u05D4\u05E6\u05DC\u05D9\u05D7\u05F4 \u05D1\u05D0\u05EA\u05D2\u05E8."),React.createElement("p",null,"\u05E2\u05DB\u05E9\u05D9\u05D5 \u05DC\u05DB\u05D9 \u05DC\u05D7\u05D9\u05D5\u05EA \u05D5\u05EA\u05E0\u05D9 \u05DC\u05DE\u05D4 \u05E9\u05E2\u05E9\u05D9\u05EA \u05D4\u05D1\u05D5\u05E7\u05E8 \u05DC\u05E2\u05D1\u05D5\u05D3 \u05D1\u05EA\u05D5\u05DB\u05DA."),a&&y===t&&React.createElement("p",{className:"next"},"\u05DE\u05D7\u05E8 \u05D1\u05BE08:00 \u05DE\u05D7\u05DB\u05D4 \u05DC\u05DA \u05D4\u05D1\u05D5\u05E7\u05E8 \u05D4\u05D1\u05D0."),React.createElement("button",{className:"link",onClick:()=>i(y)},"\u05E1\u05D9\u05DE\u05E0\u05EA\u05D9 \u05D1\u05D8\u05E2\u05D5\u05EA")):React.createElement("button",{className:"btn primary block",onClick:()=>n(y)},"\u05E2\u05E9\u05D9\u05EA\u05D9 \u05D0\u05EA \u05E9\u05DC\u05D9 \u05DC\u05D4\u05D9\u05D5\u05DD \u2713")))}function tt({days:e,today:a,completed:t,activatedAt:s,now:n,onOpen:i}){let o=Object.fromEntries(e.map(u=>[u.number,u])),r=Array.from({length:9},(u,c)=>c+1),d=t.size;return React.createElement("div",{className:"screen"},React.createElement("header",{className:"page-head"},React.createElement("p",{className:"day-of plain",dir:"ltr"},"JOURNEY"),React.createElement("h1",null,"\u05D4\u05DE\u05E1\u05E2 \u05E9\u05DC\u05DA"),React.createElement("p",null,te)),React.createElement("div",{className:"progress-line"},React.createElement("div",{className:"row"},React.createElement("span",null,"\u05D9\u05D5\u05DD ",a," \u05DE\u05EA\u05D5\u05DA ",9),React.createElement("span",null,d===0?"\u05E8\u05E7 \u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA":d===1?"\u05D1\u05D5\u05E7\u05E8 \u05D0\u05D7\u05D3 \u05DE\u05D0\u05D7\u05D5\u05E8\u05D9\u05D9\u05DA":`${d} \u05D1\u05E7\u05E8\u05D9\u05DD \u05DE\u05D0\u05D7\u05D5\u05E8\u05D9\u05D9\u05DA`)),React.createElement("div",{className:"bar",role:"progressbar","aria-valuemin":0,"aria-valuemax":9,"aria-valuenow":d},React.createElement("i",{style:{width:`${d/9*100}%`}}))),React.createElement("ol",{className:"journey"},r.map(u=>{let c=o[u]||{number:u,title:`\u05D9\u05D5\u05DD ${u}`,emoji:""},f=u>a||!o[u],y=c.number===a,N=t.has(c.number),v=c.number===a+1,w=f?"locked":y?"today":N?"done":"open",m=f?v?`\u{1F512} ${Ye(c.number,s,n)}`:"\u{1F512}":y?N?"\u2190 \u05D4\u05D9\u05D5\u05DD \xB7 \u05E2\u05E9\u05D9\u05EA \u05D0\u05EA \u05E9\u05DC\u05DA \u2713":"\u2190 \u05D4\u05D9\u05D5\u05DD":N?"\u2713":"\u05E4\u05EA\u05D5\u05D7, \u05DE\u05D7\u05DB\u05D4 \u05DC\u05DA";return React.createElement("li",{key:c.number},React.createElement("button",{className:`jrow ${w}`,disabled:f,onClick:()=>i(c.number),"aria-label":f?`\u05D9\u05D5\u05DD ${c.number}, \u05E0\u05E2\u05D5\u05DC`:`\u05D9\u05D5\u05DD ${c.number}: ${c.title}`},React.createElement("span",{className:"num"},c.number),React.createElement("span",{className:"txt"},f?React.createElement("span",{className:"t"},"\u05D9\u05D5\u05DD ",c.number):React.createElement("span",{className:"t"},c.title," ",React.createElement("span",{className:"emoji"},c.emoji)),React.createElement("span",{className:"s"},m)),!f&&React.createElement("span",{className:"chev"},React.createElement(D.chevron,null))))})),a<9&&React.createElement("p",{className:"key-line"},O[0],React.createElement("br",null),O[1]))}var{useState:T,useRef:Vt,useEffect:_t}=React;function Ht(e){return new Promise(a=>{let t=document.createElement("video");t.preload="metadata",t.muted=!0;let s=URL.createObjectURL(e),n=i=>{URL.revokeObjectURL(s),a(i)};t.onloadedmetadata=()=>n({duration:t.duration,width:t.videoWidth,height:t.videoHeight}),t.onerror=()=>n({duration:null}),setTimeout(()=>n({duration:null}),8e3),t.src=s})}function qt({media:e}){return!e||!e.length?null:e.map((a,t)=>a.type==="video"?React.createElement("div",{className:"photo video",key:t},a.url?React.createElement("video",{src:a.url,controls:!0,playsInline:!0,preload:"metadata"}):React.createElement(j,{seed:t+3})):React.createElement("div",{className:"photo",key:t},a.url?React.createElement("img",{src:a.url,alt:"",loading:"lazy"}):React.createElement(j,{seed:a.art})))}function Yt(e,a){return!e.day||e.day>a?null:e.label?`${e.label} \xB7 \u05D9\u05D5\u05DD ${e.day}`:`\u05D9\u05D5\u05DD ${e.day}`}function Wt({post:e,now:a,today:t,onLike:s,onComments:n,onDelete:i}){let o=e.commentCount||0,r=Yt(e,t),[d,u]=T(!1);return React.createElement("article",{className:"post"},React.createElement("div",{className:"post-head"},React.createElement(Y,{name:e.author.name,photo:e.author.photo}),React.createElement("div",{className:"who"},React.createElement("strong",null,e.author.name),React.createElement("span",null,ge(e.createdAt,a))),r&&React.createElement("span",{className:"tag"},r)),e.text&&React.createElement("p",{className:"text",dir:"auto"},e.text),React.createElement(qt,{media:e.media}),React.createElement("div",{className:"post-actions"},React.createElement("button",{className:e.likedByMe?"liked":"",onClick:()=>s(e),"aria-pressed":e.likedByMe},React.createElement(D.heart,{filled:e.likedByMe})," ",e.likes>0?e.likes:""," ",React.createElement("span",{className:"sr"},"\u05D0\u05D4\u05D1\u05EA\u05D9")),React.createElement("button",{onClick:()=>n(e)},o===0?"\u05DC\u05E4\u05E8\u05D2\u05DF":o===1?"\u05EA\u05D2\u05D5\u05D1\u05D4 \u05D0\u05D7\u05EA":`${o} \u05EA\u05D2\u05D5\u05D1\u05D5\u05EA`),e.mine&&(d?React.createElement("span",{className:"confirm-row"},React.createElement("button",{className:"danger",onClick:()=>i(e)},"\u05DC\u05DE\u05D7\u05D5\u05E7?"),React.createElement("button",{onClick:()=>u(!1)},"\u05D1\u05D9\u05D8\u05D5\u05DC")):React.createElement("button",{className:"push-end",onClick:()=>u(!0)},"\u05DE\u05D7\u05D9\u05E7\u05D4"))))}function st({posts:e,loading:a,error:t,me:s,now:n,today:i,onCompose:o,onLike:r,onComments:d,onDelete:u,onRetry:c}){return React.createElement("div",{className:"screen"},React.createElement("header",{className:"page-head"},React.createElement("h1",null,"\u05D4\u05E7\u05D4\u05D9\u05DC\u05D4"),React.createElement("p",null,"\u05E0\u05E9\u05D9\u05DD \u05D1\u05EA\u05D5\u05DA \u05D0\u05D5\u05EA\u05D5 \u05DE\u05E1\u05E2. \u05D4\u05E9\u05E8\u05D0\u05D4, \u05D4\u05D5\u05DB\u05D7\u05D5\u05EA, \u05D5\u05D1\u05D9\u05D7\u05D3.")),React.createElement("button",{className:"composer",onClick:()=>o(null)},React.createElement(Y,{name:s.name,photo:s.photo}),React.createElement("span",null,"\u05DE\u05D4 \u05E7\u05D5\u05E8\u05D4 \u05D0\u05E6\u05DC\u05DA \u05D4\u05D9\u05D5\u05DD?")),t&&React.createElement("div",{className:"soft-error"},React.createElement("p",null,t),React.createElement("button",{className:"link",onClick:c},"\u05DC\u05E0\u05E1\u05D5\u05EA \u05E9\u05D5\u05D1")),a&&!e.length&&React.createElement("p",{className:"empty"},"\u05D8\u05D5\u05E2\u05E0\u05EA\u2026"),!a&&!t&&!e.length&&React.createElement("p",{className:"empty"},"\u05E2\u05D5\u05D3 \u05D0\u05D9\u05DF \u05DB\u05D0\u05DF \u05E9\u05D9\u05EA\u05D5\u05E4\u05D9\u05DD. \u05D0\u05D5\u05DC\u05D9 \u05D0\u05EA \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D4? \u{1F90D}"),React.createElement("div",{className:"feed"},e.map(f=>React.createElement(Wt,{key:f.id,post:f,now:n,today:i,onLike:r,onComments:d,onDelete:u}))))}function nt({day:e,onClose:a,onPublish:t}){let s=e?e.share:null,[n,i]=T(""),[o,r]=T([]),[d,u]=T(!1),[c,f]=T(""),y=Vt(null),N=async m=>{let p=Array.from(m.target.files||[]);m.target.value="",f("");for(let k of p){let I=k.type.startsWith("video")?"video":k.type.startsWith("image")?"image":null;if(!I){f("\u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05E8\u05E7 \u05EA\u05DE\u05D5\u05E0\u05D4 \u05D0\u05D5 \u05E1\u05E8\u05D8\u05D5\u05DF.");continue}if(k.size>50*1024*1024){f(I==="video"?`\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05D2\u05D3\u05D5\u05DC \u05DE\u05D3\u05D9 (\u05DE\u05E2\u05DC ${50}MB). \u05E0\u05E1\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05E7\u05E6\u05E8 \u05D9\u05D5\u05EA\u05E8 \u05D0\u05D5 \u05D1\u05D0\u05D9\u05DB\u05D5\u05EA \u05E8\u05D2\u05D9\u05DC\u05D4.`:`\u05D4\u05EA\u05DE\u05D5\u05E0\u05D4 \u05D2\u05D3\u05D5\u05DC\u05D4 \u05DE\u05D3\u05D9 (\u05DE\u05E2\u05DC ${50}MB).`);continue}let b={};if(I==="video"){if(b=await Ht(k),b.duration&&b.duration>182){f("\u05D4\u05E1\u05E8\u05D8\u05D5\u05DF \u05D0\u05E8\u05D5\u05DA \u05DE\u05BE3 \u05D3\u05E7\u05D5\u05EA. \u05D0\u05E4\u05E9\u05E8 \u05DC\u05E7\u05E6\u05E8 \u05D0\u05D5\u05EA\u05D5 \u05D1\u05D8\u05DC\u05E4\u05D5\u05DF \u05D5\u05DC\u05E0\u05E1\u05D5\u05EA \u05E9\u05D5\u05D1.");continue}b.duration||(b.duration=null)}r(A=>[...A,{file:k,kind:I,preview:URL.createObjectURL(k),...b}].slice(0,4))}},v=async m=>{m.preventDefault(),u(!0),f("");try{await t({text:n.trim(),day:e?e.number:null,label:s?s.label:null,files:o.map(p=>({file:p.file,kind:p.kind,duration:p.kind==="video"?Math.round(p.duration||180):null,width:p.width,height:p.height}))})}catch(p){f(p.message),u(!1)}},w=o.some(m=>m.kind==="video");return React.createElement(V,{title:s?s.cta:"\u05E9\u05D9\u05EA\u05D5\u05E3 \u05D1\u05E7\u05D4\u05D9\u05DC\u05D4",onClose:d?()=>{}:a},React.createElement("form",{className:"stack",onSubmit:v},s&&React.createElement("span",{className:"tag",style:{justifySelf:"start"}},s.label," \xB7 \u05D9\u05D5\u05DD ",e.number),React.createElement("label",{className:"sr",htmlFor:"post-text"},"\u05D4\u05D8\u05E7\u05E1\u05D8 \u05E9\u05DC \u05D4\u05E4\u05D5\u05E1\u05D8"),React.createElement("textarea",{id:"post-text",className:"textarea",dir:"auto",placeholder:s?s.placeholder:"\u05DE\u05D4 \u05E7\u05D5\u05E8\u05D4 \u05D0\u05E6\u05DC\u05DA \u05D4\u05D9\u05D5\u05DD?",value:n,onChange:m=>i(m.target.value),autoFocus:!0}),o.map((m,p)=>React.createElement("div",{className:"thumb",key:p},m.kind==="video"?React.createElement("video",{src:m.preview,muted:!0,playsInline:!0,preload:"metadata"}):React.createElement("img",{src:m.preview,alt:""}),m.kind==="video"&&m.duration?React.createElement("span",{className:"thumb-badge"},Math.floor(m.duration/60),":",String(Math.round(m.duration%60)).padStart(2,"0")):null,!d&&React.createElement("button",{type:"button",className:"icon-btn",onClick:()=>r(o.filter((k,I)=>I!==p)),"aria-label":"\u05D4\u05E1\u05E8\u05D4"},React.createElement(D.close,null)))),c&&React.createElement("p",{className:"error-note",role:"alert"},c),React.createElement("div",{className:"row-between"},React.createElement("input",{ref:y,id:"post-media",type:"file",accept:"image/*,video/*",multiple:!0,className:"sr",onChange:N,tabIndex:-1,"aria-hidden":"true"}),React.createElement("button",{type:"button",className:"add-photo",onClick:()=>y.current.click(),disabled:d||o.length>=4},"\u05EA\u05DE\u05D5\u05E0\u05D4 \u05D0\u05D5 \u05E1\u05E8\u05D8\u05D5\u05DF"),React.createElement("button",{type:"submit",className:"btn primary",disabled:d||!n.trim()&&!o.length},d?w?"\u05DE\u05E2\u05DC\u05D4 \u05E1\u05E8\u05D8\u05D5\u05DF\u2026":"\u05DE\u05E9\u05EA\u05E4\u05EA\u2026":"\u05DC\u05E9\u05EA\u05E3")),React.createElement("p",{className:"note"},"\u05E1\u05E8\u05D8\u05D5\u05DF \u05E2\u05D3 3 \u05D3\u05E7\u05D5\u05EA.")))}function ot({post:e,now:a,onClose:t,onChanged:s}){let{api:n}=$(),[i,o]=T(null),[r,d]=T(""),[u,c]=T(!1),[f,y]=T(""),N=()=>n.loadComments(e.id).then(o).catch(m=>y(m.message));_t(()=>{N()},[e.id]);let v=async m=>{if(m.preventDefault(),!!r.trim()){c(!0),y("");try{await n.addComment(e.id,r.trim()),d(""),await N(),s()}catch(p){y(p.message)}c(!1)}},w=async m=>{try{await n.deleteComment(m),await N(),s()}catch(p){y(p.message)}};return React.createElement(V,{title:"\u05EA\u05D2\u05D5\u05D1\u05D5\u05EA",onClose:t},React.createElement("div",{className:"comments"},i===null&&!f&&React.createElement("p",{className:"empty"},"\u05D8\u05D5\u05E2\u05E0\u05EA\u2026"),i&&i.length===0&&React.createElement("p",{className:"empty"},"\u05E2\u05D5\u05D3 \u05D0\u05D9\u05DF \u05EA\u05D2\u05D5\u05D1\u05D5\u05EA. \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05D9\u05D5\u05EA \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D4 \u05DC\u05E4\u05E8\u05D2\u05DF."),(i||[]).map(m=>React.createElement("div",{className:"comment",key:m.id},React.createElement(Y,{name:m.author.name,photo:m.author.photo}),React.createElement("div",{className:"bubble"},React.createElement("strong",null,m.author.name),React.createElement("p",{dir:"auto"},m.text),React.createElement("span",null,ge(m.createdAt,a),m.mine&&React.createElement(React.Fragment,null," \xB7 ",React.createElement("button",{className:"inline-link",onClick:()=>w(m.id)},"\u05DE\u05D7\u05D9\u05E7\u05D4"))))))),f&&React.createElement("p",{className:"error-note",role:"alert"},f),React.createElement("form",{className:"comment-form",onSubmit:v},React.createElement("label",{className:"sr",htmlFor:"comment-text"},"\u05EA\u05D2\u05D5\u05D1\u05D4"),React.createElement("input",{id:"comment-text",className:"input",dir:"auto",placeholder:"\u05DE\u05D4 \u05D0\u05EA \u05E8\u05D5\u05D0\u05D4 \u05D1\u05D4?",value:r,onChange:m=>d(m.target.value)}),React.createElement("button",{type:"submit",className:"btn primary",disabled:u||!r.trim(),style:{minHeight:48,padding:"0 18px"}},"\u05E9\u05DC\u05D9\u05D7\u05D4")))}var it=[{id:"all",label:"\u05D4\u05DB\u05D5\u05DC"},{id:"listen",label:"\u05DC\u05D4\u05D0\u05D6\u05E0\u05D4"},{id:"watch",label:"\u05DC\u05E6\u05E4\u05D9\u05D9\u05D4"},{id:"games",label:"\u05D4\u05DE\u05E9\u05D7\u05E7\u05D9\u05DD"},{id:"print",label:"\u05DC\u05D4\u05D3\u05E4\u05E1\u05D4"}],rt=[{id:"l1",category:"listen",kind:"audio",title:"5 \u05D3\u05E7\u05D5\u05EA \u05E9\u05DC \u05D4\u05D9\u05D6\u05DB\u05E8\u05D5\u05EA",meta:"5 \u05D3\u05E7\u05F3",description:"\u05D0\u05D5\u05D6\u05E0\u05D9\u05D5\u05EA, \u05E2\u05D9\u05E0\u05D9\u05D9\u05DD \u05E2\u05E6\u05D5\u05DE\u05D5\u05EA, \u05D5\u05E8\u05E7 \u05DC\u05D4\u05D9\u05D6\u05DB\u05E8. \u05DE\u05D9\u05D5\u05DD 3."},{id:"l2",category:"listen",kind:"audio",title:"\u05E0\u05E9\u05D9\u05DE\u05D4 \u05DC\u05E8\u05D2\u05E2\u05D9\u05DD \u05E9\u05D4\u05DB\u05D5\u05DC \u05D9\u05D5\u05EA\u05E8 \u05DE\u05D3\u05D9",meta:"4 \u05D3\u05E7\u05F3",description:"\u05DC\u05E8\u05D2\u05E2\u05D9\u05DD \u05E9\u05D1\u05D4\u05DD \u05D4\u05D2\u05D5\u05E3 \u05DE\u05EA\u05DB\u05D5\u05D5\u05E5 \u05D5\u05D0\u05D9\u05DF \u05D6\u05DE\u05DF \u05DC\u05DB\u05DC\u05D5\u05DD."},{id:"l3",category:"games",kind:"text",title:"\u05D4\u05EA\u05E8\u05D7\u05D1\u05D5\u05EA / \u05D4\u05EA\u05DB\u05D5\u05D5\u05E6\u05D5\u05EA",meta:"\u05D3\u05E7\u05D4 \u05E7\u05E8\u05D9\u05D0\u05D4",description:"\u05D4\u05DE\u05E6\u05E4\u05DF \u05E9\u05DC \u05D4\u05D2\u05D5\u05E3, \u05DC\u05DB\u05DC \u05D4\u05D7\u05DC\u05D8\u05D4 \u05E7\u05D8\u05E0\u05D4.",body:["\u05DC\u05E4\u05E0\u05D9 \u05D4\u05D7\u05DC\u05D8\u05D4 \u05E7\u05D8\u05E0\u05D4, \u05E2\u05E6\u05E8\u05D9 \u05DC\u05E9\u05E0\u05D9\u05D9\u05D4 \u05D5\u05EA\u05E9\u05D0\u05DC\u05D9:","**\u05D6\u05D4 \u05DE\u05E8\u05D7\u05D9\u05D1 \u05D0\u05D5\u05EA\u05D9 \u05D0\u05D5 \u05DE\u05DB\u05D5\u05D5\u05E5 \u05D0\u05D5\u05EA\u05D9?**","\u05DC\u05D0 \u05E6\u05E8\u05D9\u05DA \u05DC\u05D4\u05D1\u05D9\u05DF \u05DC\u05DE\u05D4. \u05E8\u05E7 \u05DC\u05E9\u05D9\u05DD \u05DC\u05D1. \u05D4\u05D2\u05D5\u05E3 \u05E2\u05D5\u05E0\u05D4 \u05DE\u05D4\u05E8 \u05D9\u05D5\u05EA\u05E8 \u05DE\u05D4\u05E8\u05D0\u05E9."]},{id:"l4",category:"games",kind:"text",title:"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA",meta:"\u05D3\u05E7\u05D4 \u05E7\u05E8\u05D9\u05D0\u05D4",description:"\u05DE\u05D4 \u05E2\u05D5\u05E9\u05D9\u05DD \u05E2\u05DD \u05DE\u05D7\u05E9\u05D1\u05D4 \u05E9\u05DE\u05E8\u05D2\u05D9\u05E9\u05D4 \u05DB\u05DE\u05D5 \u05D0\u05DE\u05EA.",body:['\u05DB\u05E9\u05E2\u05D5\u05DC\u05D4 \u05DE\u05D7\u05E9\u05D1\u05D4 \u05DB\u05DE\u05D5 "\u05D0\u05E0\u05D9 \u05DE\u05D0\u05D7\u05D5\u05E8" \u05D0\u05D5 "\u05D0\u05D9 \u05D0\u05E4\u05E9\u05E8", \u05D0\u05DC \u05EA\u05EA\u05D5\u05D5\u05DB\u05D7\u05D9 \u05D0\u05D9\u05EA\u05D4.','\u05E4\u05E9\u05D5\u05D8 \u05EA\u05D2\u05D9\u05D3\u05D9: **"\u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA \u05D4\u05D9\u05D0 \u05E8\u05E7 \u05E0\u05E7\u05D5\u05D3\u05EA \u05DE\u05D1\u05D8 \u05DE\u05E2\u05E0\u05D9\u05D9\u05E0\u05EA."**',"\u05D5\u05D0\u05D6 \u05EA\u05E9\u05D0\u05DC\u05D9: **\u05D5\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D1\u05D5\u05D7\u05E8\u05EA?**"]},{id:"l5",category:"watch",kind:"video",title:"\u05DE\u05E4\u05D2\u05E9 \u05DC\u05D9\u05D9\u05D1: \u05DC\u05D7\u05D9\u05D5\u05EA \u05D1\u05DC\u05D9 \u05DC\u05D3\u05E2\u05EA",meta:"42 \u05D3\u05E7\u05F3",description:"\u05E9\u05D0\u05DC\u05D5\u05EA, \u05EA\u05E9\u05D5\u05D1\u05D5\u05EA \u05D5\u05D4\u05E8\u05D1\u05D4 \u05E6\u05D7\u05D5\u05E7. \u05D4\u05E7\u05DC\u05D8\u05D4 \u05DE\u05D4\u05DE\u05E4\u05D2\u05E9 \u05D4\u05E7\u05D1\u05D5\u05E6\u05EA\u05D9.",art:7},{id:"l6",category:"print",kind:"pdf",title:"\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA \u05E9\u05D4\u05D7\u05D9\u05D9\u05DD \u05D0\u05D9\u05EA\u05D9",meta:"PDF \xB7 2 \u05E2\u05DE\u05F3",description:"\u05D3\u05E3 \u05EA\u05D9\u05E2\u05D5\u05D3 \u05DC\u05EA\u05D9\u05E7 \u05D4\u05D4\u05D5\u05DB\u05D7\u05D5\u05EA, \u05DC\u05D8\u05DC\u05E4\u05D5\u05DF \u05D0\u05D5 \u05DC\u05D4\u05D3\u05E4\u05E1\u05D4."},{id:"l7",category:"print",kind:"pdf",title:"\u05D8\u05E7\u05E1 \u05D4\u05D5\u05D5\u05D3\u05D0\u05D5\u05EA \u05E9\u05DC\u05D9",meta:"PDF \xB7 \u05E2\u05DE\u05D5\u05D3 \u05D0\u05D7\u05D3",description:"\u05EA\u05D1\u05E0\u05D9\u05EA \u05DC\u05D8\u05E7\u05E1 \u05D1\u05D5\u05E7\u05E8 \u05E9\u05DC 5\u201310 \u05D3\u05E7\u05D5\u05EA, \u05DC\u05EA\u05DC\u05D5\u05EA \u05DC\u05D9\u05D3 \u05D4\u05DE\u05E8\u05D0\u05D4."}],lt={audio:"\u05D4\u05D0\u05D6\u05E0\u05D4",video:"\u05E6\u05E4\u05D9\u05D9\u05D4",text:"\u05E7\u05E8\u05D9\u05D0\u05D4",pdf:"\u05DC\u05D4\u05D3\u05E4\u05E1\u05D4"};var{useState:Ae,useEffect:zt}=React;function ct({items:e,loading:a,onOpen:t}){let[s,n]=Ae("all"),i=s==="all"?e:e.filter(r=>r.category===s),o=it.filter(r=>r.id==="all"||e.some(d=>d.category===r.id));return React.createElement("div",{className:"screen"},React.createElement("header",{className:"page-head"},React.createElement("h1",null,"\u05D4\u05E1\u05E4\u05E8\u05D9\u05D9\u05D4"),React.createElement("p",null,"\u05D4\u05DB\u05DC\u05D9\u05DD \u05DE\u05D4\u05DE\u05E1\u05E2, \u05EA\u05DE\u05D9\u05D3 \u05DB\u05D0\u05DF. \u05D2\u05DD \u05D0\u05D7\u05E8\u05D9 \u05D4\u05D9\u05D5\u05DD \u05D4\u05EA\u05E9\u05D9\u05E2\u05D9.")),o.length>2&&React.createElement("div",{className:"chips",role:"group","aria-label":"\u05E1\u05D9\u05E0\u05D5\u05DF \u05DC\u05E4\u05D9 \u05E1\u05D5\u05D2"},o.map(r=>React.createElement("button",{key:r.id,className:"chip","aria-pressed":s===r.id,onClick:()=>n(r.id)},r.label))),a&&!e.length&&React.createElement("p",{className:"empty"},"\u05D8\u05D5\u05E2\u05E0\u05EA\u2026"),!a&&!e.length&&React.createElement("p",{className:"empty"},"\u05D4\u05E1\u05E4\u05E8\u05D9\u05D9\u05D4 \u05DE\u05EA\u05DE\u05DC\u05D0\u05EA. \u05D1\u05E7\u05E8\u05D5\u05D1 \u05D9\u05D5\u05E4\u05D9\u05E2\u05D5 \u05DB\u05D0\u05DF \u05D4\u05E7\u05DC\u05D8\u05D5\u05EA \u05D5\u05DB\u05DC\u05D9\u05DD."),React.createElement("div",{className:"lib"},i.map(r=>React.createElement("button",{className:"lib-item",key:r.id,onClick:()=>t(r)},React.createElement("span",{className:`swatch sw-${r.kind}`,"aria-hidden":"true"}),React.createElement("span",{className:"txt"},React.createElement("span",{className:"eyebrow"},lt[r.kind],r.meta?` \xB7 ${r.meta}`:""),React.createElement("strong",null,r.title),React.createElement("p",null,r.description))))))}function dt({item:e,onClose:a}){let{api:t,isPreview:s}=$(),[n,i]=Ae(null),[o,r]=Ae(!e.filePath);zt(()=>{e.filePath&&t.fileUrl("content",e.filePath).then(u=>{i(u),r(!0)})},[e.id]);let d=React.createElement("p",{className:"note",style:{textAlign:"center"}},s?"\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D3\u05D5\u05D2\u05DE\u05D4. \u05D1\u05D0\u05E4\u05DC\u05D9\u05E7\u05E6\u05D9\u05D4 \u05D4\u05D0\u05DE\u05D9\u05EA\u05D9\u05EA \u05D4\u05D5\u05D0 \u05D9\u05D9\u05E4\u05EA\u05D7 \u05DB\u05D0\u05DF.":"\u05D4\u05E7\u05D5\u05D1\u05E5 \u05D9\u05E2\u05DC\u05D4 \u05DC\u05DB\u05D0\u05DF \u05D1\u05E7\u05E8\u05D5\u05D1.");return React.createElement(V,{title:e.title,onClose:a},React.createElement("div",{className:"stack",style:{gap:18}},React.createElement("p",{style:{color:"var(--ink-2)"}},e.description),e.kind==="audio"&&React.createElement(re,{title:e.title,duration:n?"":/^\d+/.test(e.meta)?`${parseInt(e.meta,10)}:00`:"",src:n,loading:!o}),e.kind==="video"&&React.createElement(ie,{title:e.title,art:e.art||4,source:e.youtubeUrl?{kind:"link",url:e.youtubeUrl}:null}),e.kind==="text"&&e.body&&React.createElement("div",{className:"prose"},e.body.map((u,c)=>React.createElement("p",{key:c},React.createElement(Z,{text:u})))),e.kind==="pdf"&&React.createElement(React.Fragment,null,React.createElement("div",{className:"file-card"},React.createElement("span",{className:"doc"},"PDF"),React.createElement("span",{className:"txt"},React.createElement("strong",null,e.title),React.createElement("span",null,e.meta))),n?React.createElement("a",{className:"btn primary block",href:n,target:"_blank",rel:"noopener"},"\u05E4\u05EA\u05D9\u05D7\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5"):o&&d)))}var{useState:le,useEffect:Jt}=React;function Gt(){return React.createElement("svg",{width:"18",height:"18",viewBox:"0 0 48 48","aria-hidden":"true"},React.createElement("path",{fill:"#EA4335",d:"M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.6 17.7 9.5 24 9.5z"}),React.createElement("path",{fill:"#4285F4",d:"M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.5 5.8c4.4-4 6.8-10 6.8-17.2z"}),React.createElement("path",{fill:"#FBBC05",d:"M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.9-6z"}),React.createElement("path",{fill:"#34A853",d:"M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6C6.6 42.6 14.6 48 24 48z"}))}function mt(){let{api:e,isPreview:a}=$(),[t,s]=le(""),[n,i]=le(!1),[o,r]=le(!1),[d,u]=le(""),c=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.trim()),f=async N=>{if(N.preventDefault(),!!c){r(!0),u("");try{await e.signInEmail(t),i(!0)}catch(v){u(v.message)}r(!1)}},y=async()=>{u("");try{await e.signInGoogle()}catch(N){u(N.message)}};return React.createElement("main",{className:"gate"},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"gate-title"},React.createElement("p",{className:"brand",dir:"ltr"},"JOURNEY"),React.createElement("h1",null,Oe),React.createElement("p",null,te)),n?React.createElement("div",{className:"sent"},React.createElement("h2",{style:{fontSize:"var(--step-3)"}},"\u05D1\u05D3\u05E7\u05D9 \u05D0\u05EA \u05EA\u05D9\u05D1\u05EA \u05D4\u05DE\u05D9\u05D9\u05DC"),React.createElement("p",{style:{color:"var(--ink-2)"}},"\u05E9\u05DC\u05D7\u05E0\u05D5 \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DB\u05E0\u05D9\u05E1\u05D4 \u05D0\u05DC ",React.createElement("bdi",{dir:"ltr"},t.trim()),". \u05DC\u05D7\u05D9\u05E6\u05D4 \u05E2\u05DC\u05D9\u05D5 \u05EA\u05DB\u05E0\u05D9\u05E1 \u05D0\u05D5\u05EA\u05DA \u05D9\u05E9\u05E8 \u05E4\u05E0\u05D9\u05DE\u05D4."),React.createElement("p",{className:"note"},"\u05DC\u05D0 \u05D4\u05D2\u05D9\u05E2 \u05EA\u05D5\u05DA \u05DB\u05DE\u05D4 \u05D3\u05E7\u05D5\u05EA? \u05DB\u05D3\u05D0\u05D9 \u05DC\u05D4\u05E6\u05D9\u05E5 \u05D2\u05DD \u05D1\u05EA\u05D9\u05E7\u05D9\u05D9\u05EA \u05D4\u05E1\u05E4\u05D0\u05DD \u05D0\u05D5 \u05E7\u05D9\u05D3\u05D5\u05DE\u05D9 \u05DE\u05DB\u05D9\u05E8\u05D5\u05EA."),a&&React.createElement("button",{className:"btn primary block",onClick:()=>e.signInGoogle()},"\u05D4\u05DE\u05E9\u05DA \u05D1\u05EA\u05E6\u05D5\u05D2\u05D4"),React.createElement("button",{className:"link",onClick:()=>i(!1)},"\u05DC\u05E9\u05E0\u05D5\u05EA \u05DB\u05EA\u05D5\u05D1\u05EA \u05D0\u05D5 \u05DC\u05E9\u05DC\u05D5\u05D7 \u05E9\u05D5\u05D1")):React.createElement("form",{className:"gate-form",onSubmit:f},e.googleEnabled&&React.createElement(React.Fragment,null,React.createElement("button",{type:"button",className:"btn white block",onClick:y},React.createElement(Gt,null)," \u05D4\u05DE\u05E9\u05DA \u05E2\u05DD Google"),React.createElement("div",{className:"divider"},"\u05D0\u05D5 \u05E2\u05DD \u05DB\u05EA\u05D5\u05D1\u05EA \u05DE\u05D9\u05D9\u05DC")),React.createElement("label",{className:"sr",htmlFor:"signin-email"},"\u05DB\u05EA\u05D5\u05D1\u05EA \u05DE\u05D9\u05D9\u05DC"),React.createElement("input",{id:"signin-email",className:"input",type:"email",inputMode:"email",autoComplete:"email",dir:"ltr",placeholder:"name@example.com",value:t,onChange:N=>s(N.target.value),style:{textAlign:"center"}}),React.createElement("button",{type:"submit",className:"btn primary block",disabled:!c||o},o?"\u05E9\u05D5\u05DC\u05D7\u05EA\u2026":"\u05E9\u05DC\u05D9\u05D7\u05EA \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DB\u05E0\u05D9\u05E1\u05D4"),d&&React.createElement("p",{className:"error-note center",role:"alert"},d),React.createElement("p",{className:"small"},"\u05E0\u05E9\u05DC\u05D7 \u05D0\u05DC\u05D9\u05D9\u05DA \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DC\u05DE\u05D9\u05D9\u05DC. \u05D1\u05DC\u05D9 \u05E1\u05D9\u05E1\u05DE\u05D0\u05D5\u05EA \u05DC\u05D6\u05DB\u05D5\u05E8.")))}function ut({name:e,onRefresh:a,onSignOut:t}){return Jt(()=>{let s=setInterval(a,3e4);return()=>clearInterval(s)},[]),React.createElement("main",{className:"gate",style:{alignContent:"center"}},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"gate-title"},React.createElement("p",{className:"brand small-brand",dir:"ltr"},"JOURNEY"),React.createElement("h1",null,"\u05DB\u05DE\u05E2\u05D8 \u05E9\u05DD",e?`, ${e}`:""),React.createElement("p",null,"\u05E7\u05D9\u05D1\u05DC\u05E0\u05D5 \u05D0\u05EA \u05D4\u05D4\u05E8\u05E9\u05DE\u05D4 \u05E9\u05DC\u05DA. \u05D1\u05E8\u05D2\u05E2 \u05E9\u05D4\u05D2\u05D9\u05E9\u05D4 \u05EA\u05D0\u05D5\u05E9\u05E8, \u05D4\u05D1\u05D5\u05E7\u05E8 \u05D4\u05E8\u05D0\u05E9\u05D5\u05DF \u05E9\u05DC\u05DA \u05D9\u05D9\u05E4\u05EA\u05D7 \u05DB\u05D0\u05DF.")),React.createElement("p",{className:"key-line"},O[0],React.createElement("br",null),O[1]),React.createElement("button",{className:"btn white",style:{justifySelf:"center"},onClick:a},"\u05DC\u05D1\u05D3\u05D5\u05E7 \u05E9\u05D5\u05D1"),React.createElement("button",{className:"link",style:{justifySelf:"center"},onClick:t},"\u05D4\u05EA\u05E0\u05EA\u05E7\u05D5\u05EA"))}function pt({onSignOut:e}){return React.createElement("main",{className:"gate",style:{alignContent:"center"}},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"gate-title"},React.createElement("p",{className:"brand small-brand",dir:"ltr"},"JOURNEY"),React.createElement("h1",null,"\u05D4\u05D2\u05D9\u05E9\u05D4 \u05DC\u05D7\u05E9\u05D1\u05D5\u05DF \u05D4\u05D6\u05D4 \u05E1\u05D2\u05D5\u05E8\u05D4"),React.createElement("p",null,"\u05D0\u05DD \u05E0\u05E8\u05D0\u05D4 \u05DC\u05DA \u05E9\u05D6\u05D5 \u05D8\u05E2\u05D5\u05EA, \u05DB\u05EA\u05D1\u05D9 \u05DC\u05E0\u05D5 \u05D5\u05E0\u05D1\u05D3\u05D5\u05E7.")),React.createElement("button",{className:"link",style:{justifySelf:"center"},onClick:e},"\u05D4\u05EA\u05E0\u05EA\u05E7\u05D5\u05EA"))}function bt(){return React.createElement("main",{className:"gate",style:{alignContent:"center"}},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"gate-title"},React.createElement("p",{className:"brand",dir:"ltr"},"JOURNEY")))}var{useState:x,useMemo:Kt,useEffect:Q,useCallback:Ee,useRef:Xt}=React,Zt=[{id:"today",label:"\u05D4\u05D9\u05D5\u05DD"},{id:"journey",label:"\u05D4\u05DE\u05E1\u05E2"},{id:"community",label:"\u05E7\u05D4\u05D9\u05DC\u05D4"},{id:"library",label:"\u05E1\u05E4\u05E8\u05D9\u05D9\u05D4"}];function Qt(e){return(e||"").trim().split(/\s+/)[0]||""}function ea(e,a){let t=he(e),s=a?`, ${a}`:"";return t>=5&&t<12?`\u05D1\u05D5\u05E7\u05E8 \u05D8\u05D5\u05D1${s} \u2600\uFE0F`:t>=12&&t<17?`\u05E6\u05D4\u05E8\u05D9\u05D9\u05DD \u05D8\u05D5\u05D1\u05D9\u05DD${s}`:t>=17&&t<22?`\u05E2\u05E8\u05D1 \u05D8\u05D5\u05D1${s}`:`\u05DC\u05D9\u05DC\u05D4 \u05D8\u05D5\u05D1${s}`}function ta(){let[e,a]=x(""),t=Xt(null),s=Ee(n=>{a(n),clearTimeout(t.current),t.current=setTimeout(()=>a(""),4e3)},[]);return[e,s]}function ft({api:e}){let[a,t]=x(void 0),[s,n]=x(null),[i,o]=x(""),[r,d]=x(()=>new Date),[u,c]=x(0),[f,y]=x([]),[N,v]=x(new Set),[w,m]=x({day1Video:null,day9Video:null,answers:{},ritual:null}),[p,k]=x([]),[I,b]=x({loading:!0,error:""}),[A,B]=x([]),[de,me]=x(!0),[W,z]=x("today"),[J,G]=x(null),[P,S]=x(null),[Le,ee]=ta();Q(()=>{let l=!0;e.init().then(C=>l&&t(C)).catch(()=>l&&t(null));let g=e.onAuthChange(C=>{t(C),c(E=>E+1)});return()=>{l=!1,g()}},[]),Q(()=>{let l=setInterval(()=>d(new Date),6e4),g=()=>document.visibilityState==="visible"&&d(new Date);return document.addEventListener("visibilitychange",g),()=>{clearInterval(l),document.removeEventListener("visibilitychange",g)}},[]);let ue=Ee(async()=>{try{n(await e.loadMe()),o("")}catch(l){o(l.message)}},[e]);Q(()=>{a?ue():n(null)},[a,u]);let M=s&&s.profile,K=!!(M&&M.status==="approved"&&M.activatedAt),H=K?qe(M.activatedAt,r):0,X=Ee(async()=>{b(l=>({...l,loading:!0}));try{k(await e.loadFeed()),b({loading:!1,error:""})}catch(l){b({loading:!1,error:l.message})}},[e]);Q(()=>{if(!K)return;let l=!0;return(async()=>{try{let[g,C,E]=await Promise.all([e.loadDays(),e.loadProgress(),e.loadPrivate()]);if(!l)return;y(g),v(C),m(E),o("")}catch(g){l&&o(g.message)}})(),X(),me(!0),e.loadLibrary().then(g=>{l&&(B(g),me(!1))}).catch(()=>l&&me(!1)),()=>{l=!1}},[K,H,u]),Q(()=>{window.scrollTo(0,0)},[W]);let Ie=async(l,g)=>{v(C=>{let E=new Set(C);return g?E.add(l):E.delete(l),E});try{await e.setDone(l,g)}catch(C){v(E=>{let F=new Set(E);return g?F.delete(l):F.add(l),F}),ee(C.message)}},yt=async(l,g)=>{let C=await e.savePrivateVideo(l,g);m(E=>({...E,[l==="day1_video"?"day1Video":"day9Video"]:C}))},gt=async(l,g)=>{await e.savePrivateData(l,g),m(C=>l==="purpose_answers"?{...C,answers:g.answers}:{...C,ritual:g})},Nt=async l=>{let g=!l.likedByMe;k(C=>C.map(E=>E.id===l.id?{...E,likedByMe:g,likes:E.likes+(g?1:-1)}:E));try{await e.setLike(l.id,g)}catch(C){k(E=>E.map(F=>F.id===l.id?{...F,likedByMe:!g,likes:F.likes+(g?-1:1)}:F)),ee(C.message)}},kt=async l=>{await e.createPost(l),S(null),G(null),z("community"),ee("\u05E9\u05D9\u05EA\u05E4\u05EA \u2713"),X()},wt=async l=>{try{await e.deletePost(l.id),k(g=>g.filter(C=>C.id!==l.id))}catch(g){ee(g.message)}},pe=async()=>{S(null),await e.signOut(),t(null),z("today")},Ct=l=>p.filter(g=>g.mine&&g.day===l&&g.label).length,Pe=Kt(()=>({api:e,isPreview:e.isPreview}),[e]),be=Object.fromEntries(f.map(l=>[l.number,l])),$e=Qt(M&&M.name),Me={today:H,completed:N,personal:w,shareCount:Ct,onComplete:l=>Ie(l,!0),onUndo:l=>Ie(l,!1),onShare:l=>S({type:"compose",day:l}),onSaveVideo:yt,onSaveData:gt,onGoCommunity:()=>{G(null),z("community")}},Be=e.preview&&React.createElement("button",{className:`preview-pill ${K?"":"on-gate"}`,onClick:()=>S({type:"preview"})},"\u05EA\u05E6\u05D5\u05D2\u05D4 \u05DE\u05E7\u05D3\u05D9\u05DE\u05D4"),Re=P&&P.type==="preview"&&React.createElement(oa,{api:e,onClose:()=>S(null),onChanged:()=>{S(null),z("today"),G(null),c(l=>l+1)}}),q=null;if(a===void 0||a&&!s&&!i?q=React.createElement(bt,null):a?i&&!s?q=React.createElement(aa,{message:i,onRetry:()=>c(l=>l+1)}):M.status==="blocked"?q=React.createElement(pt,{onSignOut:pe}):K||(q=React.createElement(ut,{name:$e,isAdmin:s.isAdmin,onRefresh:ue,onSignOut:pe})):q=React.createElement(mt,null),q)return React.createElement(ne.Provider,{value:Pe},React.createElement("div",{className:"app"},q,Be,Re));let Ue=be[H];return React.createElement(ne.Provider,{value:Pe},React.createElement("div",{className:"app"},React.createElement("header",{className:"topbar"},React.createElement("span",{className:"wordmark",dir:"ltr"},"JOURNEY"),React.createElement("button",{onClick:()=>S({type:"space"}),"aria-label":"\u05D4\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05D9"},React.createElement(Y,{name:M.name,photo:M.photo}))),W==="today"&&React.createElement("div",{className:"screen",key:`today-${H}`},React.createElement("p",{className:"greeting"},ea(r,$e)),Ue?React.createElement(Ce,{day:Ue,isToday:!0,...Me}):i?React.createElement(sa,{message:i,onRetry:()=>c(l=>l+1)}):React.createElement("p",{className:"empty"},"\u05D8\u05D5\u05E2\u05E0\u05EA \u05D0\u05EA \u05D4\u05D1\u05D5\u05E7\u05E8 \u05E9\u05DC\u05DA\u2026")),W==="journey"&&React.createElement(tt,{days:f,today:H,completed:N,activatedAt:M.activatedAt,now:r,onOpen:l=>l===H?z("today"):G(l)}),W==="community"&&React.createElement(st,{posts:p,loading:I.loading,error:I.error,me:M,now:Date.now(),today:H,onCompose:()=>S({type:"compose",day:null}),onLike:Nt,onComments:l=>S({type:"comments",post:l}),onDelete:wt,onRetry:X}),W==="library"&&React.createElement(ct,{items:A,loading:de,onOpen:l=>S({type:"library",item:l})}),J&&be[J]&&React.createElement("div",{className:"overlay",role:"dialog","aria-modal":"true","aria-label":`\u05D9\u05D5\u05DD ${J}`},React.createElement("div",{className:"screen",key:J},React.createElement("button",{className:"backbar",onClick:()=>G(null)},React.createElement(D.back,null)," \u05D7\u05D6\u05E8\u05D4 \u05DC\u05DE\u05E1\u05E2"),React.createElement("div",{style:{height:10}}),React.createElement(Ce,{day:be[J],...Me}))),React.createElement("nav",{className:"tabs","aria-label":"\u05E0\u05D9\u05D5\u05D5\u05D8 \u05E8\u05D0\u05E9\u05D9"},Zt.map(l=>React.createElement("button",{key:l.id,"aria-current":W===l.id&&!J?"page":void 0,onClick:()=>{G(null),z(l.id)}},l.label))),P&&P.type==="compose"&&React.createElement(nt,{day:P.day,onClose:()=>S(null),onPublish:kt}),P&&P.type==="comments"&&React.createElement(ot,{post:P.post,now:Date.now(),onClose:()=>S(null),onChanged:X}),P&&P.type==="library"&&React.createElement(dt,{item:P.item,onClose:()=>S(null)}),P&&P.type==="space"&&React.createElement(na,{api:e,profile:M,personal:w,onClose:()=>S(null),onSaved:()=>{ue(),X()},onSignOut:pe}),Be,Re,Le&&React.createElement("div",{className:"toast",role:"status"},Le)))}function aa({message:e,onRetry:a}){return React.createElement("main",{className:"gate",style:{alignContent:"center"}},React.createElement("div",{className:"sun"}),React.createElement("div",{className:"gate-title"},React.createElement("p",{className:"brand small-brand",dir:"ltr"},"JOURNEY"),React.createElement("h1",null,"\u05E8\u05D2\u05E2, \u05DE\u05E9\u05D4\u05D5 \u05DC\u05D0 \u05E0\u05D8\u05E2\u05DF"),React.createElement("p",null,e)),React.createElement("button",{className:"btn white",style:{justifySelf:"center"},onClick:a},"\u05DC\u05E0\u05E1\u05D5\u05EA \u05E9\u05D5\u05D1"))}function sa({message:e,onRetry:a}){return React.createElement("div",{className:"soft-error"},React.createElement("p",null,e),React.createElement("button",{className:"link",onClick:a},"\u05DC\u05E0\u05E1\u05D5\u05EA \u05E9\u05D5\u05D1"))}function na({api:e,profile:a,personal:t,onClose:s,onSaved:n,onSignOut:i}){let[o,r]=x(a.name),[d,u]=x(null),[c,f]=x(!1),[y,N]=x(""),v=ae.map((p,k)=>[p,t.answers[k]]).filter(([,p])=>p&&p.trim()),w=t.day1Video||t.day9Video||v.length||t.ritual,m=async p=>{p.preventDefault(),f(!0),N("");try{await e.updateProfile({name:o,photoFile:d&&d.file}),n(),s()}catch(k){N(k.message),f(!1)}};return React.createElement(V,{title:"\u05D4\u05DE\u05E8\u05D7\u05D1 \u05D4\u05D0\u05D9\u05E9\u05D9 \u05E9\u05DC\u05D9",onClose:s},React.createElement("div",{className:"stack",style:{gap:22}},React.createElement("p",{className:"lock-note"},"\u{1F512} \u05E8\u05E7 \u05D0\u05EA \u05E8\u05D5\u05D0\u05D4 \u05D0\u05EA \u05DE\u05D4 \u05E9\u05DB\u05D0\u05DF."),!w&&React.createElement("p",{className:"empty space-empty"},"\u05DB\u05D0\u05DF \u05D9\u05D9\u05E9\u05DE\u05E8\u05D5 \u05D4\u05D3\u05D1\u05E8\u05D9\u05DD \u05D4\u05D0\u05D9\u05E9\u05D9\u05D9\u05DD \u05E9\u05DC\u05DA \u05DE\u05D4\u05DE\u05E1\u05E2: \u05D4\u05E1\u05E8\u05D8\u05D5\u05E0\u05D9\u05DD \u05E9\u05DC\u05DA, \u05D4\u05EA\u05E9\u05D5\u05D1\u05D5\u05EA \u05E9\u05DC\u05DA \u05D5\u05D4\u05D8\u05E7\u05E1 \u05E9\u05DC\u05DA."),(t.day1Video||t.day9Video)&&React.createElement("div",{className:"space-videos"},t.day1Video&&React.createElement("div",{className:"space-video"},React.createElement("span",{className:"eyebrow"},"\u05D9\u05D5\u05DD 1"),React.createElement("div",{className:"media-frame"},React.createElement("video",{src:t.day1Video.url,controls:!0,playsInline:!0,preload:"metadata"}))),t.day9Video&&React.createElement("div",{className:"space-video"},React.createElement("span",{className:"eyebrow"},"\u05D9\u05D5\u05DD 9"),React.createElement("div",{className:"media-frame"},React.createElement("video",{src:t.day9Video.url,controls:!0,playsInline:!0,preload:"metadata"})))),v.length>0&&React.createElement("div",{className:"space-block"},React.createElement("p",{className:"eyebrow"},"\u05D4\u05E9\u05D0\u05DC\u05D5\u05EA \u05E9\u05E4\u05D5\u05EA\u05D7\u05D5\u05EA \u05DE\u05E8\u05D7\u05D1 \xB7 \u05D9\u05D5\u05DD 8"),v.map(([p,k],I)=>React.createElement("div",{key:I,className:"qa"},React.createElement("strong",null,p),React.createElement("p",{dir:"auto"},k)))),t.ritual&&React.createElement(ke,{ritual:t.ritual}),React.createElement("hr",{className:"rule"}),React.createElement("form",{className:"stack",onSubmit:m},React.createElement("div",{style:{display:"flex",alignItems:"center",gap:16}},React.createElement(Y,{name:o||a.name,photo:d?d.url:a.photo,size:"lg"}),React.createElement("label",{className:"add-photo",htmlFor:"profile-photo",style:{cursor:"pointer"}},"\u05D4\u05D7\u05DC\u05E4\u05EA \u05EA\u05DE\u05D5\u05E0\u05D4"),React.createElement("input",{id:"profile-photo",type:"file",accept:"image/*",className:"sr",onChange:p=>{let k=p.target.files&&p.target.files[0];k&&u({file:k,url:URL.createObjectURL(k)})}})),React.createElement("div",{className:"field"},React.createElement("label",{htmlFor:"profile-name"},"\u05D4\u05E9\u05DD \u05E9\u05D9\u05D5\u05E4\u05D9\u05E2 \u05D1\u05E7\u05D4\u05D9\u05DC\u05D4"),React.createElement("input",{id:"profile-name",className:"input",dir:"auto",value:o,onChange:p=>r(p.target.value)})),React.createElement("div",{className:"field"},React.createElement("label",{htmlFor:"profile-email"},"\u05DE\u05D9\u05D9\u05DC"),React.createElement("input",{id:"profile-email",className:"input",value:a.email||"",dir:"ltr",readOnly:!0,style:{color:"var(--ink-3)",textAlign:"end"}})),y&&React.createElement("p",{className:"error-note",role:"alert"},y),React.createElement("button",{className:"btn primary block",type:"submit",disabled:c},c?"\u05E9\u05D5\u05DE\u05E8\u05EA\u2026":"\u05E9\u05DE\u05D9\u05E8\u05D4"),React.createElement("button",{className:"btn quiet block",type:"button",onClick:i},"\u05D4\u05EA\u05E0\u05EA\u05E7\u05D5\u05EA"))))}function oa({api:e,onClose:a,onChanged:t}){let s=e.preview;return React.createElement(V,{title:"\u05EA\u05E6\u05D5\u05D2\u05D4 \u05DE\u05E7\u05D3\u05D9\u05DE\u05D4",onClose:a},React.createElement("div",{className:"stack",style:{gap:22}},React.createElement("p",{className:"note"},"\u05D4\u05DB\u05E4\u05EA\u05D5\u05E8 \u05D4\u05D6\u05D4 \u05E7\u05D9\u05D9\u05DD \u05E8\u05E7 \u05D1\u05D2\u05E8\u05E1\u05EA \u05D4\u05EA\u05E6\u05D5\u05D2\u05D4, \u05DB\u05D3\u05D9 \u05E9\u05EA\u05D5\u05DB\u05DC\u05D9 \u05DC\u05E8\u05D0\u05D5\u05EA \u05DB\u05DC \u05DE\u05E1\u05DA. \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05D9\u05D5\u05E4\u05D9\u05E2 \u05DC\u05DE\u05E9\u05EA\u05EA\u05E4\u05D5\u05EA."),React.createElement("div",{className:"field"},React.createElement("label",null,"\u05D0\u05D9\u05D6\u05D4 \u05DE\u05E1\u05DA \u05DC\u05D4\u05E6\u05D9\u05D2"),React.createElement("div",{className:"seg"},React.createElement("button",{"aria-pressed":s.stage==="signin",onClick:()=>{s.setStage("signin"),t()}},"\u05DB\u05E0\u05D9\u05E1\u05D4"),React.createElement("button",{"aria-pressed":s.stage==="waiting",onClick:()=>{s.setStage("waiting"),t()}},"\u05DE\u05DE\u05EA\u05D9\u05E0\u05D4 \u05DC\u05D0\u05D9\u05E9\u05D5\u05E8"),React.createElement("button",{"aria-pressed":s.stage==="app",onClick:()=>{s.setStage("app"),t()}},"\u05D1\u05EA\u05D5\u05DA \u05D4\u05DE\u05E1\u05E2"))),React.createElement("div",{className:"field"},React.createElement("label",null,"\u05D1\u05D0\u05D9\u05D6\u05D4 \u05D9\u05D5\u05DD \u05E9\u05DC \u05D4\u05DE\u05E1\u05E2 \u05D4\u05D9\u05D0 \u05E0\u05DE\u05E6\u05D0\u05EA"),React.createElement("div",{className:"seg nine"},Array.from({length:9},(n,i)=>i+1).map(n=>React.createElement("button",{key:n,"aria-pressed":s.stage==="app"&&s.day===n,onClick:()=>{s.setDay(n),t()}},n))),React.createElement("p",{className:"note"},"\u05D8\u05D9\u05E4: \u05D1\u05D9\u05D5\u05DD 1 \u05D4\u05E2\u05DC\u05D9 \u05E1\u05E8\u05D8\u05D5\u05DF \u05E7\u05E6\u05E8, \u05D5\u05D0\u05D6 \u05E2\u05D1\u05E8\u05D9 \u05DC\u05D9\u05D5\u05DD 9 \u05DB\u05D3\u05D9 \u05DC\u05E8\u05D0\u05D5\u05EA \u05D0\u05EA \u05E8\u05D2\u05E2 \u05D4\u05DE\u05E4\u05D2\u05E9 \u05D0\u05D9\u05EA\u05D5."))))}var De={id:"me",name:"\u05E0\u05D5\u05E2\u05D4 \u05DC\u05D5\u05D9",firstName:"\u05E0\u05D5\u05E2\u05D4",email:"noa@example.com"};function vt(e=Date.now()){return[{id:"p1",author:{id:"u1",name:"\u05DE\u05D9\u05DB\u05DC \u05D0\u05D1\u05E8\u05D4\u05DD"},createdAt:e-1.2*36e5,day:5,label:"\u05D4\u05D5\u05DB\u05D7\u05EA \u05E9\u05E4\u05E2",text:'\u05D4\u05E0\u05D4 \u05D6\u05D4: \u05D4\u05D1\u05E8\u05D9\u05E1\u05D8\u05D4 \u05E4\u05E9\u05D5\u05D8 \u05D0\u05DE\u05E8 "\u05D4\u05D9\u05D5\u05DD \u05E2\u05DC\u05D9\u05D9". \u05D5\u05D0\u05D7\u05E8\u05D9 \u05E9\u05E2\u05D4 \u05DC\u05E7\u05D5\u05D7\u05D4 \u05D9\u05E9\u05E0\u05D4 \u05DB\u05EA\u05D1\u05D4 \u05DC\u05D9 \u05DE\u05E9\u05D5\u05DD \u05DE\u05E7\u05D5\u05DD \u05E9\u05D4\u05D9\u05D0 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D7\u05D6\u05D5\u05E8. \u05D0\u05E0\u05D9 \u05E8\u05D5\u05E9\u05DE\u05EA \u05D4\u05DB\u05D5\u05DC \u{1F4D2}',media:[],likes:18,likedByMe:!1,comments:[{id:"c1",author:{id:"u2",name:"\u05E8\u05D5\u05EA\u05DD"},text:"\u05D5\u05D5\u05D0\u05D5! \u05E7\u05D9\u05D1\u05DC\u05EA\u05D9 \u05DE\u05DE\u05DA \u05D4\u05D5\u05DB\u05D7\u05D4 \u05E9\u05D6\u05D4 \u05D0\u05E4\u05E9\u05E8\u05D9 \u{1F90D}",createdAt:e-1*36e5}]},{id:"p2",author:{id:"u3",name:"\u05E9\u05D9\u05E8\u05D4 \u05DB\u05D4\u05DF"},createdAt:e-3*36e5,day:6,label:"\u05E8\u05D2\u05E2 \u05E9\u05DC \u05DB\u05D9\u05E3",text:"\u05D4\u05D3\u05D9\u05D9\u05D8 \u05E9\u05DC\u05D9 \u05E2\u05DD \u05D4\u05D7\u05D9\u05D9\u05DD: \u05D2\u05DC\u05D9\u05D3\u05D4 \u05D1\u05E2\u05E9\u05E8 \u05D1\u05D1\u05D5\u05E7\u05E8, \u05E2\u05DC \u05E1\u05E4\u05E1\u05DC, \u05D1\u05DC\u05D9 \u05D8\u05DC\u05E4\u05D5\u05DF. \u05D4\u05D2\u05E8\u05E1\u05D4 \u05D1\u05EA \u05D4\u05BE8 \u05E9\u05DC\u05D9 \u05E6\u05E8\u05D7\u05D4.",media:[{type:"image",art:6}],likes:27,likedByMe:!0,comments:[{id:"c3",author:{id:"u4",name:"\u05D3\u05E0\u05D4"},text:"\u05D9\u05D0\u05D0\u05D0\u05D0\u05D0 \u{1F352}",createdAt:e-2.5*36e5}]},{id:"p3",author:{id:"u4",name:"\u05D3\u05E0\u05D4 \u05E4\u05E8\u05E5"},createdAt:e-6*36e5,day:2,label:"\u05D1\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4",text:`1. \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05E9\u05D0\u05E0\u05D9 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DB\u05D0\u05DF.
+2. \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05D1\u05D3\u05E8\u05DA \u05E9\u05D1\u05D4 \u05D0\u05E0\u05D9 \u05D0\u05D5\u05D4\u05D1\u05EA \u05D0\u05EA \u05D4\u05D9\u05DC\u05D3\u05D9\u05DD \u05E9\u05DC\u05D9.
+3. \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05E9\u05D0\u05DE\u05E8\u05EA\u05D9 \u05DC\u05D0 \u05DC\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05E9\u05DC\u05D0 \u05E8\u05E6\u05D9\u05EA\u05D9.
+4. \u05D0\u05E0\u05D9 \u05D2\u05D0\u05D4 \u05E9\u05DC\u05DE\u05D3\u05EA\u05D9 \u05DC\u05D1\u05E7\u05E9 \u05E2\u05D6\u05E8\u05D4.
+\u2026\u05D5\u05E2\u05D5\u05D3 \u05E9\u05E9 \u05E9\u05DC\u05D0 \u05E0\u05DB\u05E0\u05E1\u05D5 \u{1F605}`,media:[],likes:22,likedByMe:!1,comments:[{id:"c4",author:{id:"u1",name:"\u05DE\u05D9\u05DB\u05DC"},text:"\u05DE\u05D4 \u05E9\u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05D1\u05DA: \u05D0\u05D5\u05DE\u05E5 \u05E9\u05E7\u05D8. \u05EA\u05DE\u05D9\u05D3.",createdAt:e-5*36e5},{id:"c5",author:{id:"u5",name:"\u05D9\u05E2\u05DC"},text:"\u05DE\u05E1\u05E4\u05E8 3 \u{1F44F}\u{1F44F}",createdAt:e-4*36e5}]},{id:"p4",author:{id:"u5",name:"\u05D9\u05E2\u05DC \u05DE\u05D6\u05E8\u05D7\u05D9"},createdAt:e-20*36e5,day:7,label:"\u05EA\u05D5\u05D3\u05E2\u05EA \u05D6\u05D9\u05D1\u05D9",text:`I choose to be free from \u05D4\u05D8\u05D9\u05D9\u05DE\u05DC\u05D9\u05D9\u05DF \u05E9\u05D3\u05DE\u05D9\u05D9\u05E0\u05EA\u05D9 \u05DC\u05E2\u05E6\u05DE\u05D9 \u05D1\u05D2\u05D9\u05DC 25.
+I choose to be free to \u05DC\u05D4\u05EA\u05D7\u05D9\u05DC \u05DE\u05D7\u05D3\u05E9. \u05E9\u05D5\u05D1. \u05D5\u05E9\u05D5\u05D1 \u05D0\u05DD \u05E6\u05E8\u05D9\u05DA.`,media:[],likes:35,likedByMe:!1,comments:[]},{id:"p6",author:{id:"u6",name:"\u05D4\u05D3\u05E8 \u05DC\u05D5\u05D9\u05DF"},createdAt:e-9*36e5,day:null,text:"\u05DE\u05D9\u05E9\u05D4\u05D9 \u05E2\u05D5\u05D3 \u05E7\u05DE\u05D4 \u05D4\u05D9\u05D5\u05DD \u05E2\u05DD \u05D4\u05DC\u05D1 \u05D1\u05D2\u05E8\u05D5\u05DF? \u05DB\u05D5\u05EA\u05D1\u05EA \u05D0\u05EA \u05D6\u05D4 \u05E4\u05D4 \u05DB\u05D9 \u05E4\u05D4 \u05D0\u05E0\u05D9 \u05D9\u05D5\u05D3\u05E2\u05EA \u05E9\u05DE\u05D1\u05D9\u05E0\u05D9\u05DD \u{1F90D}",media:[],likes:24,likedByMe:!1,comments:[{id:"c7",author:{id:"u3",name:"\u05E9\u05D9\u05E8\u05D4"},text:"\u05DB\u05D0\u05DF. \u05E0\u05D5\u05E9\u05DE\u05D5\u05EA \u05D9\u05D7\u05D3.",createdAt:e-8.5*36e5},{id:"c8",author:{id:"u2",name:"\u05E8\u05D5\u05EA\u05DD"},text:"\u05D2\u05DD \u05D0\u05E0\u05D9. \u05D5\u05D6\u05D4 \u05E2\u05D5\u05D1\u05E8, \u05DB\u05DC \u05E4\u05E2\u05DD \u05E7\u05E6\u05EA \u05D9\u05D5\u05EA\u05E8 \u05DE\u05D4\u05E8.",createdAt:e-8*36e5}]},{id:"p7",author:{id:"u1",name:"\u05DE\u05D9\u05DB\u05DC \u05D0\u05D1\u05E8\u05D4\u05DD"},createdAt:e-14*36e5,day:null,text:"\u05D4\u05E9\u05E7\u05D9\u05E2\u05D4 \u05DE\u05D4\u05D7\u05DC\u05D5\u05DF \u05D4\u05E2\u05E8\u05D1. \u05E1\u05EA\u05DD \u05E8\u05E6\u05D9\u05EA\u05D9 \u05DC\u05E9\u05EA\u05E3 \u05DE\u05E9\u05D4\u05D5 \u05D9\u05E4\u05D4.",media:[{type:"image",art:5}],likes:16,likedByMe:!1,comments:[]},{id:"p5",author:{id:"u2",name:"\u05E8\u05D5\u05EA\u05DD \u05E9\u05D2\u05D9\u05D0"},createdAt:e-28*36e5,day:1,text:"\u05D9\u05D5\u05DD \u05E8\u05D0\u05E9\u05D5\u05DF. \u05E9\u05D0\u05DC\u05EA\u05D9 \u05D0\u05EA \u05D4\u05D2\u05D5\u05E3 \u05D0\u05DD \u05DC\u05D4\u05D9\u05E9\u05D0\u05E8 \u05D1\u05D1\u05D9\u05EA \u05D0\u05D5 \u05DC\u05E6\u05D0\u05EA. \u05D4\u05D5\u05D0 \u05D0\u05DE\u05E8 \u05DC\u05E6\u05D0\u05EA. \u05E6\u05D3\u05E7 \u{1F33F}",media:[{type:"image",art:2}],likes:31,likedByMe:!1,comments:[{id:"c6",author:{id:"u1",name:"\u05DE\u05D9\u05DB\u05DC"},text:"\u05DE\u05EA\u05D7\u05D9\u05DC\u05D5\u05EA \u05D9\u05D7\u05D3!",createdAt:e-27*36e5}]}]}var U=(e=150)=>new Promise(a=>setTimeout(a,e)),Se=new Set,h={stage:"app",day:3,profile:{id:"me",email:De.email,name:De.name,photo:null},progress:new Set([1,2]),private:{day1Video:null,day9Video:null,answers:{},ritual:null},posts:vt().map(e=>({...e,commentCount:e.comments.length}))};function ce(){Se.forEach(e=>e(h.stage==="signin"?null:{id:"me",email:h.profile.email}))}var ht={isPreview:!0,googleEnabled:!0,preview:{get stage(){return h.stage},get day(){return h.day},setStage(e){h.stage=e,ce()},setDay(e){h.day=e,h.stage="app",h.progress=new Set(Array.from({length:e-1},(a,t)=>t+1)),ce()}},async init(){return h.stage==="signin"?null:{id:"me",email:h.profile.email}},onAuthChange(e){return Se.add(e),()=>Se.delete(e)},async signInEmail(){await U(400)},async signInGoogle(){h.stage="waiting",ce()},async signOut(){h.stage="signin",ce()},async loadMe(){await U();let e=h.stage==="app";return{user:{id:"me",email:h.profile.email},isAdmin:!1,profile:{...h.profile,status:e?"approved":"pending",activatedAt:e?We(h.day):null}}},async updateProfile({name:e,photoFile:a}){typeof e=="string"&&(h.profile.name=e.trim()),a&&(h.profile.photo=URL.createObjectURL(a))},async loadDays(){return await U(),Te.filter(e=>e.number<=h.day).map(e=>({...e,video:{art:e.video.art,source:null}}))},async loadProgress(){return new Set(h.progress)},async setDone(e,a){await U(80),a?h.progress.add(e):h.progress.delete(e)},async loadPrivate(){return{...h.private}},async savePrivateVideo(e,a){await U(700);let t={url:URL.createObjectURL(a),at:new Date().toISOString()};return h.private[e==="day1_video"?"day1Video":"day9Video"]=t,t},async savePrivateData(e,a){await U(200),e==="purpose_answers"&&(h.private.answers=a.answers),e==="ritual"&&(h.private.ritual=a)},async loadFeed(){return await U(),h.posts.filter(e=>!e.day||e.day<=h.day||e.author.id==="me").sort((e,a)=>a.createdAt-e.createdAt).map(e=>({...e,mine:e.author.id==="me"}))},async createPost({text:e,day:a,label:t,files:s}){await U(s.some(n=>n.kind==="video")?1200:400),h.posts.unshift({id:`p${Date.now()}`,author:{id:"me",name:h.profile.name,photo:h.profile.photo},createdAt:Date.now(),day:a||null,label:t||null,text:e,media:s.map(n=>({type:n.kind,url:URL.createObjectURL(n.file),duration:n.duration})),likes:0,likedByMe:!1,comments:[],commentCount:0})},async deletePost(e){h.posts=h.posts.filter(a=>a.id!==e)},async setLike(e,a){let t=h.posts.find(s=>s.id===e);t&&t.likedByMe!==a&&(t.likedByMe=a,t.likes+=a?1:-1)},async loadComments(e){await U();let a=h.posts.find(t=>t.id===e);return(a?a.comments:[]).map(t=>({...t,mine:t.author.id==="me"}))},async addComment(e,a){let t=h.posts.find(s=>s.id===e);t.comments.push({id:`c${Date.now()}`,author:{id:"me",name:h.profile.name.split(" ")[0],photo:h.profile.photo},text:a,createdAt:Date.now()}),t.commentCount=t.comments.length},async deleteComment(e){h.posts.forEach(a=>{a.comments=a.comments.filter(t=>t.id!==e),a.commentCount=a.comments.length})},async loadLibrary(){return await U(),rt.map(e=>({...e}))},async fileUrl(){return null}};document.documentElement.lang="he";document.documentElement.dir="rtl";ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ft,{api:ht}));})();
+
+</script>

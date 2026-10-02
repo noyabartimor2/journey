@@ -37,6 +37,15 @@ ${previewJs}
 </script>
 `;
 writeFileSync('dist/index.html', preview);
+// Also published as site/demo/ so the demo can be opened by link (not indexed).
+mkdirSync('site/demo', { recursive: true });
+writeFileSync('site/demo/index.html', `<!doctype html>
+<html lang="he" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../icon-192.png" type="image/png">
+${preview}`);
 
 // 2. Real site
 mkdirSync('site', { recursive: true });
@@ -45,7 +54,6 @@ writeFileSync('site/styles.css', css);
 const stamp = Date.now().toString(36);
 const site = `<!doctype html>
 <html lang="he" dir="rtl">
-<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>JOURNEY</title>
