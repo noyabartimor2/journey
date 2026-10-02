@@ -10,6 +10,10 @@ export const GOOGLE_SIGNIN = false;
 export const PRICE_FULL = 890;
 export const PRICE_NOW = 449;
 export const JOIN_URL = '';
+// After a successful payment Grow sends her here (set as the success / return URL in Grow).
+// The page only says thank you; access is opened by the server once Grow confirms the payment,
+// and the sign-in link in her email (and the button on this page) open the app on its home screen.
+export const THANKS_URL = 'https://noyabartimor2.github.io/journey/join/thanks/';
 
 // Community videos
 export const MAX_VIDEO_SECONDS = 180;

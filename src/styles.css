@@ -287,7 +287,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: bala
 .btn.soft { background: var(--blush); color: var(--ink); }
 .btn.quiet { background: transparent; color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); }
 .btn.white { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
-.btn.block { width: 100%; }
+.btn.block { width: 100%; padding-top: 0; }
 .btn:disabled { opacity: 0.45; cursor: default; }
 .link { color: var(--ink-2); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line); font-size: var(--step--1); padding: 6px; }
 
@@ -831,8 +831,6 @@ a.btn { text-decoration: none; }
 
 /* ===================== Sales page (site/join/) ===================== */
 .sales { padding-bottom: 40px; }
-.sales-hero { min-height: auto; align-content: start; padding-top: 72px; gap: 22px; }
-.sales-hero .key-line { margin-top: 4px; }
 .sales-signin { justify-self: center; }
 .sales-price { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 12px; text-align: center; }
 .sales-price .was { color: var(--ink-3); text-decoration: line-through; font-size: var(--step-1); }
@@ -915,15 +913,18 @@ a.btn { text-decoration: none; }
 .edit-bar .btn.quiet { color: var(--white); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--white) 30%, transparent); }
 .app:has(.edit-bar) .screen, .app:has(.edit-bar) .overlay .screen { padding-bottom: 200px; }
 
-/* ===================== Home: the word on a living aura ===================== */
-.home {
+/* ===================== The living aura (home, sales, thanks) ===================== */
+.aura-stage {
   --mx: 0.5; --my: 0.45;
   position: relative; isolation: isolate; overflow: hidden; container-type: inline-size;
+  background: radial-gradient(120% 80% at 50% 110%, #F6DCCF 0%, var(--paper) 55%);
+  touch-action: manipulation;
+}
+.home {
   min-height: 100vh; min-height: 100dvh;
   display: grid; place-items: center;
   padding: 24px 20px calc(var(--nav-h) + 24px + env(safe-area-inset-bottom, 0px));
-  background: radial-gradient(120% 80% at 50% 110%, #F6DCCF 0%, var(--paper) 55%);
-  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  user-select: none; -webkit-user-select: none;
 }
 .aura { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
 
@@ -1017,4 +1018,49 @@ a.btn { text-decoration: none; }
   .halo, .orb, .core, .speck, .home-title span, .home-line { animation: none !important; }
   .home-title span, .home-line { opacity: 1; filter: none; transform: none; }
   .speck { display: none; }
+}
+
+/* ---------- Sales page and thank-you page on the aura ---------- */
+.sales-hero {
+  min-height: 100vh; min-height: 100dvh;
+  display: grid; place-items: center;
+  padding: 40px 22px 72px;
+}
+.sales-hero-inner { display: grid; justify-items: center; gap: 22px; text-align: center; width: 100%; }
+.sales-hero-offer {
+  display: grid; gap: 12px; width: 100%; margin-top: 18px;
+  opacity: 0; transform: translateY(10px); animation: lineIn 1.2s ease 2s forwards;
+}
+.sales-hero .sales-price .now { text-shadow: 0 0 24px rgba(255,253,249,0.9); }
+.sales-scroll {
+  position: absolute; bottom: 18px; left: 50%; translate: -50% 0;
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  color: var(--ink-2); font-size: 1.4rem; text-decoration: none;
+  background: color-mix(in srgb, var(--white) 55%, transparent);
+  animation: nudge 2.4s ease-in-out infinite;
+}
+@keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+.sales-key { margin: 8px 0 0; }
+.sales-offer {
+  display: grid; justify-items: center; gap: 16px; text-align: center;
+  padding: 44px 22px; border-radius: var(--radius);
+}
+.sales-offer h2 { font-size: var(--step-3); }
+.sales-offer .tagline { color: var(--ink-2); }
+.sales-offer .sales-join { width: 100%; }
+.thanks .home-hero { width: 100%; }
+.thanks-card {
+  display: grid; gap: 10px; width: 100%; margin-top: 10px; padding: 24px 20px; text-align: center;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--white) 70%, transparent);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--white) 80%, transparent), 0 20px 40px -28px rgba(80,60,40,0.45);
+  opacity: 0; transform: translateY(10px); animation: lineIn 1.2s ease 1.8s forwards;
+}
+.thanks-card h2 { font-size: var(--step-3); }
+.thanks-card p { color: var(--ink-2); }
+.thanks-card .btn { margin-top: 8px; text-decoration: none; }
+.thanks { padding-bottom: 40px; }
+@media (prefers-reduced-motion: reduce) {
+  .sales-hero-offer, .thanks-card { animation: none !important; opacity: 1; transform: none; }
 }
