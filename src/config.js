@@ -15,6 +15,11 @@ export const JOIN_URL = '';
 // and the sign-in link in her email (and the button on this page) open the app on its home screen.
 export const THANKS_URL = 'https://noyabartimor2.github.io/journey/join/thanks/';
 
+// Who the sign-in emails come from, shown so she can search her inbox.
+// These are Supabase's defaults; change both once a custom email sender (e.g. "JOURNEY") is set up.
+export const EMAIL_SENDER_NAME = 'Supabase Auth';
+export const EMAIL_SENDER_ADDRESS = 'noreply@mail.app.supabase.io';
+
 // Community videos
 export const MAX_VIDEO_SECONDS = 180;
 // Largest upload we accept (MB). Must not exceed the Supabase plan's per-file limit.
