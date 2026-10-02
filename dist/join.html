@@ -880,6 +880,50 @@ a.btn { text-decoration: none; }
 .sales-footer { display: grid; gap: 6px; justify-items: center; padding-top: 8px; }
 @media (max-width: 360px) { .sales-grid { grid-template-columns: 1fr; } }
 
+/* ===================== Content editing (admin) ===================== */
+.topbar-actions { display: flex; align-items: center; gap: 6px; }
+.edit-toggle { background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+.editable {
+  outline: 1.5px dashed color-mix(in srgb, var(--mist-deep) 55%, transparent);
+  outline-offset: 4px; border-radius: 6px; cursor: text; min-width: 1.5em;
+  white-space: pre-wrap;
+}
+.editable:focus { outline-style: solid; outline-color: var(--mist-deep); background: color-mix(in srgb, var(--white) 70%, transparent); }
+.editable:empty::before { content: attr(data-placeholder); color: var(--ink-3); }
+.rich.editing { gap: 16px; }
+.piece { display: grid; gap: 6px; }
+.piece-tools { display: flex; align-items: center; gap: 2px; font-size: var(--step--1); color: var(--ink-3); }
+.piece-tools .spacer { flex: 1; }
+.piece-tools select { font: inherit; color: var(--ink-2); background: transparent; border: 0; padding: 2px 0; cursor: pointer; }
+.piece-tools button { width: 28px; height: 28px; border-radius: 8px; color: var(--ink-2); }
+.piece-tools button:hover:not(:disabled) { background: color-mix(in srgb, var(--white) 70%, transparent); }
+.piece-tools button:disabled { opacity: 0.3; cursor: default; }
+.piece-kind { font-weight: 600; }
+.rich .multi { white-space: pre-line; }
+.rich .quotes.multi { font-family: var(--font-display); }
+.rich-media.locked { pointer-events: none; opacity: 0.7; }
+.piece-label { font-weight: 600; color: var(--ink); }
+.add-piece { justify-self: start; padding: 8px 14px; border-radius: 999px; font-size: var(--step--1); font-weight: 600; color: var(--sage-deep); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sage-deep) 35%, transparent); }
+.share-task .btn.editable { display: flex; }
+.edit-bar {
+  position: fixed; z-index: 60;
+  left: 50%; translate: -50% 0;
+  bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom, 0px));
+  width: min(calc(100% - 24px), calc(var(--col) - 24px));
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 12px 12px 14px;
+  border-radius: 18px;
+  background: var(--ink); color: var(--white);
+  box-shadow: 0 20px 40px -20px rgba(40, 30, 20, 0.5);
+}
+.edit-bar-text { display: grid; gap: 2px; flex: 1; min-width: 0; font-size: var(--step--1); line-height: 1.4; }
+.edit-bar-text strong { font-size: var(--step-0); }
+.edit-bar-text .note { color: color-mix(in srgb, var(--white) 65%, transparent); }
+.edit-bar-actions { display: flex; gap: 6px; flex: none; }
+.edit-bar .btn { min-height: 42px; padding: 0 18px; font-size: var(--step-0); }
+.edit-bar .btn.quiet { color: var(--white); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--white) 30%, transparent); }
+.app:has(.edit-bar) .screen, .app:has(.edit-bar) .overlay .screen { padding-bottom: 200px; }
+
 </style>
 <div id="root" dir="rtl" lang="he"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>

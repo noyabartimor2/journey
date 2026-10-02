@@ -6,11 +6,23 @@ import { TOTAL_DAYS } from '../lib/schedule.js';
 import { Icon } from './ui.jsx';
 import { VideoBlock } from './media.jsx';
 import { Rich } from './Rich.jsx';
+import { Editable } from './edit.jsx';
 import { PrivateVideo, PurposeAnswers, RitualBuilder, Day9Moment } from './widgets.jsx';
 const { useState } = React;
 
-function Fold({ tone, label, title, children, defaultOpen }) {
+function Fold({ tone, label, title, children, defaultOpen, editing, onTitle }) {
   const [open, setOpen] = useState(!!defaultOpen);
+  if (editing) return (
+    <section className={`fold ${tone} open`}>
+      <div className="fold-head">
+        <span className="fold-titles">
+          <span className="eyebrow">{label}</span>
+          <Editable className="fold-title" editing value={title} onChange={onTitle} placeholder="כותרת" />
+        </span>
+      </div>
+      <div className="fold-body"><div className="fold-inner">{children}</div></div>
+    </section>
+  );
   return (
     <section className={`fold ${tone} ${open ? 'open' : ''}`}>
       <button className="fold-head" onClick={() => setOpen(!open)} aria-expanded={open}>
@@ -25,8 +37,12 @@ function Fold({ tone, label, title, children, defaultOpen }) {
   );
 }
 
-export function DayPage({ day, isToday, today, completed, onComplete, onUndo, onShare, shareCount, personal, onSaveVideo, onSaveData, onGoCommunity }) {
+export function DayPage({ day, isToday, today, completed, onComplete, onUndo, onShare, shareCount, personal, onSaveVideo, onSaveData, onGoCommunity, editing, onEdit }) {
   const number = day.number;
+  // While editing: change one part of the day and hand the whole updated day up.
+  const set = (key, value) => onEdit({ ...day, [key]: value });
+  const setIn = (key, sub, value) => onEdit({ ...day, [key]: { ...day[key], [sub]: value } });
+  const richEdit = (key, sub) => (editing ? (v) => (sub ? setIn(key, sub, v) : set(key, v)) : undefined);
   const done = completed.has(number);
   const shared = shareCount(number);
 
@@ -55,12 +71,15 @@ export function DayPage({ day, isToday, today, completed, onComplete, onUndo, on
           ))}
         </div>
         <p className="day-of" dir="ltr">DAY {number} OF {TOTAL_DAYS}</p>
-        <h1>{day.title} <span className="emoji">{day.emoji}</span></h1>
-        <p className="question">{day.question}</p>
+        <h1>
+          <Editable editing={editing} value={day.title} onChange={(v) => set('title', v)} placeholder="שם היום" />{' '}
+          <Editable className="emoji" editing={editing} value={day.emoji} onChange={(v) => set('emoji', v)} placeholder="🙂" />
+        </h1>
+        <Editable as="p" className="question" editing={editing} value={day.question} onChange={(v) => set('question', v)} placeholder="השאלה של היום" />
       </section>
 
       <div className="intro">
-        <Rich items={day.intro} />
+        <Rich items={day.intro} onChange={richEdit('intro')} />
       </div>
 
       {day.moment && (
@@ -74,9 +93,14 @@ export function DayPage({ day, isToday, today, completed, onComplete, onUndo, on
       </section>
 
       <div className="folds">
-        {day.task && <Fold tone="sage" label="המשימה שלך" title={day.task.title}>
-          <Rich items={day.task.body} renderWidget={renderWidget} />
-          {day.share && (
+        {day.task && <Fold tone="sage" label="המשימה שלך" title={day.task.title} editing={editing} onTitle={(v) => setIn('task', 'title', v)}>
+          <Rich items={day.task.body} renderWidget={renderWidget} onChange={richEdit('task', 'body')} />
+          {day.share && editing && (
+            <div className="share-task">
+              <Editable as="p" className="btn primary block" editing value={day.share.cta} onChange={(v) => setIn('share', 'cta', v)} placeholder="טקסט הכפתור" />
+            </div>
+          )}
+          {day.share && !editing && (
             <div className="share-task">
               {shared > 0 && <p className="shared-note">שיתפת {shared > 1 ? `${shared} פעמים` : ''} ✓ <button className="link" onClick={onGoCommunity}>לראות בקהילה</button></p>}
               {(!shared || day.share.repeatable) && (
@@ -86,16 +110,16 @@ export function DayPage({ day, isToday, today, completed, onComplete, onUndo, on
           )}
         </Fold>}
         {day.extra && (
-          <Fold tone="mist" label={day.extra.label} title={day.extra.title}>
-            <Rich items={day.extra.body} renderWidget={renderWidget} />
+          <Fold tone="mist" label={day.extra.label} title={day.extra.title} editing={editing} onTitle={(v) => setIn('extra', 'title', v)}>
+            <Rich items={day.extra.body} renderWidget={renderWidget} onChange={richEdit('extra', 'body')} />
           </Fold>
         )}
-        <Fold tone="blush" label={day.game.label || 'המשחק של היום'} title={day.game.title}>
-          <Rich items={day.game.body} />
+        <Fold tone="blush" label={day.game.label || 'המשחק של היום'} title={day.game.title} editing={editing} onTitle={(v) => setIn('game', 'title', v)}>
+          <Rich items={day.game.body} onChange={richEdit('game', 'body')} />
         </Fold>
       </div>
 
-      <section className="finish">
+      {!editing && <section className="finish">
         {!done ? (
           <button className="btn primary block" onClick={() => onComplete(number)}>עשיתי את שלי להיום ✓</button>
         ) : number === TOTAL_DAYS ? (
@@ -115,7 +139,7 @@ export function DayPage({ day, isToday, today, completed, onComplete, onUndo, on
             <button className="link" onClick={() => onUndo(number)}>סימנתי בטעות</button>
           </div>
         )}
-      </section>
+      </section>}
     </>
   );
 }
