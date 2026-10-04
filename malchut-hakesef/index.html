@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ממלכת הכסף | נויה ברטימור</title>
+<meta name="description" content="מעטפת דיגיטלית למערכת היחסים שלך עם כסף. לא עוד קורס שפע. הטבת תאילנד: 555 ₪ במקום 888 ₪.">
+<meta name="theme-color" content="#0a0a0c">
+<meta property="og:title" content="ממלכת הכסף | נויה ברטימור">
+<meta property="og:description" content="מזל טוב. הבנת שבא לך להיות עשירה. אז למה כל כך קשה לך לזמן אותו אליך?">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:image" content="assets/noya.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0c; --bg2:#101015; --gold:#d4af37; --gold-l:#f3d98b; --gold-d:#b8891f;
+    --red:#8b1a2b; --red-d:#5e0f1c; --navy:#0d1530; --ink:#efe9d9; --mute:#a8a18d; --line:rgba(212,175,55,.28);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:92px;overflow-x:hidden}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--gold-l);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  section{padding:60px 0;position:relative}
+  .alt{background:linear-gradient(180deg,#0d0d12,#0a0a0c)}
+  .bar{position:sticky;top:0;z-index:40;background:linear-gradient(90deg,#c9a23a,#f3d98b,#c9a23a);color:#1a1405;text-align:center;font-weight:700;font-size:14px;padding:9px 12px}
+  .bar small{display:block;font-weight:500;font-size:12.5px;opacity:.85}
+  .eyebrow{color:var(--gold);font-weight:700;font-size:15px;text-align:center;margin:0 0 12px}
+  h1,h2,h3{margin:0}
+  h1,h2,.lines,.big,.sub,.quote p{text-wrap:balance}
+  h1,h2{text-align:center;color:var(--gold);font-weight:900;line-height:1.1}
+  h1{font-size:clamp(40px,11vw,72px)}
+  h2{font-size:clamp(30px,8vw,46px)}
+  .sub{text-align:center;color:var(--mute);font-size:clamp(17px,4.4vw,21px);margin:18px auto 0;max-width:560px}
+  .lines{text-align:center;font-size:clamp(21px,5.6vw,28px);line-height:1.5;font-weight:500;margin:26px 0}
+  .lines b{color:var(--gold-l);font-weight:900}
+  .big{text-align:center;font-weight:900;font-size:clamp(26px,7vw,38px);line-height:1.2;margin:34px 0 0;color:var(--ink)}
+  .big em{font-style:normal;color:var(--gold)}
+  p.t{font-size:clamp(17px,4.4vw,19px);color:#cfc8b6;margin:0 0 16px}
+  .center{text-align:center}
+  hr.divider{height:1px;border:0;margin:0;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+  .art{margin:34px auto 0;max-width:560px}
+  .art svg{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:18px;background:#000}
+
+  /* hero */
+  .hero{overflow:hidden;padding:44px 0 56px;text-align:center}
+  .hero .wrap{position:relative;z-index:1;max-width:860px}
+  .h-hero{font-size:clamp(32px,9vw,54px);line-height:1.12}
+  .h-hero span{color:var(--ink)}
+  .portal-wrap{position:relative;width:min(84%,360px);margin:56px auto 0}
+  .rays{position:absolute;left:50%;top:42%;width:960px;height:960px;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,rgba(243,217,139,.13) 0 5deg,transparent 5deg 15deg);-webkit-mask-image:radial-gradient(circle,#000 0,transparent 62%);mask-image:radial-gradient(circle,#000 0,transparent 62%);pointer-events:none}
+  .crown{position:absolute;top:-46px;left:50%;width:92px;transform:translateX(-50%);z-index:3;filter:drop-shadow(0 0 14px rgba(243,217,139,.7))}
+  .portal{position:relative;z-index:1;aspect-ratio:4/5;border-radius:999px 999px 14px 14px;overflow:hidden;border:2px solid var(--gold);background:#0a0a0c;box-shadow:0 0 0 7px rgba(212,175,55,.12),0 0 70px rgba(212,175,55,.38)}
+  .portal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:46% 12%}
+  .portal::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 50% at 50% 30%,rgba(243,217,139,.22),transparent 70%),radial-gradient(120% 92% at 50% 40%,transparent 46%,rgba(10,10,12,.9) 88%),linear-gradient(180deg,transparent 64%,rgba(94,15,28,.6))}
+  .carpet{position:relative;z-index:2;height:30px;margin:-2px 6% 0;clip-path:polygon(6% 0,94% 0,100% 100%,0 100%);background:linear-gradient(180deg,#8b1a2b,#4a0b16)}
+  .proof{color:var(--mute);font-size:13.5px;margin:14px 0 0}
+
+  /* buttons */
+  .btn{display:block;max-width:560px;margin:0 auto;text-align:center;text-decoration:none;border:0;cursor:pointer;font-family:inherit;background:linear-gradient(180deg,#f3d98b,#c9a23a);color:#1a1405;border-radius:14px;padding:13px 16px;font-weight:900;font-size:19px;box-shadow:0 8px 28px rgba(212,175,55,.28);width:100%}
+  .btn:active{transform:translateY(1px)}
+  .btn small{display:block;font-weight:700;font-size:12.5px;opacity:.85}
+  .btn.inline{display:inline-block;width:auto;padding:15px 34px;margin-top:30px;font-size:20px}
+  .sticky{position:fixed;inset:auto 0 0 0;z-index:50;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(10,10,12,0),rgba(10,10,12,.94) 38%);transition:transform .3s,opacity .3s}
+  .sticky.hide{transform:translateY(110%);opacity:0;pointer-events:none}
+
+  /* mirror list */
+  .mirror{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:10px}
+  .mirror li{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(160deg,#16161d,#0c0c11);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:clamp(16px,4.2vw,18px)}
+  .mirror li::before{content:"";flex:none;width:9px;height:9px;margin-top:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+
+  /* rules */
+  .rules{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:12px}
+  .rules li{background:linear-gradient(160deg,#17171e,#0b0b10);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+  .rules b{display:block;color:var(--gold-l);font-size:19px;margin-bottom:2px}
+  .rules span{color:var(--mute);font-size:15.5px}
+  .quote{margin:34px 0 0;padding:26px 22px;border-radius:20px;background:linear-gradient(160deg,#2a0a12,#0c0c11);border:1px solid rgba(212,175,55,.45);text-align:center}
+  .quote p{margin:0;font-size:clamp(20px,5.4vw,26px);font-weight:700;line-height:1.45}
+  .quote p+p{margin-top:12px}
+  .quote b{color:var(--gold-l)}
+
+  /* compare */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+  .cmp h3{font-size:17px;text-align:center;padding:12px 8px;border-radius:12px 12px 0 0;font-weight:900}
+  .cmp .s h3{background:var(--red-d);color:#f0c9cf}
+  .cmp .r h3{background:linear-gradient(180deg,#f3d98b,#c9a23a);color:#1a1405}
+  .cmp ul{list-style:none;margin:0;padding:6px 12px 10px;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;background:#0e0e13}
+  .cmp li{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:15px;line-height:1.35}
+  .cmp li:last-child{border:0}
+  .cmp .s li{color:#c9a7ad}.cmp .r li{color:#ece4c9}
+
+  /* cards + legend */
+  .stage{position:relative;margin:30px -8px 0}
+  .stage svg{width:100%;height:auto;display:block;overflow:visible}
+  .twinkle{animation:tw 2.8s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+  .twinkle.d2{animation-delay:.9s}.twinkle.d3{animation-delay:1.7s}
+  @keyframes tw{from{opacity:.25;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+  .swirl{stroke-dasharray:14 10;animation:flow 22s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-480}}
+  .float{animation:fl 6s ease-in-out infinite alternate}
+  @keyframes fl{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+  .legend{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .legend li{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(160deg,#14141b,#0c0c11);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .legend .n{flex:none;width:26px;height:26px;border-radius:50%;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:#1a1405;font-weight:900;font-size:14px;display:grid;place-items:center;margin-top:2px}
+  .legend b{display:block;color:var(--gold-l);font-size:15px;line-height:1.25}
+  .legend span{color:var(--mute);font-size:13px;line-height:1.35}
+  .cards{display:grid;gap:14px;margin-top:30px}
+  .card{background:linear-gradient(160deg,#14141b,#0b0b10);border:1px solid var(--line);border-radius:18px;padding:22px 22px 24px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .card .no{color:var(--gold-d);font-weight:700;font-size:14px;letter-spacing:.06em}
+  .card h3{margin:6px 0 8px;font-size:22px;color:var(--gold-l);line-height:1.2}
+  .card p{margin:0;color:var(--mute);font-size:16px}
+  .card em{display:block;margin-top:8px;color:var(--gold);font-style:normal;font-size:14px;font-weight:700}
+
+  /* not-x */
+  .notx{background:radial-gradient(60% 100% at 50% 50%,#2a0a12,transparent 80%)}
+  .notx .lines{font-size:clamp(23px,6.4vw,32px)}
+  .strike{display:inline-block;color:#c46a78;text-decoration:line-through;text-decoration-thickness:3px}
+
+  /* founder */
+  .founder{display:grid;gap:22px}
+  .avatar{width:130px;height:130px;border-radius:50%;overflow:hidden;border:2px solid var(--gold);margin:0 auto;box-shadow:0 0 40px rgba(212,175,55,.3)}
+  .avatar img{width:100%;height:100%;object-fit:cover;object-position:46% 18%;transform:scale(1.5);transform-origin:50% 28%}
+  .story p{font-size:clamp(17px,4.5vw,19.5px);margin:0 0 14px;color:#d6cfbd}
+  .story .hl{color:var(--gold-l);font-weight:900;font-size:1.15em}
+  .story .fine{font-size:13.5px;color:var(--mute);margin-top:20px}
+
+  /* testimonials */
+  .tm{display:grid;gap:14px;margin-top:28px}
+  .tm blockquote{margin:0;padding:24px 22px;border-radius:18px;background:linear-gradient(160deg,#17171e,#0b0b10);border:1px solid var(--line);font-size:clamp(19px,5vw,23px);font-weight:700;line-height:1.45;color:var(--gold-l);position:relative}
+  .tm blockquote::before{content:"”";position:absolute;top:-6px;right:16px;font-size:72px;line-height:1;color:var(--gold);opacity:.5;font-family:Georgia,serif}
+  .tm cite{display:block;margin-top:10px;font-style:normal;font-weight:500;font-size:14px;color:var(--mute)}
+
+  /* not for everyone */
+  .nope{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:10px}
+  .nope li{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:14px;background:#0e0e13;border:1px solid rgba(255,255,255,.07);font-size:clamp(16px,4.3vw,18px)}
+  .nope li::before{content:"✕";flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid #b24a58;color:#d8707e;display:grid;place-items:center;font-size:13px;margin-top:1px}
+
+  /* offer */
+  .offer{background:radial-gradient(80% 60% at 50% 0%,#3a2a08,transparent 70%),var(--bg)}
+  .stack{list-style:none;margin:26px 0 0;padding:0}
+  .stack li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid rgba(212,175,55,.18);font-size:clamp(16px,4.3vw,18px)}
+  .stack li span:first-child::before{content:"✓";color:#42d17a;font-weight:900;margin-inline-end:10px}
+  .stack .v{color:var(--mute);font-size:14.5px;white-space:nowrap}
+  .total{display:flex;justify-content:space-between;align-items:baseline;padding:16px 4px 4px;font-weight:900;font-size:20px}
+  .total s{color:#c46a78;font-size:24px}
+  .box{position:relative;margin-top:44px;padding:42px 22px 26px;border:2px solid var(--gold);border-radius:22px;background:linear-gradient(180deg,#15120a,#0a0a0c);box-shadow:0 0 60px rgba(212,175,55,.2)}
+  .box .tag{position:absolute;top:-19px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,#f3d98b,#c9a23a);color:#1a1405;font-weight:900;border-radius:99px;padding:6px 20px;font-size:16px;white-space:nowrap}
+  .price{text-align:center}
+  .price .reg{color:var(--mute);font-size:17px}
+  .price .now{display:block;font-size:clamp(64px,19vw,92px);font-weight:900;color:var(--gold-l);line-height:1;margin:6px 0}
+  .price .why{font-weight:700;color:var(--gold);margin:6px 0 0}
+  .price .terms{color:var(--mute);font-size:14.5px;margin:10px 0 0}
+  form{margin-top:22px;display:grid;gap:12px}
+  label{display:block;font-size:14px;color:var(--mute);margin-bottom:4px}
+  input{width:100%;font:inherit;font-size:17px;color:var(--ink);background:#121217;border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:14px 14px}
+  input::placeholder{color:#6f6a5c}
+  input:focus{outline:none;border-color:var(--gold-l);box-shadow:0 0 0 3px rgba(243,217,139,.2)}
+  .err{color:#ff9aa6;font-size:14px;min-height:20px;margin:0;text-align:center}
+  .fine2{color:var(--mute);font-size:13px;text-align:center;margin:0}
+
+  /* faq */
+  .faq{margin-top:28px;display:grid;gap:10px}
+  details{background:#0e0e13;border:1px solid var(--line);border-radius:14px;padding:0 16px}
+  summary{cursor:pointer;list-style:none;font-weight:700;font-size:clamp(16px,4.3vw,18px);padding:16px 0;color:var(--gold-l);display:flex;justify-content:space-between;gap:12px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--gold);font-size:24px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{margin:0 0 16px;color:#cfc8b6;font-size:16.5px}
+
+  footer{padding:36px 0 24px;border-top:1px solid var(--line);color:var(--mute);font-size:13px;text-align:center}
+  footer p{margin:0 0 10px}
+
+  /* reveal */
+  .js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .js .rv.in{opacity:1;transform:none}
+  @media (max-width:420px){.legend{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){.twinkle,.swirl,.float{animation:none}.js .rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<div class="bar">✈️ הטבת תאילנד: 555 ₪ במקום 888 ₪ · 37% הנחה<small>עד שאני חוזרת או ל-25 הנשים הראשונות</small></div>
+
+<!-- 1. HERO -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">בואי נתחיל מהחלק הכיפי</p>
+    <h1 class="h-hero"><span>מזל טוב.</span><br>הבנת שבא לך להיות עשירה.</h1>
+    <p class="sub">אז למה כל כך קשה לך לזמן אותו אליך?</p>
+
+    <div class="portal-wrap">
+      <div class="rays" aria-hidden="true"></div>
+      <svg class="crown" viewBox="0 0 120 80" aria-hidden="true">
+        <defs><linearGradient id="h-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e3a0"/><stop offset=".55" stop-color="#d4af37"/><stop offset="1" stop-color="#a77a17"/></linearGradient></defs>
+        <path d="M14 62 L22 22 L44 44 L60 10 L76 44 L98 22 L106 62 Z" fill="url(#h-gold)" stroke="#fff3c4" stroke-width="1.5" stroke-linejoin="round"/>
+        <rect x="14" y="62" width="92" height="12" rx="4" fill="url(#h-gold)"/>
+        <circle cx="22" cy="20" r="4.5" fill="#fff3c4"/><circle cx="60" cy="8" r="5.5" fill="#fff3c4"/><circle cx="98" cy="20" r="4.5" fill="#fff3c4"/>
+        <circle cx="60" cy="68" r="3.5" fill="#8b1a2b"/><circle cx="36" cy="68" r="2.6" fill="#8b1a2b"/><circle cx="84" cy="68" r="2.6" fill="#8b1a2b"/>
+      </svg>
+      <div class="portal">
+        <img src="assets/noya.jpg" width="1100" height="880" alt="נויה ברטימור, מנטורית ויוצרת ממלכת הכסף" fetchpriority="high">
+      </div>
+      <div class="carpet" aria-hidden="true"></div>
+    </div>
+
+    <a class="btn inline" href="#join">אני רוצה להיכנס לממלכה</a>
+    <p class="proof">מעל 60 נשים כבר עברו את "קוד הכסף" · גישה מיידית · בקצב שלך</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 2. STORY -->
+<section>
+  <div class="wrap">
+    <div class="lines rv">החלטת שאת לא הולכת לחיות בחוסר.<br>אז התחלת את <b>המירוץ</b>.<br>לעבוד, לעשות, להשיג, להוכיח.</div>
+    <div class="lines rv">אבל תסתכלי טוב על המירוץ.<br>את רצה <b>אל</b> משהו? או <b>מ</b>משהו?</div>
+    <div class="art rv"><svg viewBox="0 0 800 560" role="img" aria-label="שני מרוצים: לולאה אדומה שבה רצים ממשהו, ודרך זהב שרצה אל משהו">
+      <defs>
+        <linearGradient id="b-road" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stop-color="#2a1f06"/><stop offset="1" stop-color="#d4af37"/>
+        </linearGradient>
+        <radialGradient id="b-sun"><stop offset="0" stop-color="#fff7da"/><stop offset=".5" stop-color="#f3d98b" stop-opacity=".7"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></radialGradient>
+        <radialGradient id="b-bgL" cx="26%" cy="50%" r="60%"><stop offset="0" stop-color="#2a0a12"/><stop offset="1" stop-color="#060608"/></radialGradient>
+        <radialGradient id="b-bgR" cx="80%" cy="35%" r="70%"><stop offset="0" stop-color="#3a2a08"/><stop offset="1" stop-color="#060608"/></radialGradient>
+      </defs>
+      <rect width="400" height="560" fill="url(#b-bgL)"/>
+      <rect x="400" width="400" height="560" fill="url(#b-bgR)"/>
+      <!-- left loop -->
+      <circle cx="200" cy="320" r="120" fill="none" stroke="#4a0b16" stroke-width="40"/>
+      <circle cx="200" cy="320" r="120" fill="none" stroke="#c46a78" stroke-width="2" stroke-dasharray="10 12" opacity=".7"/>
+      <polygon points="200,190 178,205 178,175" fill="#c46a78" transform="rotate(90 200 190)"/>
+      <polygon points="320,320 335,298 305,298" fill="#c46a78" transform="rotate(180 320 320)"/>
+      <g fill="none" stroke="#e9c7cd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="200" cy="168" r="9" fill="#e9c7cd"/>
+        <path d="M200 178 L196 202 M196 202 L180 214 M196 202 L206 218 M198 186 L182 192 M198 186 L214 180"/>
+      </g>
+      <text x="200" y="312" text-anchor="middle" font-size="22" fill="#e9c7cd" font-weight="700">עוד קצת,</text>
+      <text x="200" y="342" text-anchor="middle" font-size="22" fill="#e9c7cd" font-weight="700">ואז אני אנוח</text>
+      <text x="200" y="64" text-anchor="middle" font-size="40" fill="#c46a78" font-weight="900">ממשהו</text>
+      <text x="200" y="98" text-anchor="middle" font-size="17" fill="#9a737b">רצה כדי לא להיות ענייה</text>
+      <!-- right road -->
+      <circle cx="600" cy="170" r="110" fill="url(#b-sun)"/>
+      <polygon points="470,540 730,540 640,210 560,210" fill="url(#b-road)"/>
+      <path d="M470 540 L560 210 M730 540 L640 210" stroke="#f3d98b" stroke-width="3" opacity=".8"/>
+      <path d="M600 540 L600 215" stroke="#fff3c4" stroke-width="4" stroke-dasharray="26 22" opacity=".85"/>
+      <path d="M570 210 V178 A30 30 0 0 1 630 178 V210" fill="none" stroke="#fff3c4" stroke-width="5"/>
+      <path d="M582 210 V182 A18 18 0 0 1 618 182 V210 Z" fill="#fff7da"/>
+      <g fill="none" stroke="#fff3c4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="600" cy="400" r="11" fill="#fff3c4"/>
+        <path d="M600 412 L600 446 M600 446 L584 474 M600 446 L616 474 M600 420 L578 408 M600 420 L622 408"/>
+      </g>
+      <text x="600" y="64" text-anchor="middle" font-size="40" fill="#f3d98b" font-weight="900">אל משהו</text>
+      <text x="600" y="98" text-anchor="middle" font-size="17" fill="#c9b36e">יוצרת כי היא רוצה</text>
+      <line x1="400" y1="0" x2="400" y2="560" stroke="#d4af37" stroke-opacity=".5"/>
+      <circle cx="400" cy="280" r="26" fill="#0a0a0c" stroke="#d4af37" stroke-width="2"/>
+      <text x="400" y="289" text-anchor="middle" font-size="24" fill="#f3d98b" font-weight="900">או</text>
+    </svg></div>
+    <p class="big rv">כי יש הבדל בין לרצות להיות עשירה<br>לבין <em>לעשות הכל רק לא להיות ענייה.</em></p>
+
+    <h2 class="rv" style="margin-top:56px;font-size:clamp(26px,7vw,36px)">נשמע לך מוכר?</h2>
+    <ul class="mirror rv">
+      <li>מנוחה מרגישה כמו משהו שצריך להרוויח קודם.</li>
+      <li>את עסוקה כל הזמן, ועדיין מרגישה שלא עשית מספיק.</li>
+      <li>כשמישהו נותן לך משהו, את כבר מחשבת איך תחזירי.</li>
+      <li>קשה לך לבקש, ועוד יותר קשה להגיד "מגיע לי".</li>
+      <li>כסף נכנס? חלק בך כבר מחכה שייגמר.</li>
+      <li>את מתישה את עצמך, ובטוחה שזה פשוט "מה שצריך".</li>
+    </ul>
+    <p class="big rv">זה לא שאת לא מספיק מתאמצת.<br><em>זה שאת מתאמצת כדי להוכיח שמגיע לך.</em></p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 3. SURVIVOR IDENTITY -->
+<section class="alt">
+  <div class="wrap">
+    <p class="eyebrow rv">לזה קוראים</p>
+    <h2 class="rv">"הזהות השורדת"</h2>
+    <p class="sub rv">היא לא מחשבה אחת. היא ספר חוקים שלם שקיבלת מזמן, בלי שמישהו שאל אותך.</p>
+    <div class="art rv"><svg viewBox="0 0 800 720" style="direction:ltr" role="img" aria-label="ספר החוקים של הזהות השורדת, כל החוקים מחוקים, וחותמת: אפשר לכתוב מחדש">
+      <defs>
+        <linearGradient id="c-page" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16161f"/><stop offset="1" stop-color="#0b0b11"/></linearGradient>
+        <linearGradient id="c-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3d98b"/><stop offset="1" stop-color="#b8891f"/></linearGradient>
+      </defs>
+      <rect width="800" height="720" fill="#060608"/>
+      <rect x="90" y="30" width="620" height="660" rx="20" fill="url(#c-page)" stroke="#d4af37" stroke-width="3"/>
+      <rect x="112" y="52" width="576" height="616" rx="12" fill="none" stroke="#d4af37" stroke-opacity=".35"/>
+      <path d="M600 30 V150 L627 126 L654 150 V30 Z" fill="#8b1a2b"/>
+      <text x="570" y="118" text-anchor="end" font-size="38" fill="url(#c-gold)" font-weight="900">החוקים שקיבלת מזמן</text>
+      <text x="570" y="154" text-anchor="end" font-size="20" fill="#9a937f">בלי ששאלו אותך</text>
+      <line x1="150" y1="186" x2="650" y2="186" stroke="#d4af37" stroke-opacity=".4"/>
+      <g font-size="28" fill="#b9b2a0">
+        <circle cx="640" cy="250" r="16" fill="none" stroke="#d4af37"/><text x="640" y="258" text-anchor="middle" font-size="17" fill="#d4af37">1</text>
+        <text x="604" y="259" text-anchor="end" text-decoration="line-through">כסף צריך להרוויח בזיעה</text>
+        <circle cx="640" cy="330" r="16" fill="none" stroke="#d4af37"/><text x="640" y="338" text-anchor="middle" font-size="17" fill="#d4af37">2</text>
+        <text x="604" y="339" text-anchor="end" text-decoration="line-through">כל דבר עולה במשהו</text>
+        <circle cx="640" cy="410" r="16" fill="none" stroke="#d4af37"/><text x="640" y="418" text-anchor="middle" font-size="17" fill="#d4af37">3</text>
+        <text x="604" y="419" text-anchor="end" text-decoration="line-through">כסף הוא קצת מלוכלך</text>
+        <circle cx="640" cy="490" r="16" fill="none" stroke="#d4af37"/><text x="640" y="498" text-anchor="middle" font-size="17" fill="#d4af37">4</text>
+        <text x="604" y="499" text-anchor="end" text-decoration="line-through">אל תצפי ליותר מדי</text>
+        <circle cx="640" cy="570" r="16" fill="none" stroke="#d4af37"/><text x="640" y="578" text-anchor="middle" font-size="17" fill="#d4af37">5</text>
+        <text x="604" y="579" text-anchor="end" text-decoration="line-through">לא כדאי להרגיש טוב מזה</text>
+      </g>
+      <g transform="rotate(-6 400 640)">
+        <rect x="230" y="616" width="340" height="48" rx="10" fill="#0a0a0c" stroke="#f3d98b" stroke-width="3"/>
+        <text x="400" y="649" text-anchor="middle" font-size="26" fill="#f3d98b" font-weight="900">אפשר לכתוב מחדש</text>
+      </g>
+    </svg></div>
+
+    <ul class="rules rv">
+      <li><b>"כסף צריך להרוויח בזיעה."</b><span>מה שבא בקלות, לא באמת שלי.</span></li>
+      <li><b>"כל דבר עולה במשהו."</b><span>אם נכנס כסף, משהו אחר ייקח: זמן, בריאות, יחסים, שקט.</span></li>
+      <li><b>"כסף הוא משהו קצת מלוכלך."</b><span>עשירים הם אלה שוויתרו על משהו טוב.</span></li>
+      <li><b>"אל תצפי ליותר מדי."</b><span>ככה לא מתאכזבים.</span></li>
+      <li><b>"בטח שלא כדאי להרגיש טוב מזה."</b><span>זה לא יחזיק.</span></li>
+    </ul>
+
+    <div class="lines rv" style="margin-top:40px">את עובדת קשה, ומאבדת את עצמך בדרך.<br>את מקבלת, ומיד מרגישה שחייבת.<br>את נהנית, ובו זמנית מחכה שזה ייגמר.</div>
+
+    <p class="t rv" style="text-align:center;margin-top:34px"><b style="color:var(--gold-l);font-size:1.15em">היא לא האויבת. היא נולדה כדי להגן עליך.</b><br>היא ראתה ולמדה איך נראה כסף במקום שגדלת בו, ועשתה בדיוק מה שנדרש: <b style="color:var(--gold-l)">שרדה.</b></p>
+    <p class="big rv">אבל מי שמתעסקת בלשרוד, <em>לא יכולה ליצור.</em></p>
+    <p class="t rv" style="text-align:center;margin-top:12px">וזו הנקודה שבה היא כבר לא מגנה עליך, אלא מעכבת אותך.</p>
+
+    <div class="quote rv">
+      <p><b>את רוצה ללמוד איך לייצר כסף מבלי להישחק בדרך?</b></p>
+      <p>הצעד הראשון והכי קריטי הוא לשחרר את הזהות השורדת.</p>
+      <p>כי בלעדיה תוכלי ליצור ולקבל כסף בלי להרגיש שאת משלמת עליו.</p>
+    </div>
+    <div class="art rv"><svg viewBox="0 0 800 420" role="img" aria-label="שרשרת שנשברת: מצד אחד חוליות כהות ומצד שני חוליות זהב">
+      <defs>
+        <linearGradient id="d-iron" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a0b16"/><stop offset="1" stop-color="#9b3342"/></linearGradient>
+        <linearGradient id="d-gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8891f"/><stop offset="1" stop-color="#f3d98b"/></linearGradient>
+        <radialGradient id="d-burst"><stop offset="0" stop-color="#fff7da"/><stop offset=".35" stop-color="#f3d98b" stop-opacity=".75"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></radialGradient>
+        <radialGradient id="d-bg" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#2a1d06"/><stop offset="1" stop-color="#060608"/></radialGradient>
+      </defs>
+      <rect width="800" height="420" fill="url(#d-bg)"/>
+      <!-- left: heavy, dark -->
+      <g fill="none" stroke="url(#d-iron)" stroke-width="12" stroke-linecap="round">
+        <ellipse cx="50" cy="210" rx="44" ry="28"/>
+        <ellipse cx="118" cy="210" rx="14" ry="28"/>
+        <ellipse cx="186" cy="210" rx="44" ry="28"/>
+        <ellipse cx="254" cy="210" rx="14" ry="28"/>
+        <ellipse cx="322" cy="210" rx="44" ry="28" stroke-dasharray="180 60" transform="rotate(-8 322 210)"/>
+      </g>
+      <!-- right: light, gold -->
+      <g fill="none" stroke="url(#d-gold)" stroke-width="12" stroke-linecap="round">
+        <ellipse cx="478" cy="210" rx="44" ry="28" stroke-dasharray="180 60" transform="rotate(8 478 210) scale(1)"/>
+        <ellipse cx="546" cy="210" rx="14" ry="28"/>
+        <ellipse cx="614" cy="210" rx="44" ry="28"/>
+        <ellipse cx="682" cy="210" rx="14" ry="28"/>
+        <ellipse cx="750" cy="210" rx="44" ry="28"/>
+      </g>
+      <circle cx="400" cy="210" r="120" fill="url(#d-burst)"/>
+      <g stroke="#fff3c4" stroke-width="4" stroke-linecap="round">
+        <path d="M400 210 L400 120"/><path d="M400 210 L400 300"/>
+        <path d="M400 210 L330 140"/><path d="M400 210 L470 140"/>
+        <path d="M400 210 L330 280"/><path d="M400 210 L470 280"/>
+        <path d="M400 210 L310 210" opacity=".6"/><path d="M400 210 L490 210" opacity=".6"/>
+      </g>
+      <g fill="#fff7da">
+        <circle cx="360" cy="164" r="4"/><circle cx="446" cy="172" r="3.5"/><circle cx="372" cy="262" r="3"/>
+        <circle cx="440" cy="256" r="4.5"/><circle cx="410" cy="140" r="2.5"/><circle cx="390" cy="290" r="2.5"/>
+      </g>
+      <text x="200" y="360" text-anchor="middle" font-size="26" fill="#c46a78" font-weight="700">הזהות השורדת</text>
+      <text x="610" y="360" text-anchor="middle" font-size="26" fill="#f3d98b" font-weight="700">הזהות העשירה</text>
+    </svg></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 4. MUST HAVE -->
+<section>
+  <div class="wrap">
+    <h2 class="rv" style="font-size:clamp(26px,7vw,38px);line-height:1.2">בבית ראית איך עובדים קשה.<br>אף אחד לא לימד אותך איך להרגיש ראויה ליצור כסף בקלילות.</h2>
+    <div style="margin-top:30px">
+      <p class="t rv">כל אישה שרוצה ליצור לעצמה, בכוחות עצמה, עתיד עשיר, תפגוש את זה: האמונה שהיא לא מספיק ראויה, והמרדף שנולד מזה.</p>
+      <p class="t rv">השאלה היחידה היא אם תפגשי את זה מתוך בחירה מודעת ומוכנות לשחרר, או בדרך הקשה שאת כבר מכירה.</p>
+      <p class="t rv"><b style="color:var(--gold-l)">החיים ילמדו אותך את זה בכל מקרה. איתי, או בלעדיי.</b></p>
+    </div>
+    <p class="big rv">אפשר, כבר בגיל צעיר, לשבור את מעגל ההישרדות<br><em>בלי לבלות חיים שלמים בבריחה מחרדה כלכלית.</em></p>
+
+    <div class="cmp rv">
+      <div class="s"><h3>הזהות השורדת</h3><ul>
+        <li>רצה כדי לא להיות ענייה</li><li>כסף = מאמץ והקרבה</li><li>נחה רק כשמגיע לה</li><li>מקבלת, ומיד מרגישה חייבת</li><li>מחזיקה מתוך חרדה</li></ul></div>
+      <div class="r"><h3>הזהות העשירה</h3><ul>
+        <li>יוצרת כי היא רוצה</li><li>כסף = זרימה ובחירה</li><li>נחה כי זה טבעי</li><li>מקבלת, ונהנית</li><li>מחזיקה מתוך שלווה וחיבור</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 5. KINGDOM -->
+<section class="alt">
+  <div class="wrap">
+    <p class="eyebrow rv">ממלכת הכסף</p>
+    <h2 class="rv">זה לא עוד<br>קורס שפע.</h2>
+    <div style="margin-top:26px" class="center">
+      <p class="t rv">מעטפת דיגיטלית שלמה. בלי לחץ לסיים בזמן, ובלי להישכח בין כל הקורסים שקנית ולא הספקת.</p>
+      <p class="t rv">היא לא מלמדת איך להתעשר מהר, או איך למצוא משרה שמשלמת כפול. היא עוזרת לך להיזכר בגרסה העשירה שכבר קיימת בתודעה שלך, ולבנות זהות פנימית שמסונכרנת עם ההכנסות שאת רוצה ליצור.</p>
+      <p class="t rv"><b style="color:var(--gold-l)">היא מלווה אותך בדרך מהזהות של מי שצריכה להוכיח, לזהות של מי שמרשה לעצמה לקבל, ליצור ולנוח.</b></p>
+    </div>
+
+    <div class="stage rv"><svg viewBox="0 0 800 660" style="direction:ltr" role="img" aria-label="מוקאפ ממלכת הכסף: קורס מוקלט, מדיטציות, סאבלימינל לשינה, חוברת עבודה, משחקי תודעה וספריית העשרה">
+        <defs>
+          <radialGradient id="m-glow" cx="50%" cy="48%" r="52%">
+            <stop offset="0" stop-color="#d4af37" stop-opacity=".55"/><stop offset=".55" stop-color="#8a6516" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="m-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e3a0"/><stop offset=".5" stop-color="#d4af37"/><stop offset="1" stop-color="#a77a17"/></linearGradient>
+          <linearGradient id="m-goldH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a77a17"/><stop offset=".5" stop-color="#f7e3a0"/><stop offset="1" stop-color="#a77a17"/></linearGradient>
+          <linearGradient id="m-screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a0a12"/><stop offset="1" stop-color="#07070b"/></linearGradient>
+          <linearGradient id="m-navy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16214a"/><stop offset="1" stop-color="#070a18"/></linearGradient>
+          <linearGradient id="m-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b4b55"/><stop offset="1" stop-color="#17171d"/></linearGradient>
+          <linearGradient id="m-cover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9b2237"/><stop offset="1" stop-color="#4a0b16"/></linearGradient>
+          <linearGradient id="m-plat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1b22"/><stop offset="1" stop-color="#050507"/></linearGradient>
+          <filter id="m-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+          <path id="m-star" d="M0 -12 Q1.5 -1.5 12 0 Q1.5 1.5 0 12 Q-1.5 1.5 -12 0 Q-1.5 -1.5 0 -12 Z"/>
+        </defs>
+
+        <ellipse cx="400" cy="330" rx="400" ry="320" fill="url(#m-glow)"/>
+
+        <!-- swirl -->
+        <g fill="none" stroke-linecap="round">
+          <path d="M70 470 C10 220 270 40 520 78 S820 270 735 500" stroke="#f3d98b" stroke-width="9" opacity=".35" filter="url(#m-blur)"/>
+          <path class="swirl" d="M70 470 C10 220 270 40 520 78 S820 270 735 500" stroke="url(#m-gold)" stroke-width="3"/>
+          <path d="M110 500 C60 270 290 90 505 120 S770 290 700 505" stroke="#f3d98b" stroke-width="1.5" opacity=".45"/>
+        </g>
+
+        <!-- platform -->
+        <ellipse cx="400" cy="560" rx="352" ry="46" fill="#000" opacity=".6"/>
+        <ellipse cx="400" cy="548" rx="338" ry="40" fill="url(#m-plat)" stroke="url(#m-goldH)" stroke-width="3"/>
+        <ellipse cx="400" cy="548" rx="300" ry="32" fill="none" stroke="#d4af37" stroke-opacity=".25"/>
+
+        <!-- tablet (meditations) -->
+        <g class="float" style="animation-delay:.6s">
+        <g transform="rotate(-8 165 340)">
+          <rect x="84" y="240" width="170" height="220" rx="16" fill="url(#m-metal)"/>
+          <rect x="92" y="248" width="154" height="204" rx="10" fill="url(#m-navy)"/>
+          <g fill="none" stroke="#f3d98b" stroke-width="1.6">
+            <circle cx="169" cy="340" r="14" opacity=".95"/><circle cx="169" cy="340" r="30" opacity=".6"/>
+            <circle cx="169" cy="340" r="48" opacity=".35"/><circle cx="169" cy="340" r="66" opacity=".18"/>
+          </g>
+          <circle cx="169" cy="340" r="7" fill="#fff3c4"/>
+          <text x="169" y="283" text-anchor="middle" font-size="19" font-weight="900" fill="#f3d98b">5 מדיטציות</text>
+          <text x="169" y="302" text-anchor="middle" font-size="11" fill="#9aa4c8">כסף · שפע · אומץ</text>
+          <rect x="120" y="424" width="98" height="4" rx="2" fill="#2b3563"/><rect x="120" y="424" width="42" height="4" rx="2" fill="#f3d98b"/>
+        </g>
+        </g>
+
+        <!-- phone (subliminal) -->
+        <g class="float" style="animation-delay:1.4s">
+        <g transform="rotate(7 640 345)">
+          <rect x="590" y="240" width="104" height="208" rx="20" fill="url(#m-metal)"/>
+          <rect x="596" y="246" width="92" height="196" rx="15" fill="url(#m-navy)"/>
+          <rect x="624" y="251" width="36" height="8" rx="4" fill="#000"/>
+          <path d="M650 306 A24 24 0 1 0 650 354 A19 19 0 1 1 650 306 Z" fill="#f3d98b"/>
+          <g fill="#fff3c4"><circle cx="612" cy="290" r="1.6"/><circle cx="670" cy="330" r="1.4"/><circle cx="622" cy="372" r="1.8"/><circle cx="676" cy="286" r="1.2"/></g>
+          <text x="642" y="402" text-anchor="middle" font-size="14" font-weight="900" fill="#f3d98b">סאבלימינל</text>
+          <text x="642" y="418" text-anchor="middle" font-size="11" fill="#9aa4c8">לשינה</text>
+        </g>
+        </g>
+
+        <!-- laptop (code) -->
+        <g class="float">
+          <rect x="238" y="146" width="324" height="208" rx="12" fill="url(#m-metal)"/>
+          <rect x="248" y="156" width="304" height="188" rx="6" fill="url(#m-screen)"/>
+          <path d="M360 190 L372 172 L384 184 L400 166 L416 184 L428 172 L440 190 Z" fill="url(#m-gold)"/>
+          <rect x="360" y="190" width="80" height="6" rx="2" fill="url(#m-gold)"/>
+          <text x="400" y="228" text-anchor="middle" font-size="30" font-weight="900" fill="#f3d98b">קוד הכסף</text>
+          <text x="400" y="249" text-anchor="middle" font-size="13" fill="#c8bda0">3 מפגשים מוקלטים</text>
+          <circle cx="400" cy="287" r="22" fill="url(#m-gold)"/>
+          <path d="M393 275 L393 299 L414 287 Z" fill="#1a1405"/>
+          <rect x="278" y="326" width="244" height="4" rx="2" fill="#3a2a30"/><rect x="278" y="326" width="96" height="4" rx="2" fill="#d4af37"/>
+          <path d="M214 354 L586 354 L606 374 Q606 380 598 380 L202 380 Q194 380 194 374 Z" fill="url(#m-metal)"/>
+          <rect x="360" y="354" width="80" height="6" rx="3" fill="#0a0a0d"/>
+        </g>
+
+        <!-- workbook -->
+        <g transform="rotate(-5 275 480)">
+          <rect x="222" y="418" width="112" height="136" rx="6" fill="#d8b24a"/>
+          <rect x="216" y="412" width="112" height="136" rx="6" fill="url(#m-cover)" stroke="url(#m-gold)" stroke-width="2.5"/>
+          <rect x="226" y="422" width="92" height="116" rx="3" fill="none" stroke="#f3d98b" stroke-opacity=".6"/>
+          <path d="M252 462 L258 450 L266 457 L272 446 L278 457 L286 450 L292 462 Z" fill="url(#m-gold)"/>
+          <text x="272" y="492" text-anchor="middle" font-size="17" font-weight="900" fill="#f3d98b">חוברת</text>
+          <text x="272" y="512" text-anchor="middle" font-size="17" font-weight="900" fill="#f3d98b">עבודה</text>
+        </g>
+
+        <!-- headphones -->
+        <g fill="none" stroke-linecap="round">
+          <path d="M338 520 C336 440 464 440 462 520" stroke="#ece6d6" stroke-width="9"/>
+          <path d="M338 520 C336 440 464 440 462 520" stroke="#fff" stroke-width="3" opacity=".6" transform="translate(0 -2)"/>
+        </g>
+        <rect x="322" y="494" width="30" height="52" rx="14" fill="#efe9d9"/><rect x="448" y="494" width="30" height="52" rx="14" fill="#efe9d9"/>
+        <rect x="326" y="504" width="14" height="32" rx="7" fill="#d4af37" opacity=".8"/><rect x="460" y="504" width="14" height="32" rx="7" fill="#d4af37" opacity=".8"/>
+
+        <!-- game card -->
+        <g transform="rotate(9 548 478)">
+          <rect x="512" y="426" width="76" height="106" rx="8" fill="#0b0b10" stroke="url(#m-gold)" stroke-width="2.5"/>
+          <rect x="519" y="433" width="62" height="92" rx="4" fill="none" stroke="#d4af37" stroke-opacity=".4"/>
+          <path d="M550 452 L568 480 L550 508 L532 480 Z" fill="url(#m-gold)"/>
+          <path d="M550 462 L560 480 L550 498 L540 480 Z" fill="#8b1a2b"/>
+        </g>
+
+        <!-- library -->
+        <g>
+          <rect x="598" y="508" width="112" height="20" rx="3" fill="#13213f" stroke="#d4af37" stroke-opacity=".7"/>
+          <rect x="606" y="486" width="100" height="22" rx="3" fill="#8b1a2b" stroke="#d4af37" stroke-opacity=".7"/>
+          <rect x="596" y="466" width="106" height="20" rx="3" fill="#1b1b22" stroke="#d4af37" stroke-opacity=".7"/>
+          <rect x="612" y="515" width="40" height="3" rx="1.5" fill="#d4af37" opacity=".7"/>
+        </g>
+
+        <!-- ribbon -->
+        <g>
+          <path d="M150 598 L190 584 L190 626 L150 640 L170 612 Z" fill="#8a6516"/>
+          <path d="M650 598 L610 584 L610 626 L650 640 L630 612 Z" fill="#8a6516"/>
+          <path d="M184 580 L616 580 L616 624 L184 624 Z" fill="url(#m-gold)"/>
+          <path d="M184 580 L616 580" stroke="#fff3c4" stroke-width="2" opacity=".8"/>
+          <text x="400" y="610" text-anchor="middle" font-size="22" font-weight="900" fill="#1a1405">תשלום חד פעמי · גישה לכל החיים</text>
+        </g>
+
+        <!-- value badge -->
+        <g transform="rotate(-10 112 118)">
+          <circle cx="112" cy="118" r="68" fill="none" stroke="#f3d98b" stroke-width="5" stroke-dasharray="3 5" opacity=".9"/>
+          <circle cx="112" cy="118" r="60" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="2"/>
+          <circle cx="112" cy="118" r="52" fill="none" stroke="#1a1405" stroke-opacity=".45"/>
+          <text x="112" y="106" text-anchor="middle" font-size="13.5" font-weight="900" fill="#1a1405">שווי המעטפת</text>
+          <text x="112" y="136" text-anchor="middle" font-size="23" font-weight="900" fill="#1a1405">5,250 ₪</text>
+        </g>
+
+        <!-- pins -->
+        <g font-weight="900" font-size="15" text-anchor="middle" fill="#1a1405">
+          <g><circle cx="400" cy="138" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="400" y="144">1</text></g>
+          <g><circle cx="150" cy="238" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="150" y="244">2</text></g>
+          <g><circle cx="660" cy="232" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="660" y="238">3</text></g>
+          <g><circle cx="230" cy="412" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="230" y="418">4</text></g>
+          <g><circle cx="590" cy="424" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="590" y="430">5</text></g>
+          <g><circle cx="700" cy="462" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="700" y="468">6</text></g>
+        </g>
+
+        <!-- sparkles -->
+        <g fill="#fff3c4">
+          <use href="#m-star" x="560" y="96" class="twinkle"/><use href="#m-star" x="696" y="168" class="twinkle d2" transform="translate(0 0) scale(1)"/>
+          <use href="#m-star" x="52" y="300" class="twinkle d3"/><use href="#m-star" x="300" y="64" class="twinkle d2"/>
+          <use href="#m-star" x="744" y="372" class="twinkle"/><use href="#m-star" x="214" y="150" class="twinkle d3"/>
+          <circle cx="470" cy="60" r="2.4" class="twinkle"/><circle cx="118" cy="420" r="2" class="twinkle d2"/><circle cx="676" cy="96" r="2" class="twinkle d3"/>
+        </g>
+      </svg></div>
+    <ol class="legend rv">
+      <li><span class="n">1</span><div><b>קוד הכסף</b><span>3 מפגשים מוקלטים. מעל 60 נשים כבר עברו אותו בלייב.</span></div></li>
+      <li><span class="n">2</span><div><b>5 מדיטציות</b><span>כסף, שפע, הזדמנויות ואומץ. ללמוד לקבל.</span></div></li>
+      <li><span class="n">3</span><div><b>סאבלימינל לשינה</b><span>את ישנה. העבודה ממשיכה בשקט.</span></div></li>
+      <li><span class="n">4</span><div><b>חוברות ותרגילים</b><span>כדי שזה לא יישאר תובנה יפה.</span></div></li>
+      <li><span class="n">5</span><div><b>משחקי תודעה</b><span>שינוי שלא מרגיש כמו שיעורי בית.</span></div></li>
+      <li><span class="n">6</span><div><b>ספריית ההעשרה</b><span>הרצאות, ספרים, סרטים ופודקאסטים.</span></div></li>
+    </ol>
+
+    <h2 class="rv" style="margin-top:64px;font-size:clamp(26px,7vw,38px)">מה מחכה לך<br>בתוך הממלכה?</h2>
+    <div class="cards">
+      <article class="card rv"><span class="no">01</span><h3>קוד הכסף</h3><p>3 מפגשים מוקלטים. מאיפה הגיעו החוקים של הזהות השורדת, מה הם מפעילים בך היום, ומה אפשר לבחור אחרת.</p><em>מעל 60 נשים כבר עברו אותו בלייב</em></article>
+      <article class="card rv"><span class="no">02</span><h3>5 מדיטציות לקידוד מחדש</h3><p>כסף. שפע. הזדמנויות. אומץ. ללמוד לקבל, לא רק לעשות.</p></article>
+      <article class="card rv"><span class="no">03</span><h3>סאבלימינל לשינה</h3><p>את ישנה. העבודה ממשיכה בשקט.</p></article>
+      <article class="card rv"><span class="no">04</span><h3>חוברות עבודה ותרגילים</h3><p>לכתוב, לשאול, לפגוש. כדי שזה לא יישאר תובנה יפה.</p></article>
+      <article class="card rv"><span class="no">05</span><h3>משחקי תודעה</h3><p>כי שינוי לא חייב להרגיש כמו שיעורי בית.</p></article>
+      <article class="card rv"><span class="no">06</span><h3>ספריית ההעשרה</h3><p>הרצאות, ספרים, סרטים ופודקאסטים שריכזתי עבורך.</p></article>
+    </div>
+    <p class="big rv" style="font-size:clamp(20px,5.4vw,26px);margin-top:30px">אין דד-ליין. <em>את בוחרת מאיפה להתחיל.</em></p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 6. NOT X -->
+<section class="notx">
+  <div class="wrap">
+    <div class="lines rv"><span class="strike">נוסחת קסם.</span> <span class="strike">גורו פיננסי.</span> <span class="strike">קורס שפע.</span></div>
+    <p class="big rv" style="margin-top:6px"><em>נעשה את זה אחרת.</em></p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 7. FOUNDER -->
+<section>
+  <div class="wrap founder">
+    <div class="avatar rv"><img src="assets/noya.jpg" width="1100" height="880" alt="נויה ברטימור" loading="lazy"></div>
+    <div class="story">
+      <h2 class="rv" style="font-size:clamp(28px,7.4vw,38px);margin-bottom:22px">אני נויה.</h2>
+      <p class="rv">במשך תקופה ארוכה עבדתי מהבוקר עד הערב. הכסף נכנס. העסק גדל. ועדיין הייתי בחרדה כלכלית.</p>
+      <p class="rv">לא הבנתי: כמה עוד אני צריכה להרוויח כדי שסוף סוף ארגיש בטוחה?</p>
+      <p class="rv">עד שהבנתי שהזהות השורדת שלי לא חיפשה כסף. <span class="hl">היא חיפשה מאמץ.</span> את התחושה שאני נשחקת, עובדת בלי סוף, נלחמת. כי כל עוד אני מתאמצת, אני כביכול בטוחה.</p>
+      <p class="rv">כשהתחלתי לשחרר אותה, לא רק היחסים שלי עם כסף השתנו. כל החיים שלי השתנו.</p>
+      <p class="rv">הלו״ז שלי התרוקן, וההכנסות עלו ב-50%. הרגשתי בנוח להכפיל מחירים בעסק, והגיעו לקוחות איכותיות. התחלתי ללמוד תחביבים חדשים. חזרתי לנשיות ולמיניות שלי. הפסקתי להיות עסוקה כל היום בשאלה "איך אני מייצרת עוד כסף?" והתחלתי להשאיר בחיים שלי מקום גם להזדמנויות שלא יכולתי לתכנן מראש.</p>
+      <p class="rv">ואז הבנתי: לא רציתי לבנות עושר שדורש ממני להישחק כדי להחזיק אותו. <span class="hl">רציתי לבנות חיים שאני באמת רוצה להיות נוכחת בהם.</span></p>
+      <p class="fine rv">זה הסיפור שלי. התוצאות שלי אישיות, וממלכת הכסף לא מבטיחה תוצאה כספית.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 8. TESTIMONIALS -->
+<section class="alt">
+  <div class="wrap">
+    <p class="eyebrow rv">מה נשים אומרות</p>
+    <h2 class="rv">מה יש לנשים להגיד.</h2>
+    <div class="tm">
+      <blockquote class="rv">אף פעם לא הרגשתי חיבור כל כך עמוק וחזק.<cite>מהמשתתפות בקורס "קוד הכסף"</cite></blockquote>
+      <blockquote class="rv">הקורס נתן לי את האפשרות לראות את הדברים אחרת.<cite>מהמשתתפות בקורס "קוד הכסף"</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 9. NOT FOR EVERYONE -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">זה לא לכל אחת.</h2>
+    <p class="sub rv" style="margin-bottom:0">הממלכה לא בשבילך אם:</p>
+    <ul class="nope rv">
+      <li>את מחפשת נוסחת קסם שתעשה את העבודה בלי שתפגשי את עצמך.</li>
+      <li>את מחפשת קורס על השקעות או ניהול תקציב.</li>
+      <li>את לא מוכנה להסתכל על הסיפור שמנהל אותך היום.</li>
+    </ul>
+    <p class="big rv" style="font-size:clamp(22px,6vw,30px)">אבל אם עייפת לרוץ, ורוצה להרגיש שמותר לך,<br><em>יש לך מקום, אצלי.</em></p>
+  </div>
+</section>
+
+<!-- 10. OFFER -->
+<section class="offer" id="offer">
+  <div class="wrap">
+    <p class="big rv" style="margin-top:0;font-size:clamp(22px,6vw,30px);line-height:1.35">יש כאלה שיגידו שידע כזה שווה <em>20,000 ₪</em>.<br>אחרות היו משלמות <em>5,000 ₪</em> על שינוי כזה.<br>אבל זה לא המחיר שתשלמי היום.</p>
+    <p class="t rv center" style="margin-top:26px">נמאס לי לראות נשים חיות בזהות שורדת.<br>אז החלטתי לעשות מהלך אמיץ ולתת לך הצעה שקשה לסרב לה.</p>
+
+    <h2 class="rv" style="margin-top:40px;font-size:clamp(26px,7vw,38px)">הכניסה לממלכה</h2>
+    <ul class="stack rv">
+      <li><span>קוד הכסף · 3 מפגשים מוקלטים</span><span class="v">שווי 1,800 ₪</span></li>
+      <li><span>5 מדיטציות לקידוד מחדש</span><span class="v">שווי 750 ₪</span></li>
+      <li><span>סאבלימינל לשינה</span><span class="v">שווי 600 ₪</span></li>
+      <li><span>חוברות עבודה ותרגילים</span><span class="v">שווי 700 ₪</span></li>
+      <li><span>משחקי תודעה</span><span class="v">שווי 500 ₪</span></li>
+      <li><span>ספריית ההעשרה</span><span class="v">שווי 900 ₪</span></li>
+    </ul>
+    <div class="total rv"><span>סה"כ שווי:</span><s>5,250 ₪</s></div>
+
+    <div class="box rv" id="join">
+      <span class="tag">✈️ הטבת תאילנד</span>
+      <div class="price">
+        <div class="reg">מחיר רגיל: 888 ₪</div>
+        <span class="now">555 ₪</span>
+        <p class="why">טסתי לתאילנד, אז חתכתי את המחיר.</p>
+        <p class="terms">ההטבה בתוקף כל עוד אני בתאילנד, או ל-25 הנשים הראשונות, מה שקורה קודם. אחרי זה המחיר חוזר ל-888 ₪, בלי הארכות.</p>
+      </div>
+      <form id="join-form" novalidate>
+        <div><label for="f-name">שם מלא</label><input id="f-name" name="name" type="text" autocomplete="name" required placeholder="השם שלך"></div>
+        <div><label for="f-phone">טלפון</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="050-0000000" dir="ltr" style="text-align:right"></div>
+        <div><label for="f-email">אימייל</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="name@email.com" dir="ltr" style="text-align:right"></div>
+        <p class="err" id="form-err" role="alert" aria-live="polite"></p>
+        <button class="btn" type="submit" id="submit-btn">אני נכנסת לממלכה<small>גישה מיידית · תשלום חד פעמי · 555 ₪</small></button>
+        <p class="fine2">כולל מע״מ · כל הממלכה נפתחת לך מיד · גישה לכל החיים · מכל מקום, בקצב שלך</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 11. FAQ -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">שאלות נפוצות</h2>
+    <div class="faq rv">
+      <details><summary>אין לי עסק, ואני אפילו לא עובדת עכשיו. זה בשבילי?</summary><p>כן. זה עוסק באמונות שלך על כסף, לא בעבודה.</p></details>
+      <details><summary>אני עובדת קשה ולא מצליחה לנוח. זה זה?</summary><p>כנראה. זו בדיוק הנקודה שהממלכה נוגעת בה.</p></details>
+      <details><summary>זה מבטיח שארוויח יותר כסף?</summary><p>לא. הממלכה לא מבטיחה תוצאה כספית. היא נותנת שפה, כלים ומרחב לשנות את מערכת היחסים שלך עם כסף.</p></details>
+      <details><summary>כמה זמן זה לוקח?</summary><p>אין מסלול. הכול נפתח מיד, ואת מתקדמת בקצב שלך.</p></details>
+      <details><summary>זה לימוד השקעות?</summary><p>לא. זה עוסק בך.</p></details>
+      <details><summary>מה קורה כשההטבה נגמרת?</summary><p>המחיר חוזר ל-888 ₪, בלי הארכות.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 12. CLOSING -->
+<section class="alt">
+  <div class="wrap">
+    <div class="art rv" style="max-width:420px"><svg viewBox="0 0 800 900" role="img" aria-label="שער הממלכה: אישה עומדת על שטיח אדום מול דלת זוהרת מתחת לכתר">
+      <defs>
+        <radialGradient id="a-bg" cx="50%" cy="62%" r="62%">
+          <stop offset="0" stop-color="#4a3508"/><stop offset=".55" stop-color="#14100a"/><stop offset="1" stop-color="#070709"/>
+        </radialGradient>
+        <linearGradient id="a-gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f3d98b"/><stop offset="1" stop-color="#b8891f"/>
+        </linearGradient>
+        <radialGradient id="a-door" cx="50%" cy="78%" r="70%">
+          <stop offset="0" stop-color="#fff7da"/><stop offset=".4" stop-color="#f3d98b"/><stop offset="1" stop-color="#a9791a"/>
+        </radialGradient>
+        <linearGradient id="a-stone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#18203f"/><stop offset="1" stop-color="#090c1a"/>
+        </linearGradient>
+        <linearGradient id="a-carpet" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#8b1a2b"/><stop offset="1" stop-color="#4a0b16"/>
+        </linearGradient>
+        <path id="a-ray" d="M0 0 L-55 -760 L55 -760 Z"/>
+        <radialGradient id="a-halo"><stop offset="0" stop-color="#f3d98b" stop-opacity=".55"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="800" height="900" fill="url(#a-bg)"/>
+      <g transform="translate(400 600)" fill="#f3d98b">
+        <use href="#a-ray" transform="rotate(-70)" opacity=".05"/>
+        <use href="#a-ray" transform="rotate(-50)" opacity=".08"/>
+        <use href="#a-ray" transform="rotate(-30)" opacity=".06"/>
+        <use href="#a-ray" transform="rotate(-12)" opacity=".1"/>
+        <use href="#a-ray" transform="rotate(12)" opacity=".1"/>
+        <use href="#a-ray" transform="rotate(30)" opacity=".06"/>
+        <use href="#a-ray" transform="rotate(50)" opacity=".08"/>
+        <use href="#a-ray" transform="rotate(70)" opacity=".05"/>
+      </g>
+      <g fill="#f3d98b">
+        <circle cx="90" cy="120" r="2.2" opacity=".8"/><circle cx="700" cy="90" r="1.8" opacity=".7"/>
+        <circle cx="610" cy="210" r="2.6" opacity=".6"/><circle cx="150" cy="300" r="1.6" opacity=".7"/>
+        <circle cx="720" cy="360" r="2" opacity=".6"/><circle cx="60" cy="470" r="2.4" opacity=".5"/>
+        <circle cx="260" cy="60" r="1.5" opacity=".7"/><circle cx="520" cy="40" r="2" opacity=".6"/>
+      </g>
+      <!-- columns -->
+      <rect x="95" y="330" width="56" height="480" fill="url(#a-stone)" stroke="#d4af37" stroke-opacity=".45"/>
+      <rect x="649" y="330" width="56" height="480" fill="url(#a-stone)" stroke="#d4af37" stroke-opacity=".45"/>
+      <rect x="85" y="316" width="76" height="16" rx="3" fill="url(#a-gold)"/>
+      <rect x="639" y="316" width="76" height="16" rx="3" fill="url(#a-gold)"/>
+      <!-- arch -->
+      <path d="M170 800 V380 A230 230 0 0 1 630 380 V800 Z" fill="url(#a-stone)" stroke="#d4af37" stroke-width="4"/>
+      <path d="M235 800 V390 A165 165 0 0 1 565 390 V800 Z" fill="url(#a-door)" stroke="#f3d98b" stroke-width="2"/>
+      <circle cx="400" cy="640" r="230" fill="url(#a-halo)"/>
+      <!-- crown -->
+      <path d="M335 150 L345 92 L372 124 L400 76 L428 124 L455 92 L465 150 Z" fill="url(#a-gold)" stroke="#fff3c4" stroke-width="1.5"/>
+      <rect x="335" y="150" width="130" height="16" rx="4" fill="url(#a-gold)"/>
+      <circle cx="400" cy="158" r="4" fill="#8b1a2b"/><circle cx="365" cy="158" r="3" fill="#8b1a2b"/><circle cx="435" cy="158" r="3" fill="#8b1a2b"/>
+      <circle cx="345" cy="90" r="5" fill="#fff3c4"/><circle cx="400" cy="72" r="6" fill="#fff3c4"/><circle cx="455" cy="90" r="5" fill="#fff3c4"/>
+      <!-- steps + carpet -->
+      <rect x="150" y="800" width="500" height="20" fill="#0d1226" stroke="#d4af37" stroke-opacity=".5"/>
+      <rect x="120" y="820" width="560" height="22" fill="#0b0f20" stroke="#d4af37" stroke-opacity=".4"/>
+      <rect x="90" y="842" width="620" height="58" fill="#080b18" stroke="#d4af37" stroke-opacity=".3"/>
+      <path d="M255 800 L545 800 L640 900 L160 900 Z" fill="url(#a-carpet)"/>
+      <path d="M255 800 L160 900 M545 800 L640 900" stroke="#d4af37" stroke-width="3" opacity=".8"/>
+      <!-- figure -->
+      <ellipse cx="400" cy="790" rx="62" ry="9" fill="#000" opacity=".5"/>
+      <path d="M383 676 Q400 668 417 676 L444 788 Q400 806 356 788 Z" fill="#06060a" stroke="#f3d98b" stroke-opacity=".55" stroke-width="1.5"/>
+      <path d="M384 664 Q384 640 400 640 Q416 640 416 664 Q420 700 412 722 Q408 690 400 684 Q392 690 388 722 Q380 700 384 664 Z" fill="#06060a" stroke="#f3d98b" stroke-opacity=".5" stroke-width="1.2"/>
+      <circle cx="400" cy="656" r="15" fill="#06060a" stroke="#f3d98b" stroke-opacity=".55" stroke-width="1.2"/>
+    </svg></div>
+    <h2 class="rv" style="margin-top:34px">הזהות החדשה שלך<br>מתחילה כאן.</h2>
+    <div class="center rv"><a class="btn inline" href="#join">אני נכנסת לממלכה</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>ממלכת הכסף אינה מהווה ייעוץ פיננסי, השקעות או ייעוץ מקצועי מכל סוג, ואינה מבטיחה תוצאה כספית. התוצאות המתוארות הן חוויות אישיות.</p>
+    <p>© נויה ברטימור</p>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky"><a class="btn" href="#join">✈️ הטבת תאילנד · 555 ₪<small>אני נכנסת לממלכה</small></a></div>
+
+<script>
+  // ---- הגדרות: למלא לפני עלייה לאוויר ----
+  var CONFIG = {
+    CHECKOUT_URL: "",   // קישור לתשלום (לדוגמה: קישור מ-Cardcom / PayPlus / Meshulam / Stripe)
+    LEAD_ENDPOINT: ""   // כתובת לשמירת הלידים (Zapier / Make / Google Sheets webhook / Supabase function)
+  };
+
+  // reveal on scroll
+  (function(){
+    var els=[].slice.call(document.querySelectorAll('.rv'));
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(e){io.observe(e)});
+  })();
+
+  // hide sticky CTA while the offer box is visible
+  (function(){
+    var s=document.getElementById('sticky'),b=document.getElementById('join');
+    if(!('IntersectionObserver' in window))return;
+    new IntersectionObserver(function(es){s.classList.toggle('hide',es[0].isIntersecting)},{threshold:.15}).observe(b);
+  })();
+
+  // form
+  (function(){
+    var f=document.getElementById('join-form'),err=document.getElementById('form-err'),btn=document.getElementById('submit-btn');
+    f.addEventListener('submit',function(ev){
+      ev.preventDefault();
+      var name=f.name.value.trim(),phone=f.phone.value.replace(/[\s-]/g,''),email=f.email.value.trim();
+      if(name.length<2){err.textContent='איך קוראים לך?';f.name.focus();return}
+      if(!/^(\+972|0)5\d{8}$/.test(phone)&&!/^(\+972|0)[2-9]\d{7,8}$/.test(phone)){err.textContent='נראה שיש טעות במספר הטלפון.';f.phone.focus();return}
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){err.textContent='נראה שיש טעות באימייל.';f.email.focus();return}
+      err.textContent='';
+      btn.disabled=true;
+      var go=function(){
+        if(CONFIG.CHECKOUT_URL){
+          var u=new URL(CONFIG.CHECKOUT_URL);
+          u.searchParams.set('name',name);u.searchParams.set('email',email);u.searchParams.set('phone',phone);
+          window.location.href=u.toString();
+        }else{
+          btn.disabled=false;
+          err.textContent='התשלום עדיין לא מחובר לדף.';
+        }
+      };
+      var payload={name:name,phone:phone,email:email,source:'malchut-hakesef',ts:new Date().toISOString()};
+      if(CONFIG.LEAD_ENDPOINT){
+        fetch(CONFIG.LEAD_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(function(){}).then(go);
+      }else go();
+    });
+  })();
+</script>
+</body>
+</html>
