@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ממלכת הכסף - ויזואלים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0c; --gold:#d4af37; --gold-l:#f3d98b; --red:#8b1a2b; --red-d:#5e0f1c; --navy:#0d1530; --ink:#e9e3d3; --mute:#9a937f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;line-height:1.5}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 64px}
+  h1{font-size:clamp(28px,6vw,44px);color:var(--gold);text-align:center;margin:48px 0 8px;font-weight:900}
+  .lead{text-align:center;color:var(--mute);margin:0 0 40px}
+  figure{margin:0 0 56px}
+  figure svg{width:100%;height:auto;display:block;border:1px solid rgba(212,175,55,.25);border-radius:18px;background:#000}
+  figcaption{margin-top:14px}
+  figcaption b{display:block;color:var(--gold-l);font-size:20px;margin-bottom:2px}
+  figcaption span{color:var(--mute);font-size:15px}
+  .tag{display:inline-block;font-size:12px;letter-spacing:.04em;color:#0a0a0c;background:var(--gold);border-radius:99px;padding:2px 10px;margin-bottom:8px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>הוויזואלים של הממלכה</h1>
+  <p class="lead">ארבעה איורים שמספרים את החוויה, כל אחד בנקודה אחרת בדף.</p>
+
+  <!-- 1. GATE -->
+  <figure>
+    <svg viewBox="0 0 800 900" role="img" aria-label="שער הממלכה: אישה עומדת על שטיח אדום מול דלת זוהרת מתחת לכתר">
+      <defs>
+        <radialGradient id="a-bg" cx="50%" cy="62%" r="62%">
+          <stop offset="0" stop-color="#4a3508"/><stop offset=".55" stop-color="#14100a"/><stop offset="1" stop-color="#070709"/>
+        </radialGradient>
+        <linearGradient id="a-gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f3d98b"/><stop offset="1" stop-color="#b8891f"/>
+        </linearGradient>
+        <radialGradient id="a-door" cx="50%" cy="78%" r="70%">
+          <stop offset="0" stop-color="#fff7da"/><stop offset=".4" stop-color="#f3d98b"/><stop offset="1" stop-color="#a9791a"/>
+        </radialGradient>
+        <linearGradient id="a-stone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#18203f"/><stop offset="1" stop-color="#090c1a"/>
+        </linearGradient>
+        <linearGradient id="a-carpet" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#8b1a2b"/><stop offset="1" stop-color="#4a0b16"/>
+        </linearGradient>
+        <path id="a-ray" d="M0 0 L-55 -760 L55 -760 Z"/>
+        <radialGradient id="a-halo"><stop offset="0" stop-color="#f3d98b" stop-opacity=".55"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="800" height="900" fill="url(#a-bg)"/>
+      <g transform="translate(400 600)" fill="#f3d98b">
+        <use href="#a-ray" transform="rotate(-70)" opacity=".05"/>
+        <use href="#a-ray" transform="rotate(-50)" opacity=".08"/>
+        <use href="#a-ray" transform="rotate(-30)" opacity=".06"/>
+        <use href="#a-ray" transform="rotate(-12)" opacity=".1"/>
+        <use href="#a-ray" transform="rotate(12)" opacity=".1"/>
+        <use href="#a-ray" transform="rotate(30)" opacity=".06"/>
+        <use href="#a-ray" transform="rotate(50)" opacity=".08"/>
+        <use href="#a-ray" transform="rotate(70)" opacity=".05"/>
+      </g>
+      <g fill="#f3d98b">
+        <circle cx="90" cy="120" r="2.2" opacity=".8"/><circle cx="700" cy="90" r="1.8" opacity=".7"/>
+        <circle cx="610" cy="210" r="2.6" opacity=".6"/><circle cx="150" cy="300" r="1.6" opacity=".7"/>
+        <circle cx="720" cy="360" r="2" opacity=".6"/><circle cx="60" cy="470" r="2.4" opacity=".5"/>
+        <circle cx="260" cy="60" r="1.5" opacity=".7"/><circle cx="520" cy="40" r="2" opacity=".6"/>
+      </g>
+      <!-- columns -->
+      <rect x="95" y="330" width="56" height="480" fill="url(#a-stone)" stroke="#d4af37" stroke-opacity=".45"/>
+      <rect x="649" y="330" width="56" height="480" fill="url(#a-stone)" stroke="#d4af37" stroke-opacity=".45"/>
+      <rect x="85" y="316" width="76" height="16" rx="3" fill="url(#a-gold)"/>
+      <rect x="639" y="316" width="76" height="16" rx="3" fill="url(#a-gold)"/>
+      <!-- arch -->
+      <path d="M170 800 V380 A230 230 0 0 1 630 380 V800 Z" fill="url(#a-stone)" stroke="#d4af37" stroke-width="4"/>
+      <path d="M235 800 V390 A165 165 0 0 1 565 390 V800 Z" fill="url(#a-door)" stroke="#f3d98b" stroke-width="2"/>
+      <circle cx="400" cy="640" r="230" fill="url(#a-halo)"/>
+      <!-- crown -->
+      <path d="M335 150 L345 92 L372 124 L400 76 L428 124 L455 92 L465 150 Z" fill="url(#a-gold)" stroke="#fff3c4" stroke-width="1.5"/>
+      <rect x="335" y="150" width="130" height="16" rx="4" fill="url(#a-gold)"/>
+      <circle cx="400" cy="158" r="4" fill="#8b1a2b"/><circle cx="365" cy="158" r="3" fill="#8b1a2b"/><circle cx="435" cy="158" r="3" fill="#8b1a2b"/>
+      <circle cx="345" cy="90" r="5" fill="#fff3c4"/><circle cx="400" cy="72" r="6" fill="#fff3c4"/><circle cx="455" cy="90" r="5" fill="#fff3c4"/>
+      <!-- steps + carpet -->
+      <rect x="150" y="800" width="500" height="20" fill="#0d1226" stroke="#d4af37" stroke-opacity=".5"/>
+      <rect x="120" y="820" width="560" height="22" fill="#0b0f20" stroke="#d4af37" stroke-opacity=".4"/>
+      <rect x="90" y="842" width="620" height="58" fill="#080b18" stroke="#d4af37" stroke-opacity=".3"/>
+      <path d="M255 800 L545 800 L640 900 L160 900 Z" fill="url(#a-carpet)"/>
+      <path d="M255 800 L160 900 M545 800 L640 900" stroke="#d4af37" stroke-width="3" opacity=".8"/>
+      <!-- figure -->
+      <ellipse cx="400" cy="790" rx="62" ry="9" fill="#000" opacity=".5"/>
+      <path d="M383 676 Q400 668 417 676 L444 788 Q400 806 356 788 Z" fill="#06060a" stroke="#f3d98b" stroke-opacity=".55" stroke-width="1.5"/>
+      <path d="M384 664 Q384 640 400 640 Q416 640 416 664 Q420 700 412 722 Q408 690 400 684 Q392 690 388 722 Q380 700 384 664 Z" fill="#06060a" stroke="#f3d98b" stroke-opacity=".5" stroke-width="1.2"/>
+      <circle cx="400" cy="656" r="15" fill="#06060a" stroke="#f3d98b" stroke-opacity=".55" stroke-width="1.2"/>
+    </svg>
+    <figcaption>
+      <span class="tag">Hero / כניסה</span>
+      <b>הכניסה לממלכה</b>
+      <span>המקום בדף: מיד אחרי הכותרת. היא עומדת על שטיח אדום מול הדלת הזוהרת, והכתר מעליה. מרגיש כמו כניסה לעולם, לא עוד קורס.</span>
+    </figcaption>
+  </figure>
+
+  <!-- 2. RACE -->
+  <figure>
+    <svg viewBox="0 0 800 560" role="img" aria-label="שני מרוצים: לולאה אדומה שבה רצים ממשהו, ודרך זהב שרצה אל משהו">
+      <defs>
+        <linearGradient id="b-road" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stop-color="#2a1f06"/><stop offset="1" stop-color="#d4af37"/>
+        </linearGradient>
+        <radialGradient id="b-sun"><stop offset="0" stop-color="#fff7da"/><stop offset=".5" stop-color="#f3d98b" stop-opacity=".7"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></radialGradient>
+        <radialGradient id="b-bgL" cx="26%" cy="50%" r="60%"><stop offset="0" stop-color="#2a0a12"/><stop offset="1" stop-color="#060608"/></radialGradient>
+        <radialGradient id="b-bgR" cx="80%" cy="35%" r="70%"><stop offset="0" stop-color="#3a2a08"/><stop offset="1" stop-color="#060608"/></radialGradient>
+      </defs>
+      <rect width="400" height="560" fill="url(#b-bgL)"/>
+      <rect x="400" width="400" height="560" fill="url(#b-bgR)"/>
+      <!-- left loop -->
+      <circle cx="200" cy="320" r="120" fill="none" stroke="#4a0b16" stroke-width="40"/>
+      <circle cx="200" cy="320" r="120" fill="none" stroke="#c46a78" stroke-width="2" stroke-dasharray="10 12" opacity=".7"/>
+      <polygon points="200,190 178,205 178,175" fill="#c46a78" transform="rotate(90 200 190)"/>
+      <polygon points="320,320 335,298 305,298" fill="#c46a78" transform="rotate(180 320 320)"/>
+      <g fill="none" stroke="#e9c7cd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="200" cy="168" r="9" fill="#e9c7cd"/>
+        <path d="M200 178 L196 202 M196 202 L180 214 M196 202 L206 218 M198 186 L182 192 M198 186 L214 180"/>
+      </g>
+      <text x="200" y="312" text-anchor="middle" font-size="22" fill="#e9c7cd" font-weight="700">עוד קצת,</text>
+      <text x="200" y="342" text-anchor="middle" font-size="22" fill="#e9c7cd" font-weight="700">ואז אני אנוח</text>
+      <text x="200" y="64" text-anchor="middle" font-size="40" fill="#c46a78" font-weight="900">ממשהו</text>
+      <text x="200" y="98" text-anchor="middle" font-size="17" fill="#9a737b">רצה כדי לא להיות ענייה</text>
+      <!-- right road -->
+      <circle cx="600" cy="170" r="110" fill="url(#b-sun)"/>
+      <polygon points="470,540 730,540 640,210 560,210" fill="url(#b-road)"/>
+      <path d="M470 540 L560 210 M730 540 L640 210" stroke="#f3d98b" stroke-width="3" opacity=".8"/>
+      <path d="M600 540 L600 215" stroke="#fff3c4" stroke-width="4" stroke-dasharray="26 22" opacity=".85"/>
+      <path d="M570 210 V178 A30 30 0 0 1 630 178 V210" fill="none" stroke="#fff3c4" stroke-width="5"/>
+      <path d="M582 210 V182 A18 18 0 0 1 618 182 V210 Z" fill="#fff7da"/>
+      <g fill="none" stroke="#fff3c4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="600" cy="400" r="11" fill="#fff3c4"/>
+        <path d="M600 412 L600 446 M600 446 L584 474 M600 446 L616 474 M600 420 L578 408 M600 420 L622 408"/>
+      </g>
+      <text x="600" y="64" text-anchor="middle" font-size="40" fill="#f3d98b" font-weight="900">אל משהו</text>
+      <text x="600" y="98" text-anchor="middle" font-size="17" fill="#c9b36e">יוצרת כי היא רוצה</text>
+      <line x1="400" y1="0" x2="400" y2="560" stroke="#d4af37" stroke-opacity=".5"/>
+      <circle cx="400" cy="280" r="26" fill="#0a0a0c" stroke="#d4af37" stroke-width="2"/>
+      <text x="400" y="289" text-anchor="middle" font-size="24" fill="#f3d98b" font-weight="900">או</text>
+    </svg>
+    <figcaption>
+      <span class="tag">סקסן 2 · הסיפור</span>
+      <b>שני מרוצים</b>
+      <span>המקום בדף: מתחת ל"את רצה אל משהו? או ממשהו?". בימין הדרך הזהובה (את מוזמנת לשם), בשמאל הלולאה האדומה שמשאירה אותה במקום. זה ה"פאק, זאת אני" הוויזואלי.</span>
+    </figcaption>
+  </figure>
+
+  <!-- 3. RULEBOOK -->
+  <figure>
+    <svg viewBox="0 0 800 720" style="direction:ltr" role="img" aria-label="ספר החוקים של הזהות השורדת, כל החוקים מחוקים, וחותמת: אפשר לכתוב מחדש">
+      <defs>
+        <linearGradient id="c-page" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16161f"/><stop offset="1" stop-color="#0b0b11"/></linearGradient>
+        <linearGradient id="c-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3d98b"/><stop offset="1" stop-color="#b8891f"/></linearGradient>
+      </defs>
+      <rect width="800" height="720" fill="#060608"/>
+      <rect x="90" y="30" width="620" height="660" rx="20" fill="url(#c-page)" stroke="#d4af37" stroke-width="3"/>
+      <rect x="112" y="52" width="576" height="616" rx="12" fill="none" stroke="#d4af37" stroke-opacity=".35"/>
+      <path d="M600 30 V150 L627 126 L654 150 V30 Z" fill="#8b1a2b"/>
+      <text x="570" y="118" text-anchor="end" font-size="38" fill="url(#c-gold)" font-weight="900">החוקים שקיבלת מזמן</text>
+      <text x="570" y="154" text-anchor="end" font-size="20" fill="#9a937f">בלי ששאלו אותך</text>
+      <line x1="150" y1="186" x2="650" y2="186" stroke="#d4af37" stroke-opacity=".4"/>
+      <g font-size="28" fill="#b9b2a0">
+        <circle cx="640" cy="250" r="16" fill="none" stroke="#d4af37"/><text x="640" y="258" text-anchor="middle" font-size="17" fill="#d4af37">1</text>
+        <text x="604" y="259" text-anchor="end" text-decoration="line-through">כסף צריך להרוויח בזיעה</text>
+        <circle cx="640" cy="330" r="16" fill="none" stroke="#d4af37"/><text x="640" y="338" text-anchor="middle" font-size="17" fill="#d4af37">2</text>
+        <text x="604" y="339" text-anchor="end" text-decoration="line-through">כל דבר עולה במשהו</text>
+        <circle cx="640" cy="410" r="16" fill="none" stroke="#d4af37"/><text x="640" y="418" text-anchor="middle" font-size="17" fill="#d4af37">3</text>
+        <text x="604" y="419" text-anchor="end" text-decoration="line-through">כסף הוא קצת מלוכלך</text>
+        <circle cx="640" cy="490" r="16" fill="none" stroke="#d4af37"/><text x="640" y="498" text-anchor="middle" font-size="17" fill="#d4af37">4</text>
+        <text x="604" y="499" text-anchor="end" text-decoration="line-through">אל תצפי ליותר מדי</text>
+        <circle cx="640" cy="570" r="16" fill="none" stroke="#d4af37"/><text x="640" y="578" text-anchor="middle" font-size="17" fill="#d4af37">5</text>
+        <text x="604" y="579" text-anchor="end" text-decoration="line-through">לא כדאי להרגיש טוב מזה</text>
+      </g>
+      <g transform="rotate(-6 400 640)">
+        <rect x="230" y="616" width="340" height="48" rx="10" fill="#0a0a0c" stroke="#f3d98b" stroke-width="3"/>
+        <text x="400" y="649" text-anchor="middle" font-size="26" fill="#f3d98b" font-weight="900">אפשר לכתוב מחדש</text>
+      </g>
+    </svg>
+    <figcaption>
+      <span class="tag">סקסן 3 · הזהות השורדת</span>
+      <b>ספר החוקים</b>
+      <span>המקום בדף: ליד רשימת "החוקים שהיא מנהלת לפיהם". הרשימה שלך הפכה לחפץ שאפשר לראות: ספר עם חמישה חוקים מחוקים וחותמת זהב שמבשרת שזה לא גזירת גורל.</span>
+    </figcaption>
+  </figure>
+
+  <!-- 4. CHAIN -->
+  <figure>
+    <svg viewBox="0 0 800 420" role="img" aria-label="שרשרת שנשברת: מצד אחד חוליות כהות ומצד שני חוליות זהב">
+      <defs>
+        <linearGradient id="d-iron" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a0b16"/><stop offset="1" stop-color="#9b3342"/></linearGradient>
+        <linearGradient id="d-gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8891f"/><stop offset="1" stop-color="#f3d98b"/></linearGradient>
+        <radialGradient id="d-burst"><stop offset="0" stop-color="#fff7da"/><stop offset=".35" stop-color="#f3d98b" stop-opacity=".75"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></radialGradient>
+        <radialGradient id="d-bg" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#2a1d06"/><stop offset="1" stop-color="#060608"/></radialGradient>
+      </defs>
+      <rect width="800" height="420" fill="url(#d-bg)"/>
+      <!-- left: heavy, dark -->
+      <g fill="none" stroke="url(#d-iron)" stroke-width="12" stroke-linecap="round">
+        <ellipse cx="50" cy="210" rx="44" ry="28"/>
+        <ellipse cx="118" cy="210" rx="14" ry="28"/>
+        <ellipse cx="186" cy="210" rx="44" ry="28"/>
+        <ellipse cx="254" cy="210" rx="14" ry="28"/>
+        <ellipse cx="322" cy="210" rx="44" ry="28" stroke-dasharray="180 60" transform="rotate(-8 322 210)"/>
+      </g>
+      <!-- right: light, gold -->
+      <g fill="none" stroke="url(#d-gold)" stroke-width="12" stroke-linecap="round">
+        <ellipse cx="478" cy="210" rx="44" ry="28" stroke-dasharray="180 60" transform="rotate(8 478 210) scale(1)"/>
+        <ellipse cx="546" cy="210" rx="14" ry="28"/>
+        <ellipse cx="614" cy="210" rx="44" ry="28"/>
+        <ellipse cx="682" cy="210" rx="14" ry="28"/>
+        <ellipse cx="750" cy="210" rx="44" ry="28"/>
+      </g>
+      <circle cx="400" cy="210" r="120" fill="url(#d-burst)"/>
+      <g stroke="#fff3c4" stroke-width="4" stroke-linecap="round">
+        <path d="M400 210 L400 120"/><path d="M400 210 L400 300"/>
+        <path d="M400 210 L330 140"/><path d="M400 210 L470 140"/>
+        <path d="M400 210 L330 280"/><path d="M400 210 L470 280"/>
+        <path d="M400 210 L310 210" opacity=".6"/><path d="M400 210 L490 210" opacity=".6"/>
+      </g>
+      <g fill="#fff7da">
+        <circle cx="360" cy="164" r="4"/><circle cx="446" cy="172" r="3.5"/><circle cx="372" cy="262" r="3"/>
+        <circle cx="440" cy="256" r="4.5"/><circle cx="410" cy="140" r="2.5"/><circle cx="390" cy="290" r="2.5"/>
+      </g>
+      <text x="200" y="360" text-anchor="middle" font-size="26" fill="#c46a78" font-weight="700">הזהות השורדת</text>
+      <text x="610" y="360" text-anchor="middle" font-size="26" fill="#f3d98b" font-weight="700">הזהות העשירה</text>
+    </svg>
+    <figcaption>
+      <span class="tag">סקסן 3→4 · המעבר</span>
+      <b>השרשרת נשברת</b>
+      <span>המקום בדף: אחרי משפט הקונפליקט ("הצעד הראשון והכי קריטי הוא לשחרר את הזהות השורדת"). חוליות כהות וכבדות משמאל הופכות לחוליות זהב קלות מימין. שחרור, לא מלחמה.</span>
+    </figcaption>
+  </figure>
+</div>
+</body>
+</html>
