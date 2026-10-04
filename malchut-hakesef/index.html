@@ -14,6 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- פיקסל מטא / אנליטיקס: להדביק כאן את הקוד שלך. הדף כבר שולח Lead ו-InitiateCheckout אם fbq קיים -->
+
 <style>
   :root{
     --bg:#0a0a0c; --bg2:#101015; --gold:#d4af37; --gold-l:#f3d98b; --gold-d:#b8891f;
@@ -174,6 +176,13 @@
 
   footer{padding:36px 0 24px;border-top:1px solid var(--line);color:var(--mute);font-size:13px;text-align:center}
   footer p{margin:0 0 10px}
+
+  .modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:12px}
+  .modal[hidden]{display:none}
+  .modal-in{position:relative;width:100%;max-width:520px;height:min(86vh,760px);background:#fff;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;border:2px solid var(--gold)}
+  .modal iframe{flex:1;border:0;width:100%;background:#fff}
+  .modal .x{position:absolute;top:8px;left:8px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:#0a0a0c;color:var(--gold-l);font-size:26px;line-height:1;cursor:pointer}
+  .modal a{display:block;text-align:center;padding:10px;background:#0a0a0c;color:var(--gold-l);font-size:14px}
 
   /* reveal */
   .js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
@@ -410,150 +419,171 @@
       <p class="t rv"><b style="color:var(--gold-l)">היא מלווה אותך בדרך מהזהות של מי שצריכה להוכיח, לזהות של מי שמרשה לעצמה לקבל, ליצור ולנוח.</b></p>
     </div>
 
-    <div class="stage rv"><svg viewBox="0 0 800 660" style="direction:ltr" role="img" aria-label="מוקאפ ממלכת הכסף: קורס מוקלט, מדיטציות, סאבלימינל לשינה, חוברת עבודה, משחקי תודעה וספריית העשרה">
-        <defs>
-          <radialGradient id="m-glow" cx="50%" cy="48%" r="52%">
-            <stop offset="0" stop-color="#d4af37" stop-opacity=".55"/><stop offset=".55" stop-color="#8a6516" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
-          </radialGradient>
-          <linearGradient id="m-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e3a0"/><stop offset=".5" stop-color="#d4af37"/><stop offset="1" stop-color="#a77a17"/></linearGradient>
-          <linearGradient id="m-goldH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a77a17"/><stop offset=".5" stop-color="#f7e3a0"/><stop offset="1" stop-color="#a77a17"/></linearGradient>
-          <linearGradient id="m-screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a0a12"/><stop offset="1" stop-color="#07070b"/></linearGradient>
-          <linearGradient id="m-navy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16214a"/><stop offset="1" stop-color="#070a18"/></linearGradient>
-          <linearGradient id="m-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b4b55"/><stop offset="1" stop-color="#17171d"/></linearGradient>
-          <linearGradient id="m-cover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9b2237"/><stop offset="1" stop-color="#4a0b16"/></linearGradient>
-          <linearGradient id="m-plat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1b22"/><stop offset="1" stop-color="#050507"/></linearGradient>
-          <filter id="m-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
-          <path id="m-star" d="M0 -12 Q1.5 -1.5 12 0 Q1.5 1.5 0 12 Q-1.5 1.5 -12 0 Q-1.5 -1.5 0 -12 Z"/>
-        </defs>
+    <div class="stage rv"><svg viewBox="0 0 800 1000" style="direction:ltr" role="img" aria-label="הכניסה לממלכה: קורס מוקלט, מדיטציות, סאבלימינל לשינה, חוברת עבודה, משחקי תודעה וספריית העשרה, על במה בין וילונות אדומים מתחת לכתר">
+  <defs>
+    <linearGradient id="n-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e3a0"/><stop offset=".5" stop-color="#d4af37"/><stop offset="1" stop-color="#9b6f14"/></linearGradient>
+    <linearGradient id="n-goldH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9b6f14"/><stop offset=".5" stop-color="#f7e3a0"/><stop offset="1" stop-color="#9b6f14"/></linearGradient>
+    <linearGradient id="n-vel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a050c"/><stop offset=".35" stop-color="#7d1626"/><stop offset=".6" stop-color="#4a0b16"/><stop offset="1" stop-color="#1c0308"/></linearGradient>
+    <linearGradient id="n-cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3d98b" stop-opacity=".30"/><stop offset=".7" stop-color="#f3d98b" stop-opacity=".05"/><stop offset="1" stop-color="#f3d98b" stop-opacity="0"/></linearGradient>
+    <radialGradient id="n-glow" cx="50%" cy="46%" r="52%"><stop offset="0" stop-color="#d4af37" stop-opacity=".5"/><stop offset=".6" stop-color="#6d4a0c" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="n-screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a0a15"/><stop offset="1" stop-color="#060608"/></linearGradient>
+    <linearGradient id="n-navy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17234f"/><stop offset="1" stop-color="#060914"/></linearGradient>
+    <linearGradient id="n-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55555f"/><stop offset="1" stop-color="#15151b"/></linearGradient>
+    <linearGradient id="n-leather" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3243a"/><stop offset="1" stop-color="#42091a"/></linearGradient>
+    <linearGradient id="n-carpet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b1a2b"/><stop offset="1" stop-color="#3a060f"/></linearGradient>
+    <linearGradient id="n-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14141a"/><stop offset="1" stop-color="#030304"/></linearGradient>
+    <filter id="n-blur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
+    <path id="n-star" d="M0 -13 Q1.6 -1.6 13 0 Q1.6 1.6 0 13 Q-1.6 1.6 -13 0 Q-1.6 -1.6 0 -13 Z"/>
+    <g id="n-curtain">
+      <path d="M0 0 H178 C150 140 196 300 156 470 C124 610 176 790 142 1000 H0 Z" fill="url(#n-vel)"/>
+      <g fill="none" stroke="#f3d98b" stroke-opacity=".22" stroke-width="2">
+        <path d="M44 0 C36 160 58 330 40 520 C28 690 52 850 38 1000"/>
+        <path d="M92 0 C78 170 112 340 88 530 C70 700 102 860 84 1000"/>
+        <path d="M134 0 C112 150 160 320 122 500 C98 650 148 820 112 1000"/>
+      </g>
+      <path d="M178 0 C150 140 196 300 156 470 C124 610 176 790 142 1000" fill="none" stroke="#f3d98b" stroke-opacity=".5" stroke-width="2.5"/>
+      <path d="M0 560 Q96 612 160 548" fill="none" stroke="url(#n-gold)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="162" cy="548" r="9" fill="url(#n-gold)"/>
+      <path d="M162 556 L152 604 M162 556 L162 612 M162 556 L172 604" stroke="url(#n-gold)" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </defs>
 
-        <ellipse cx="400" cy="330" rx="400" ry="320" fill="url(#m-glow)"/>
+  <rect width="800" height="1000" fill="#050507"/>
+  <ellipse cx="400" cy="470" rx="420" ry="470" fill="url(#n-glow)"/>
+  <polygon points="320,0 480,0 790,990 10,990" fill="url(#n-cone)"/>
 
-        <!-- swirl -->
-        <g fill="none" stroke-linecap="round">
-          <path d="M70 470 C10 220 270 40 520 78 S820 270 735 500" stroke="#f3d98b" stroke-width="9" opacity=".35" filter="url(#m-blur)"/>
-          <path class="swirl" d="M70 470 C10 220 270 40 520 78 S820 270 735 500" stroke="url(#m-gold)" stroke-width="3"/>
-          <path d="M110 500 C60 270 290 90 505 120 S770 290 700 505" stroke="#f3d98b" stroke-width="1.5" opacity=".45"/>
-        </g>
+  <!-- floor + carpet -->
+  <rect y="760" width="800" height="240" fill="url(#n-floor)"/>
+  <g stroke="#d4af37" stroke-opacity=".14">
+    <path d="M400 760 L-120 1000"/><path d="M400 760 L120 1000"/><path d="M400 760 L400 1000"/><path d="M400 760 L680 1000"/><path d="M400 760 L920 1000"/>
+    <path d="M0 830 H800"/><path d="M0 900 H800"/>
+  </g>
+  <polygon points="352,780 448,780 640,1000 160,1000" fill="url(#n-carpet)"/>
+  <path d="M352 780 L160 1000 M448 780 L640 1000" stroke="url(#n-gold)" stroke-width="4"/>
 
-        <!-- platform -->
-        <ellipse cx="400" cy="560" rx="352" ry="46" fill="#000" opacity=".6"/>
-        <ellipse cx="400" cy="548" rx="338" ry="40" fill="url(#m-plat)" stroke="url(#m-goldH)" stroke-width="3"/>
-        <ellipse cx="400" cy="548" rx="300" ry="32" fill="none" stroke="#d4af37" stroke-opacity=".25"/>
+  <!-- curtains -->
+  <use href="#n-curtain"/>
+  <use href="#n-curtain" transform="translate(800 0) scale(-1 1)"/>
 
-        <!-- tablet (meditations) -->
-        <g class="float" style="animation-delay:.6s">
-        <g transform="rotate(-8 165 340)">
-          <rect x="84" y="240" width="170" height="220" rx="16" fill="url(#m-metal)"/>
-          <rect x="92" y="248" width="154" height="204" rx="10" fill="url(#m-navy)"/>
-          <g fill="none" stroke="#f3d98b" stroke-width="1.6">
-            <circle cx="169" cy="340" r="14" opacity=".95"/><circle cx="169" cy="340" r="30" opacity=".6"/>
-            <circle cx="169" cy="340" r="48" opacity=".35"/><circle cx="169" cy="340" r="66" opacity=".18"/>
-          </g>
-          <circle cx="169" cy="340" r="7" fill="#fff3c4"/>
-          <text x="169" y="283" text-anchor="middle" font-size="19" font-weight="900" fill="#f3d98b">5 מדיטציות</text>
-          <text x="169" y="302" text-anchor="middle" font-size="11" fill="#9aa4c8">כסף · שפע · אומץ</text>
-          <rect x="120" y="424" width="98" height="4" rx="2" fill="#2b3563"/><rect x="120" y="424" width="42" height="4" rx="2" fill="#f3d98b"/>
-        </g>
-        </g>
+  <!-- valance -->
+  <path d="M0 0 H800 V54 Q760 98 720 54 Q680 98 640 54 Q600 98 560 54 Q520 98 480 54 Q440 98 400 54 Q360 98 320 54 Q280 98 240 54 Q200 98 160 54 Q120 98 80 54 Q40 98 0 54 Z" fill="url(#n-vel)" stroke="url(#n-goldH)" stroke-width="3"/>
+  <rect y="0" width="800" height="10" fill="url(#n-goldH)"/>
 
-        <!-- phone (subliminal) -->
-        <g class="float" style="animation-delay:1.4s">
-        <g transform="rotate(7 640 345)">
-          <rect x="590" y="240" width="104" height="208" rx="20" fill="url(#m-metal)"/>
-          <rect x="596" y="246" width="92" height="196" rx="15" fill="url(#m-navy)"/>
-          <rect x="624" y="251" width="36" height="8" rx="4" fill="#000"/>
-          <path d="M650 306 A24 24 0 1 0 650 354 A19 19 0 1 1 650 306 Z" fill="#f3d98b"/>
-          <g fill="#fff3c4"><circle cx="612" cy="290" r="1.6"/><circle cx="670" cy="330" r="1.4"/><circle cx="622" cy="372" r="1.8"/><circle cx="676" cy="286" r="1.2"/></g>
-          <text x="642" y="402" text-anchor="middle" font-size="14" font-weight="900" fill="#f3d98b">סאבלימינל</text>
-          <text x="642" y="418" text-anchor="middle" font-size="11" fill="#9aa4c8">לשינה</text>
-        </g>
-        </g>
+  <!-- crown -->
+  <circle cx="400" cy="190" r="120" fill="#f3d98b" opacity=".38" filter="url(#n-blur)"/>
+  <g transform="translate(320 120) scale(1.33)">
+    <path d="M14 62 L22 22 L44 44 L60 10 L76 44 L98 22 L106 62 Z" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5" stroke-linejoin="round"/>
+    <rect x="14" y="62" width="92" height="12" rx="4" fill="url(#n-gold)"/>
+    <circle cx="22" cy="20" r="4.5" fill="#fff3c4"/><circle cx="60" cy="8" r="5.5" fill="#fff3c4"/><circle cx="98" cy="20" r="4.5" fill="#fff3c4"/>
+    <circle cx="60" cy="68" r="3.5" fill="#8b1a2b"/><circle cx="36" cy="68" r="2.6" fill="#8b1a2b"/><circle cx="84" cy="68" r="2.6" fill="#8b1a2b"/>
+  </g>
 
-        <!-- laptop (code) -->
-        <g class="float">
-          <rect x="238" y="146" width="324" height="208" rx="12" fill="url(#m-metal)"/>
-          <rect x="248" y="156" width="304" height="188" rx="6" fill="url(#m-screen)"/>
-          <path d="M360 190 L372 172 L384 184 L400 166 L416 184 L428 172 L440 190 Z" fill="url(#m-gold)"/>
-          <rect x="360" y="190" width="80" height="6" rx="2" fill="url(#m-gold)"/>
-          <text x="400" y="228" text-anchor="middle" font-size="30" font-weight="900" fill="#f3d98b">קוד הכסף</text>
-          <text x="400" y="249" text-anchor="middle" font-size="13" fill="#c8bda0">3 מפגשים מוקלטים</text>
-          <circle cx="400" cy="287" r="22" fill="url(#m-gold)"/>
-          <path d="M393 275 L393 299 L414 287 Z" fill="#1a1405"/>
-          <rect x="278" y="326" width="244" height="4" rx="2" fill="#3a2a30"/><rect x="278" y="326" width="96" height="4" rx="2" fill="#d4af37"/>
-          <path d="M214 354 L586 354 L606 374 Q606 380 598 380 L202 380 Q194 380 194 374 Z" fill="url(#m-metal)"/>
-          <rect x="360" y="354" width="80" height="6" rx="3" fill="#0a0a0d"/>
-        </g>
+  <!-- dais -->
+  <ellipse cx="400" cy="800" rx="330" ry="52" fill="#000" opacity=".65"/>
+  <ellipse cx="400" cy="786" rx="316" ry="46" fill="#0d0d12" stroke="url(#n-goldH)" stroke-width="3.5"/>
+  <ellipse cx="400" cy="786" rx="276" ry="36" fill="none" stroke="#d4af37" stroke-opacity=".28"/>
 
-        <!-- workbook -->
-        <g transform="rotate(-5 275 480)">
-          <rect x="222" y="418" width="112" height="136" rx="6" fill="#d8b24a"/>
-          <rect x="216" y="412" width="112" height="136" rx="6" fill="url(#m-cover)" stroke="url(#m-gold)" stroke-width="2.5"/>
-          <rect x="226" y="422" width="92" height="116" rx="3" fill="none" stroke="#f3d98b" stroke-opacity=".6"/>
-          <path d="M252 462 L258 450 L266 457 L272 446 L278 457 L286 450 L292 462 Z" fill="url(#m-gold)"/>
-          <text x="272" y="492" text-anchor="middle" font-size="17" font-weight="900" fill="#f3d98b">חוברת</text>
-          <text x="272" y="512" text-anchor="middle" font-size="17" font-weight="900" fill="#f3d98b">עבודה</text>
-        </g>
+  <!-- tablet: meditations -->
+  <g transform="rotate(8 628 520)">
+    <rect x="556" y="396" width="150" height="224" rx="16" fill="url(#n-metal)"/>
+    <rect x="564" y="404" width="134" height="208" rx="10" fill="url(#n-navy)"/>
+    <g fill="none" stroke="#f3d98b" stroke-width="1.8">
+      <circle cx="631" cy="510" r="14"/><circle cx="631" cy="510" r="30" opacity=".65"/><circle cx="631" cy="510" r="48" opacity=".38"/><circle cx="631" cy="510" r="64" opacity=".2"/>
+    </g>
+    <circle cx="631" cy="510" r="6" fill="#fff3c4"/>
+    <text x="631" y="438" text-anchor="middle" font-size="22" font-weight="900" fill="#f3d98b">5 מדיטציות</text>
+  </g>
 
-        <!-- headphones -->
-        <g fill="none" stroke-linecap="round">
-          <path d="M338 520 C336 440 464 440 462 520" stroke="#ece6d6" stroke-width="9"/>
-          <path d="M338 520 C336 440 464 440 462 520" stroke="#fff" stroke-width="3" opacity=".6" transform="translate(0 -2)"/>
-        </g>
-        <rect x="322" y="494" width="30" height="52" rx="14" fill="#efe9d9"/><rect x="448" y="494" width="30" height="52" rx="14" fill="#efe9d9"/>
-        <rect x="326" y="504" width="14" height="32" rx="7" fill="#d4af37" opacity=".8"/><rect x="460" y="504" width="14" height="32" rx="7" fill="#d4af37" opacity=".8"/>
+  <!-- phone: subliminal -->
+  <g transform="rotate(-8 190 540)">
+    <rect x="132" y="408" width="116" height="236" rx="22" fill="url(#n-metal)"/>
+    <rect x="139" y="415" width="102" height="222" rx="17" fill="url(#n-navy)"/>
+    <rect x="170" y="420" width="40" height="9" rx="4.5" fill="#000"/>
+    <path d="M205 486 A30 30 0 1 0 205 548 A23 23 0 1 1 205 486 Z" fill="#f3d98b"/>
+    <g fill="#fff3c4"><circle cx="158" cy="470" r="2"/><circle cx="226" cy="520" r="1.8"/><circle cx="162" cy="578" r="2.2"/><circle cx="222" cy="462" r="1.5"/></g>
+    <text x="190" y="610" text-anchor="middle" font-size="17" font-weight="900" fill="#f3d98b">סאבלימינל</text>
+  </g>
 
-        <!-- game card -->
-        <g transform="rotate(9 548 478)">
-          <rect x="512" y="426" width="76" height="106" rx="8" fill="#0b0b10" stroke="url(#m-gold)" stroke-width="2.5"/>
-          <rect x="519" y="433" width="62" height="92" rx="4" fill="none" stroke="#d4af37" stroke-opacity=".4"/>
-          <path d="M550 452 L568 480 L550 508 L532 480 Z" fill="url(#m-gold)"/>
-          <path d="M550 462 L560 480 L550 498 L540 480 Z" fill="#8b1a2b"/>
-        </g>
+  <!-- laptop: code -->
+  <g>
+    <rect x="236" y="306" width="328" height="212" rx="12" fill="url(#n-metal)"/>
+    <rect x="246" y="316" width="308" height="192" rx="6" fill="url(#n-screen)"/>
+    <text x="400" y="384" text-anchor="middle" font-size="38" font-weight="900" fill="#f3d98b">קוד הכסף</text>
+    <text x="400" y="412" text-anchor="middle" font-size="20" fill="#d8ccb0">3 מפגשים מוקלטים</text>
+    <circle cx="400" cy="452" r="25" fill="url(#n-gold)"/>
+    <path d="M393 440 L393 464 L414 452 Z" fill="#1a1405"/>
+    <rect x="278" y="490" width="244" height="5" rx="2.5" fill="#3a2a30"/><rect x="278" y="490" width="104" height="5" rx="2.5" fill="#d4af37"/>
+    <path d="M212 518 L588 518 L610 540 Q610 546 602 546 L198 546 Q190 546 190 540 Z" fill="url(#n-metal)"/>
+    <rect x="362" y="518" width="76" height="6" rx="3" fill="#0a0a0d"/>
+  </g>
 
-        <!-- library -->
-        <g>
-          <rect x="598" y="508" width="112" height="20" rx="3" fill="#13213f" stroke="#d4af37" stroke-opacity=".7"/>
-          <rect x="606" y="486" width="100" height="22" rx="3" fill="#8b1a2b" stroke="#d4af37" stroke-opacity=".7"/>
-          <rect x="596" y="466" width="106" height="20" rx="3" fill="#1b1b22" stroke="#d4af37" stroke-opacity=".7"/>
-          <rect x="612" y="515" width="40" height="3" rx="1.5" fill="#d4af37" opacity=".7"/>
-        </g>
+  <!-- workbook -->
+  <g transform="rotate(-5 300 700)">
+    <rect x="248" y="628" width="116" height="144" rx="6" fill="#d8b24a"/>
+    <rect x="242" y="622" width="116" height="144" rx="6" fill="url(#n-leather)" stroke="url(#n-gold)" stroke-width="3"/>
+    <rect x="252" y="632" width="96" height="124" rx="3" fill="none" stroke="#f3d98b" stroke-opacity=".6"/>
+    <path d="M280 668 L286 656 L294 663 L300 652 L306 663 L314 656 L320 668 Z" fill="url(#n-gold)"/>
+    <text x="300" y="706" text-anchor="middle" font-size="22" font-weight="900" fill="#f3d98b">חוברת</text>
+    <text x="300" y="732" text-anchor="middle" font-size="22" font-weight="900" fill="#f3d98b">עבודה</text>
+  </g>
 
-        <!-- ribbon -->
-        <g>
-          <path d="M150 598 L190 584 L190 626 L150 640 L170 612 Z" fill="#8a6516"/>
-          <path d="M650 598 L610 584 L610 626 L650 640 L630 612 Z" fill="#8a6516"/>
-          <path d="M184 580 L616 580 L616 624 L184 624 Z" fill="url(#m-gold)"/>
-          <path d="M184 580 L616 580" stroke="#fff3c4" stroke-width="2" opacity=".8"/>
-          <text x="400" y="610" text-anchor="middle" font-size="22" font-weight="900" fill="#1a1405">תשלום חד פעמי · גישה לכל החיים</text>
-        </g>
+  <!-- headphones -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M356 756 C354 676 446 676 444 756" stroke="#ece6d6" stroke-width="10"/>
+    <path d="M356 756 C354 676 446 676 444 756" stroke="#fff" stroke-width="3" opacity=".55" transform="translate(0 -2)"/>
+  </g>
+  <rect x="340" y="728" width="30" height="54" rx="14" fill="#efe9d9"/><rect x="430" y="728" width="30" height="54" rx="14" fill="#efe9d9"/>
+  <rect x="345" y="739" width="14" height="32" rx="7" fill="#d4af37" opacity=".85"/><rect x="441" y="739" width="14" height="32" rx="7" fill="#d4af37" opacity=".85"/>
 
-        <!-- value badge -->
-        <g transform="rotate(-10 112 118)">
-          <circle cx="112" cy="118" r="68" fill="none" stroke="#f3d98b" stroke-width="5" stroke-dasharray="3 5" opacity=".9"/>
-          <circle cx="112" cy="118" r="60" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="2"/>
-          <circle cx="112" cy="118" r="52" fill="none" stroke="#1a1405" stroke-opacity=".45"/>
-          <text x="112" y="106" text-anchor="middle" font-size="13.5" font-weight="900" fill="#1a1405">שווי המעטפת</text>
-          <text x="112" y="136" text-anchor="middle" font-size="23" font-weight="900" fill="#1a1405">5,250 ₪</text>
-        </g>
+  <!-- game cards -->
+  <g transform="rotate(10 500 720)">
+    <rect x="462" y="664" width="78" height="108" rx="8" fill="#0b0b10" stroke="url(#n-gold)" stroke-width="3"/>
+    <rect x="469" y="671" width="64" height="94" rx="4" fill="none" stroke="#d4af37" stroke-opacity=".4"/>
+    <path d="M501 690 L520 718 L501 746 L482 718 Z" fill="url(#n-gold)"/>
+    <path d="M501 700 L512 718 L501 736 L490 718 Z" fill="#8b1a2b"/>
+  </g>
 
-        <!-- pins -->
-        <g font-weight="900" font-size="15" text-anchor="middle" fill="#1a1405">
-          <g><circle cx="400" cy="138" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="400" y="144">1</text></g>
-          <g><circle cx="150" cy="238" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="150" y="244">2</text></g>
-          <g><circle cx="660" cy="232" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="660" y="238">3</text></g>
-          <g><circle cx="230" cy="412" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="230" y="418">4</text></g>
-          <g><circle cx="590" cy="424" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="590" y="430">5</text></g>
-          <g><circle cx="700" cy="462" r="16" fill="url(#m-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="700" y="468">6</text></g>
-        </g>
+  <!-- library -->
+  <g>
+    <rect x="552" y="748" width="124" height="22" rx="3" fill="#13213f" stroke="#d4af37" stroke-opacity=".8"/>
+    <rect x="560" y="724" width="108" height="24" rx="3" fill="#8b1a2b" stroke="#d4af37" stroke-opacity=".8"/>
+    <rect x="550" y="702" width="116" height="22" rx="3" fill="#1b1b22" stroke="#d4af37" stroke-opacity=".8"/>
+    <rect x="566" y="756" width="44" height="3" rx="1.5" fill="#d4af37" opacity=".8"/>
+  </g>
 
-        <!-- sparkles -->
-        <g fill="#fff3c4">
-          <use href="#m-star" x="560" y="96" class="twinkle"/><use href="#m-star" x="696" y="168" class="twinkle d2" transform="translate(0 0) scale(1)"/>
-          <use href="#m-star" x="52" y="300" class="twinkle d3"/><use href="#m-star" x="300" y="64" class="twinkle d2"/>
-          <use href="#m-star" x="744" y="372" class="twinkle"/><use href="#m-star" x="214" y="150" class="twinkle d3"/>
-          <circle cx="470" cy="60" r="2.4" class="twinkle"/><circle cx="118" cy="420" r="2" class="twinkle d2"/><circle cx="676" cy="96" r="2" class="twinkle d3"/>
-        </g>
-      </svg></div>
+  <!-- value seal -->
+  <g transform="rotate(-9 128 214)">
+    <circle cx="128" cy="214" r="70" fill="none" stroke="#f3d98b" stroke-width="5" stroke-dasharray="3 5" opacity=".9"/>
+    <circle cx="128" cy="214" r="62" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="2"/>
+    <circle cx="128" cy="214" r="53" fill="none" stroke="#1a1405" stroke-opacity=".45"/>
+    <text x="128" y="204" text-anchor="middle" font-size="16" font-weight="900" fill="#1a1405">שווי המעטפת</text>
+    <text x="128" y="236" text-anchor="middle" font-size="26" font-weight="900" fill="#1a1405">5,250 ₪</text>
+  </g>
+
+  <!-- plaque -->
+  <g>
+    <rect x="150" y="900" width="500" height="58" rx="29" fill="#0a0a0d" stroke="url(#n-goldH)" stroke-width="3"/>
+    <text x="400" y="938" text-anchor="middle" font-size="26" font-weight="900" fill="#f3d98b">תשלום חד פעמי · גישה לכל החיים</text>
+  </g>
+
+  <!-- pins -->
+  <g font-weight="900" font-size="17" text-anchor="middle" fill="#1a1405">
+    <circle cx="400" cy="292" r="18" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="400" y="298">1</text>
+    <circle cx="640" cy="388" r="18" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="640" y="394">2</text>
+    <circle cx="170" cy="398" r="18" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="170" y="404">3</text>
+    <circle cx="256" cy="620" r="18" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="256" y="626">4</text>
+    <circle cx="524" cy="660" r="18" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="524" y="666">5</text>
+    <circle cx="672" cy="700" r="18" fill="url(#n-gold)" stroke="#fff3c4" stroke-width="1.5"/><text x="672" y="706">6</text>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#fff3c4">
+    <use href="#n-star" x="262" y="150" class="twinkle"/><use href="#n-star" x="548" y="130" class="twinkle d2"/>
+    <use href="#n-star" x="232" y="300" class="twinkle d3"/><use href="#n-star" x="590" y="300" class="twinkle"/>
+    <use href="#n-star" x="300" y="860" class="twinkle d2"/><use href="#n-star" x="500" y="850" class="twinkle d3"/>
+    <circle cx="400" cy="70" r="2.4" class="twinkle"/><circle cx="330" cy="260" r="2" class="twinkle d2"/><circle cx="470" cy="250" r="2" class="twinkle d3"/>
+  </g>
+</svg></div>
     <ol class="legend rv">
       <li><span class="n">1</span><div><b>קוד הכסף</b><span>3 מפגשים מוקלטים. מעל 60 נשים כבר עברו אותו בלייב.</span></div></li>
       <li><span class="n">2</span><div><b>5 מדיטציות</b><span>כסף, שפע, הזדמנויות ואומץ. ללמוד לקבל.</span></div></li>
@@ -767,13 +797,23 @@
   </div>
 </footer>
 
+<div class="modal" id="pay-modal" hidden role="dialog" aria-modal="true" aria-label="תשלום מאובטח">
+  <div class="modal-in">
+    <button type="button" class="x" id="pay-close" aria-label="סגירה">×</button>
+    <iframe id="pay-frame" title="תשלום מאובטח" allow="payment *"></iframe>
+    <a id="pay-new" href="#" target="_blank" rel="noopener">לא נטען? פתחי את התשלום בחלון חדש</a>
+  </div>
+</div>
+
 <div class="sticky" id="sticky"><a class="btn" href="#join">✈️ הטבת תאילנד · 555 ₪<small>אני נכנסת לממלכה</small></a></div>
 
 <script>
   // ---- הגדרות: למלא לפני עלייה לאוויר ----
   var CONFIG = {
-    CHECKOUT_URL: "",   // קישור לתשלום (לדוגמה: קישור מ-Cardcom / PayPlus / Meshulam / Stripe)
-    LEAD_ENDPOINT: ""   // כתובת לשמירת הלידים (Zapier / Make / Google Sheets webhook / Supabase function)
+    GROW_URL: "",            // קישור דף התשלום מ-GROW (למשל https://pay.grow.link/...)
+    PAYMENT_MODE: "redirect", // "redirect" = מעבר לדף התשלום · "modal" = פתיחה בתוך חלון על הדף (אם GROW מאפשר הטמעה)
+    PREFILL: false,          // true = להעביר שם/טלפון/אימייל בכתובת (רק אם GROW תומך בזה)
+    LEAD_ENDPOINT: ""        // webhook לשמירת לידים (Zapier / Make / Google Sheets). אופציונלי
   };
 
   // reveal on scroll
@@ -791,6 +831,14 @@
     new IntersectionObserver(function(es){s.classList.toggle('hide',es[0].isIntersecting)},{threshold:.15}).observe(b);
   })();
 
+  // payment modal close
+  (function(){
+    var m=document.getElementById('pay-modal'),c=document.getElementById('pay-close');
+    var close=function(){m.hidden=true;document.getElementById('pay-frame').src='about:blank';document.body.style.overflow=''};
+    c.addEventListener('click',close);
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden)close()});
+  })();
+
   // form
   (function(){
     var f=document.getElementById('join-form'),err=document.getElementById('form-err'),btn=document.getElementById('submit-btn');
@@ -802,14 +850,23 @@
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){err.textContent='נראה שיש טעות באימייל.';f.email.focus();return}
       err.textContent='';
       btn.disabled=true;
+      var track=function(n){try{if(window.fbq)fbq('track',n)}catch(e){}};
+      track('Lead');
       var go=function(){
-        if(CONFIG.CHECKOUT_URL){
-          var u=new URL(CONFIG.CHECKOUT_URL);
-          u.searchParams.set('name',name);u.searchParams.set('email',email);u.searchParams.set('phone',phone);
-          window.location.href=u.toString();
-        }else{
+        var url=CONFIG.GROW_URL;
+        if(!url){btn.disabled=false;err.textContent='התשלום עדיין לא מחובר לדף.';return}
+        if(CONFIG.PREFILL){
+          try{var u=new URL(url);u.searchParams.set('name',name);u.searchParams.set('email',email);u.searchParams.set('phone',phone);url=u.toString()}catch(e){}
+        }
+        track('InitiateCheckout');
+        if(CONFIG.PAYMENT_MODE==='modal'){
+          document.getElementById('pay-frame').src=url;
+          document.getElementById('pay-new').href=url;
+          document.getElementById('pay-modal').hidden=false;
+          document.body.style.overflow='hidden';
           btn.disabled=false;
-          err.textContent='התשלום עדיין לא מחובר לדף.';
+        }else{
+          window.location.href=url;
         }
       };
       var payload={name:name,phone:phone,email:email,source:'malchut-hakesef',ts:new Date().toISOString()};
