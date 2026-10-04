@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<!-- פיקסל מטא / אנליטיקס: להדביק כאן את הקוד שלך. הדף כבר שולח Lead ו-InitiateCheckout אם fbq קיים -->
+<!-- פיקסל מטא / אנליטיקס: להדביק כאן את הקוד שלך. הדף שולח InitiateCheckout בלחיצה על כפתור התשלום אם fbq קיים -->
 
 <style>
   :root{
@@ -157,12 +157,6 @@
   .price .now{display:block;font-size:clamp(64px,19vw,92px);font-weight:900;color:var(--gold-l);line-height:1;margin:6px 0}
   .price .why{font-weight:700;color:var(--gold);margin:6px 0 0}
   .price .terms{color:var(--mute);font-size:14.5px;margin:10px 0 0}
-  form{margin-top:22px;display:grid;gap:12px}
-  label{display:block;font-size:14px;color:var(--mute);margin-bottom:4px}
-  input{width:100%;font:inherit;font-size:17px;color:var(--ink);background:#121217;border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:14px 14px}
-  input::placeholder{color:#6f6a5c}
-  input:focus{outline:none;border-color:var(--gold-l);box-shadow:0 0 0 3px rgba(243,217,139,.2)}
-  .err{color:#ff9aa6;font-size:14px;min-height:20px;margin:0;text-align:center}
   .fine2{color:var(--mute);font-size:13px;text-align:center;margin:0}
 
   /* faq */
@@ -177,12 +171,6 @@
   footer{padding:36px 0 24px;border-top:1px solid var(--line);color:var(--mute);font-size:13px;text-align:center}
   footer p{margin:0 0 10px}
 
-  .modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:12px}
-  .modal[hidden]{display:none}
-  .modal-in{position:relative;width:100%;max-width:520px;height:min(86vh,760px);background:#fff;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;border:2px solid var(--gold)}
-  .modal iframe{flex:1;border:0;width:100%;background:#fff}
-  .modal .x{position:absolute;top:8px;left:8px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:#0a0a0c;color:var(--gold-l);font-size:26px;line-height:1;cursor:pointer}
-  .modal a{display:block;text-align:center;padding:10px;background:#0a0a0c;color:var(--gold-l);font-size:14px}
 
   .tm-hint{text-align:center;color:var(--mute);font-size:14px;margin:22px 0 0}
   .tm-wrap{position:relative;max-width:1100px;margin:14px auto 0}
@@ -194,6 +182,12 @@
   .tm-nav button:active{background:#1a1405}
   .legend .n{font-size:13px}
 
+  .price .why,.price .terms,.proof,.fine2{text-wrap:balance}
+  @media (max-width:360px){.btn.inline{padding:14px 22px;font-size:18px}.btn{font-size:17.5px}.bar{font-size:13px}.bar small{font-size:11.5px}}
+
+  .btn.buy{margin-top:24px}
+  .fine2{color:var(--mute);font-size:13px;text-align:center;margin:14px 0 0}
+
   /* reveal */
   .js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
   .js .rv.in{opacity:1;transform:none}
@@ -204,7 +198,7 @@
 <body>
 <script>document.documentElement.classList.add('js')</script>
 
-<div class="bar">✈️ הטבת תאילנד: 555 ₪ במקום 888 ₪ · 37% הנחה<small>עד שאני חוזרת או ל-25 הנשים הראשונות</small></div>
+<div class="bar">✈️ הטבת תאילנד: 555 ₪ במקום 888 ₪<small>37% הנחה · עד שאני חוזרת או ל-25 הנשים הראשונות</small></div>
 
 <!-- 1. HERO -->
 <section class="hero">
@@ -675,14 +669,8 @@
         <p class="why">טסתי לתאילנד, אז חתכתי את המחיר.</p>
         <p class="terms">ההטבה בתוקף כל עוד אני בתאילנד, או ל-25 הנשים הראשונות, מה שקורה קודם. אחרי זה המחיר חוזר ל-888 ₪, בלי הארכות.</p>
       </div>
-      <form id="join-form" novalidate>
-        <div><label for="f-name">שם מלא</label><input id="f-name" name="name" type="text" autocomplete="name" required placeholder="השם שלך"></div>
-        <div><label for="f-phone">טלפון</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="050-0000000" dir="ltr" style="text-align:right"></div>
-        <div><label for="f-email">אימייל</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="name@email.com" dir="ltr" style="text-align:right"></div>
-        <p class="err" id="form-err" role="alert" aria-live="polite"></p>
-        <button class="btn" type="submit" id="submit-btn">אני נכנסת לממלכה<small>גישה מיידית · תשלום חד פעמי · 555 ₪</small></button>
-        <p class="fine2">כולל מע״מ · כל הממלכה נפתחת לך מיד · גישה לכל החיים · מכל מקום, בקצב שלך</p>
-      </form>
+      <a class="btn buy" id="buy" href="https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ" rel="noopener">אני נכנסת לממלכה<small>גישה מיידית · תשלום חד פעמי · 555 ₪</small></a>
+      <p class="fine2">כולל מע״מ · כל הממלכה נפתחת לך מיד · גישה לכל החיים · מכל מקום, בקצב שלך</p>
     </div>
   </div>
 </section>
@@ -782,25 +770,10 @@
   </div>
 </footer>
 
-<div class="modal" id="pay-modal" hidden role="dialog" aria-modal="true" aria-label="תשלום מאובטח">
-  <div class="modal-in">
-    <button type="button" class="x" id="pay-close" aria-label="סגירה">×</button>
-    <iframe id="pay-frame" title="תשלום מאובטח" allow="payment *"></iframe>
-    <a id="pay-new" href="#" target="_blank" rel="noopener">לא נטען? פתחי את התשלום בחלון חדש</a>
-  </div>
-</div>
 
 <div class="sticky" id="sticky"><a class="btn" href="#join">✈️ הטבת תאילנד · 555 ₪<small>אני נכנסת לממלכה</small></a></div>
 
 <script>
-  // ---- הגדרות: למלא לפני עלייה לאוויר ----
-  var CONFIG = {
-    GROW_URL: "https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ",            // קישור דף התשלום מ-GROW (למשל https://pay.grow.link/...)
-    PAYMENT_MODE: "redirect", // "redirect" = מעבר לדף התשלום · "modal" = פתיחה בתוך חלון על הדף (אם GROW מאפשר הטמעה)
-    PREFILL: false,          // true = להעביר שם/טלפון/אימייל בכתובת (רק אם GROW תומך בזה)
-    LEAD_ENDPOINT: ""        // webhook לשמירת לידים (Zapier / Make / Google Sheets). אופציונלי
-  };
-
   // reveal on scroll
   (function(){
     var els=[].slice.call(document.querySelectorAll('.rv'));
@@ -824,49 +797,10 @@
     document.getElementById('tm-prev').addEventListener('click',function(){step(1)});
   })();
 
-  // payment modal close
+  // checkout click tracking
   (function(){
-    var m=document.getElementById('pay-modal'),c=document.getElementById('pay-close');
-    var close=function(){m.hidden=true;document.getElementById('pay-frame').src='about:blank';document.body.style.overflow=''};
-    c.addEventListener('click',close);
-    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden)close()});
-  })();
-
-  // form
-  (function(){
-    var f=document.getElementById('join-form'),err=document.getElementById('form-err'),btn=document.getElementById('submit-btn');
-    f.addEventListener('submit',function(ev){
-      ev.preventDefault();
-      var name=f.name.value.trim(),phone=f.phone.value.replace(/[\s-]/g,''),email=f.email.value.trim();
-      if(name.length<2){err.textContent='איך קוראים לך?';f.name.focus();return}
-      if(!/^(\+972|0)5\d{8}$/.test(phone)&&!/^(\+972|0)[2-9]\d{7,8}$/.test(phone)){err.textContent='נראה שיש טעות במספר הטלפון.';f.phone.focus();return}
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){err.textContent='נראה שיש טעות באימייל.';f.email.focus();return}
-      err.textContent='';
-      btn.disabled=true;
-      var track=function(n){try{if(window.fbq)fbq('track',n)}catch(e){}};
-      track('Lead');
-      var go=function(){
-        var url=CONFIG.GROW_URL;
-        if(!url){btn.disabled=false;err.textContent='התשלום עדיין לא מחובר לדף.';return}
-        if(CONFIG.PREFILL){
-          try{var u=new URL(url);u.searchParams.set('name',name);u.searchParams.set('email',email);u.searchParams.set('phone',phone);url=u.toString()}catch(e){}
-        }
-        track('InitiateCheckout');
-        if(CONFIG.PAYMENT_MODE==='modal'){
-          document.getElementById('pay-frame').src=url;
-          document.getElementById('pay-new').href=url;
-          document.getElementById('pay-modal').hidden=false;
-          document.body.style.overflow='hidden';
-          btn.disabled=false;
-        }else{
-          window.location.href=url;
-        }
-      };
-      var payload={name:name,phone:phone,email:email,source:'malchut-hakesef',ts:new Date().toISOString()};
-      if(CONFIG.LEAD_ENDPOINT){
-        fetch(CONFIG.LEAD_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(function(){}).then(go);
-      }else go();
-    });
+    var a=document.getElementById('buy');if(!a)return;
+    a.addEventListener('click',function(){try{if(window.fbq)fbq('track','InitiateCheckout')}catch(e){}});
   })();
 </script>
 </body>
