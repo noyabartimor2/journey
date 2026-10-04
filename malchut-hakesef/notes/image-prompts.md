@@ -59,3 +59,24 @@ A premium product mockup on a black marble surface: a MacBook, an iPad, and an i
 - אם הפנים לא דומות לך: להוסיף `--cref [קישור לתמונה]` (Midjourney) או לבקש "keep the face unchanged" (Gemini / ChatGPT).
 - לבדוק ידיים ואצבעות לפני שמעלים. זו הנקודה שבה AI עדיין טועה.
 - **גילוי נאות:** כשתמונות הן יצירה ולא תיעוד, לא להציג אותן כצילום אמיתי של לקוחות. תמונות "זהות" או "לפני/אחרי" טובות לאווירה, לא כעדות.
+
+---
+
+## תמונות "לפני / אחרי" לבלוק "מי שמתעסקת בלשרוד לא יכולה ליצור"
+
+בדף כבר יש שני מקומות לתמונות האלה. כרגע מוצגת שם התמונה שלך עם עיבוד זמני (כהה וקר מול חם וזוהר). כשיהיו לך תמונות AI, שמרי אותן בשמות האלה בתיקייה `site/assets/ba/` והן יחליפו את הזמניות מעצמן:
+
+- `before.jpg`: הזהות השורדת
+- `after.jpg`: הזהות היוצרת
+
+יחס מומלץ: **3:4 לאורך**, רוחב 900 פיקסל לפחות. בשתיהן אותה אישה (העלי תמונת reference שלך), אותו חדר ואותה זווית, כדי שיבינו מיד שזה אותו אדם.
+
+**לפני (before.jpg):**
+```
+The same woman at a cluttered desk late at night, shoulders slumped, dark circles under tired eyes, hair messy, holding a phone with a red notification glow on her face, laptop open with spreadsheets, cold blue-grey light, coffee cup, papers everywhere. Exhausted and worn out but still pushing. Desaturated cold tones with a faint deep red tint. Cinematic editorial photography, portrait 3:4, no text.
+```
+
+**אחרי (after.jpg):**
+```
+The same woman in the same room, now bright and spacious: sitting relaxed and glowing with a genuine happy smile, warm golden light, a laptop closed beside a notebook and flowers, soft golden particles and tiny gold sparkles floating around her as if money and creative energy are flowing toward her, silky black and deep burgundy outfit, radiant skin. Warm saturated gold and burgundy tones. Cinematic editorial photography, portrait 3:4, no text, no cartoon coins.
+```
