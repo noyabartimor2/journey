@@ -93,9 +93,33 @@
   .up-sub{margin:26px 0 0;font-size:clamp(19px,5.2vw,24px);font-weight:300;line-height:1.45;text-wrap:balance}
   .up-sub b{color:var(--gold-l);font-weight:800}
   .up-price{margin:24px 0 0;display:grid;justify-items:center;gap:2px}
-  .up-price .was{color:var(--mute);font-size:17px}
-  .up-price .was s{color:#c9c2ae;text-decoration-color:#ff3b55;text-decoration-thickness:3px}
-  .up-price .now{font-size:clamp(76px,24vw,112px);font-weight:800;line-height:1;color:var(--gold-l);text-shadow:0 0 34px rgba(243,217,139,.5)}
+  .rip{text-align:center;margin:2px 0 4px;width:100%}
+  .rip-label{display:block;font-size:15px;color:var(--mute)}
+  .rip-label.l-new{color:var(--gold);font-weight:700;opacity:0;transition:opacity .6s 2s}
+  .rip-stage{position:relative;height:clamp(130px,38vw,190px);margin:2px 0}
+  .rip-half,.rip-new{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(46px,13.4vw,84px);line-height:1;white-space:nowrap}
+  .rip-new{font-size:clamp(70px,22vw,112px)}
+  .rip-half{color:#ff4d63;text-shadow:0 0 22px rgba(255,59,85,.35)}
+  .ra{clip-path:polygon(0 0,100% 0,100% 28%,94% 40%,82% 34%,70% 52%,58% 46%,46% 62%,34% 56%,22% 70%,10% 64%,0 74%)}
+  .rb{clip-path:polygon(0 74%,10% 64%,22% 70%,34% 56%,46% 62%,58% 46%,70% 52%,82% 34%,94% 40%,100% 28%,100% 100%,0 100%)}
+  .rip-crack{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .rip-crack polyline{fill:none;stroke:#ff3b55;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 6px #ff3b55)}
+  .rip-new{color:#3ddc84;text-shadow:0 0 26px rgba(61,220,132,.55);opacity:0;transform:scale(.2)}
+  .js .rip.go .rip-crack polyline{animation:crack .7s ease-out .3s forwards}
+  .js .rip.go .ra{animation:tearA 1.4s cubic-bezier(.5,0,.2,1) .95s forwards}
+  .js .rip.go .rb{animation:tearB 1.4s cubic-bezier(.5,0,.2,1) .95s forwards}
+  .js .rip.go .rip-new{animation:burst 1s cubic-bezier(.2,.9,.3,1.2) 1.55s forwards}
+  .js .rip.go .l-new{opacity:1}
+  @keyframes crack{to{stroke-dashoffset:0}}
+  @keyframes tearA{0%{transform:none;color:#ff4d63;opacity:1}30%{color:#ff7a8a}100%{transform:translate(-3%,-30%) rotate(-5deg);color:#c9293f;opacity:.32}}
+  @keyframes tearB{0%{transform:none;color:#ff4d63;opacity:1}30%{color:#ff7a8a}100%{transform:translate(3%,30%) rotate(5deg);color:#c9293f;opacity:.32}}
+  @keyframes burst{0%{opacity:0;transform:scale(.2);filter:blur(10px)}60%{opacity:1;transform:scale(1.16);filter:none}100%{opacity:1;transform:scale(1);filter:none}}
+  html:not(.js) .rip .rip-crack polyline,.rip.done .rip-crack polyline{stroke-dashoffset:0}
+  html:not(.js) .rip .ra,.rip.done .ra{transform:translate(-3%,-30%) rotate(-5deg);color:#c9293f;opacity:.32}
+  html:not(.js) .rip .rb,.rip.done .rb{transform:translate(3%,30%) rotate(5deg);color:#c9293f;opacity:.32}
+  html:not(.js) .rip .rip-new,.rip.done .rip-new{opacity:1;transform:none}
+  html:not(.js) .rip .l-new,.rip.done .l-new{opacity:1}
+  .rip.done *{animation:none!important;transition:none!important}
   .up-price .save{margin-top:8px;padding:4px 14px;border-radius:99px;background:rgba(61,220,132,.14);border:1px solid rgba(61,220,132,.5);color:#7ff0b0;font-weight:700;font-size:15px}
   .up-list{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:8px;text-align:start}
   .up-list li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:clamp(15.5px,4.2vw,17.5px);font-weight:300}
@@ -173,8 +197,16 @@
       <p class="up-sub">הקורס הרב-מכר שמלמד אותך<br><b>להפוך למאסטרית של בריאת מציאות.</b></p>
 
       <div class="up-price">
-        <span class="was">מחיר רשמי: <s>444 ₪</s></span>
-        <span class="now">97 ₪</span>
+        <div class="rip" id="rip" role="img" aria-label="מחיר רשמי 444 שקלים. רק עכשיו: 97 שקלים">
+          <span class="rip-label l-old">מחיר רשמי</span>
+          <div class="rip-stage" aria-hidden="true">
+            <span class="rip-half ra">444 ₪</span>
+            <span class="rip-half rb">444 ₪</span>
+            <svg class="rip-crack" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="-2,74 10,64 22,70 34,56 46,62 58,46 70,52 82,34 94,40 102,28" pathLength="100"/></svg>
+            <span class="rip-new">97 ₪</span>
+          </div>
+          <span class="rip-label l-new">רק עכשיו, רק כאן</span>
+        </div>
         <span class="save">חיסכון של 347 ₪ · 78% הנחה</span>
       </div>
 
@@ -249,6 +281,13 @@
     document.getElementById('up-no').addEventListener('click',end);
     [b1,b2].forEach(function(a){a.addEventListener('click',function(){try{if(window.fbq)fbq('track','InitiateCheckout',{value:97,currency:'ILS'})}catch(e){}})});
     if('IntersectionObserver' in window){new IntersectionObserver(function(es){bar.classList.toggle('off',es[0].isIntersecting)},{threshold:.15}).observe(sec)}
+  })();
+  // price tear animation
+  (function(){
+    var r=document.getElementById('rip');if(!r)return;
+    var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(calm||!('IntersectionObserver' in window)){r.classList.add('go','done');return}
+    new IntersectionObserver(function(es,o){if(es[0].isIntersecting){r.classList.add('go');o.disconnect()}},{threshold:.6}).observe(r);
   })();
 </script>
 </body>
