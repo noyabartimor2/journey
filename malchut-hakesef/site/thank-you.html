@@ -86,6 +86,18 @@
   .cv-t b{display:block;font-size:12.4cqw;font-weight:800;line-height:.98;color:var(--gold-l);letter-spacing:.06em;margin:5px 0 4px;text-shadow:0 0 18px rgba(243,217,139,.5)}
   .cv-t span{font-size:max(12px,6cqw);font-weight:700;color:var(--ink)}
   .best{position:absolute;top:12px;left:0;padding:4px 14px 4px 12px;background:linear-gradient(180deg,#f7e3a0,#c9a23a);color:#1a1405;font-weight:800;font-size:12.5px;border-radius:0 8px 8px 0;z-index:2}
+  .vsl{margin:26px 0 0}
+  .vsl[hidden]{display:none}
+  .vsl-cap{margin:0 0 12px;font-size:clamp(17px,4.6vw,20px);font-weight:800;color:var(--gold-l);line-height:1.35;text-wrap:balance}
+  .vsl-box{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:2px solid var(--gold);background:#0a0a0c center/cover no-repeat;box-shadow:0 14px 44px rgba(0,0,0,.6),0 0 50px rgba(212,175,55,.3)}
+  .vsl-box::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 90% at 50% 50%,rgba(94,15,28,.15),rgba(10,10,12,.7))}
+  .vsl-box iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+  .vsl-play{position:absolute;inset:0;z-index:1;display:grid;place-items:center;width:100%;border:0;background:none;cursor:pointer;color:inherit;font:inherit}
+  .vsl-play i{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:linear-gradient(180deg,#f7e3a0,#c9a23a);box-shadow:0 0 0 8px rgba(243,217,139,.2),0 0 40px rgba(243,217,139,.55);animation:pulse 2s ease-in-out infinite}
+  .vsl-play i::after{content:"";margin-inline-start:-5px;border-style:solid;border-width:13px 0 13px 22px;border-color:transparent transparent transparent #1a1405}
+  .vsl-play span{position:absolute;bottom:12px;inset-inline:0;text-align:center;font-weight:700;font-size:14px;color:#fff;text-shadow:0 1px 8px #000}
+  .vsl-ph{position:absolute;inset:0;z-index:1;display:grid;place-content:center;gap:6px;text-align:center;color:var(--gold-l);font-weight:700}
+  .vsl-ph small{font-weight:300;color:var(--mute)}
   .mm{position:relative;margin:28px -4px 0;padding:14px 8px 8px;border-radius:22px;border:2px solid var(--gold);background:radial-gradient(90% 80% at 50% 45%,#fff 0%,#ffe9f0 62%,#f6cfdd 100%);box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 60px rgba(212,175,55,.35)}
   .mm img{display:block;width:100%;height:auto}
   .mm .best{top:14px;left:0}
@@ -188,6 +200,11 @@
       <h2 class="up-h">הצעה אחת.<span>רק בדף הזה.</span></h2>
       <div class="up-timer" role="timer"><span>ההצעה נעלמת בעוד</span><b id="up-t">15:00</b></div>
 
+      <div class="vsl" id="vsl" hidden>
+        <p class="vsl-cap">לפני שמחליטים: צפי בסרטון הקצר ותראי בדיוק מה מחכה לך בתוך מאניפסט מאסטר</p>
+        <div class="vsl-box" id="vsl-box"></div>
+      </div>
+
       <div class="mm rv">
         <span class="best">רב מכר</span>
         <img src="assets/manifest-master.webp" width="1000" height="523" alt="הקורס מאניפסט מאסטר: 19 שיעורים מוקלטים כולל 3 חוברות" loading="lazy">
@@ -249,6 +266,8 @@
   // קישור התשלום ב-GROW למוצר "מאניפסט מאסטר" ב-97 ₪ (עד שיוזן, ההצעה לא תוצג כלל)
   var UPSELL_URL = "https://pay.grow.link/NjM1MDI~da557dfe61cc557337a03ff520bb4989-NDAxMDE1NQ";
   var UPSELL_MINUTES = 15;
+  // קישור סרטון ה-VSL מיוטיוב (למשל https://youtu.be/XXXXXXXXXXX). ריק = הסרטון לא מוצג
+  var VSL_URL = "";
 
   (function(){
     var a=document.getElementById('ig');
@@ -282,6 +301,21 @@
     [b1,b2].forEach(function(a){a.addEventListener('click',function(){try{if(window.fbq)fbq('track','InitiateCheckout',{value:97,currency:'ILS'})}catch(e){}})});
     if('IntersectionObserver' in window){new IntersectionObserver(function(es){bar.classList.toggle('off',es[0].isIntersecting)},{threshold:.15}).observe(sec)}
   })();
+  // VSL: short YouTube video explaining what is inside Manifest Master
+  (function(){
+    var box=document.getElementById('vsl-box'),wrap=document.getElementById('vsl');
+    if(!box||!VSL_URL)return;
+    function ytId(u){var m=String(u).match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([A-Za-z0-9_-]{11})/);return m?m[1]:(/^[A-Za-z0-9_-]{11}$/.test(u)?u:'')}
+    if(VSL_URL==='__placeholder__'){box.innerHTML='<div class="vsl-ph"><span>▶ הסרטון יופיע כאן</span><small>סרטון קצר: מה מחכה לך במאניפסט מאסטר</small></div>';wrap.hidden=false;return}
+    var id=ytId(VSL_URL);if(!id)return;
+    box.style.backgroundImage='url(https://i.ytimg.com/vi/'+id+'/hqdefault.jpg)';
+    box.innerHTML='<button type="button" class="vsl-play" aria-label="לצפייה בסרטון"><i aria-hidden="true"></i><span>לחצי לצפייה</span></button>';
+    box.firstChild.addEventListener('click',function(){
+      box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="מאניפסט מאסטר: מה מחכה לך בפנים" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    });
+    wrap.hidden=false;
+  })();
+
   // price tear animation
   (function(){
     var r=document.getElementById('rip');if(!r)return;
