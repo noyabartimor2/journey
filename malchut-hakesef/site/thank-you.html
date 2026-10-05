@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ברוכה הבאה לממלכה | נויה ברטימור</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!-- פיקסל מטא / אנליטיקס: להדביק כאן את הקוד שלך. הדף שולח אירוע Purchase אם fbq קיים -->
+<style>
+  :root{
+    --bg:#0a0a0c; --gold:#d4af37; --gold-l:#f3d98b; --gold-d:#b8891f;
+    --red:#8b1a2b; --red-d:#5e0f1c; --ink:#efe9d9; --mute:#a8a18d; --line:rgba(212,175,55,.3);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  :focus-visible{outline:3px solid var(--gold-l);outline-offset:3px;border-radius:8px}
+  .ty{position:relative;overflow:hidden;padding:48px 0 72px;text-align:center}
+  .wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 20px}
+  .rays{position:absolute;left:50%;top:330px;width:1000px;height:1000px;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,rgba(243,217,139,.12) 0 5deg,transparent 5deg 15deg);-webkit-mask-image:radial-gradient(circle,#000 0,transparent 62%);mask-image:radial-gradient(circle,#000 0,transparent 62%);pointer-events:none}
+
+  .seal{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#f7e3a0,#c9a23a);box-shadow:0 0 0 7px rgba(212,175,55,.14),0 0 46px rgba(212,175,55,.5)}
+  .seal svg{width:38px;height:38px}
+  .eyebrow{color:var(--gold);font-weight:700;font-size:16px;margin:0 0 10px;letter-spacing:.02em}
+  h1{margin:0;color:var(--gold);font-weight:800;line-height:1.08;font-size:clamp(34px,10.4vw,62px);text-wrap:balance}
+  h1 span{display:block;color:var(--ink)}
+  .sub{font-weight:300;color:#d6cfbd;font-size:clamp(18px,4.8vw,22px);margin:18px auto 0;max-width:30em;text-wrap:balance}
+  .sub b{color:var(--gold-l);font-weight:800}
+
+  .portal-wrap{position:relative;width:min(70%,290px);margin:56px auto 0}
+  .crown{position:absolute;top:-44px;left:50%;width:84px;transform:translateX(-50%);z-index:3;filter:drop-shadow(0 0 14px rgba(243,217,139,.7))}
+  .portal{position:relative;z-index:1;aspect-ratio:4/5;border-radius:999px 999px 14px 14px;overflow:hidden;border:2px solid var(--gold);background:#0a0a0c;box-shadow:0 0 0 7px rgba(212,175,55,.12),0 0 70px rgba(212,175,55,.38)}
+  .portal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:46% 12%;display:block}
+  .portal::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 50% at 50% 30%,rgba(243,217,139,.2),transparent 70%),radial-gradient(120% 92% at 50% 40%,transparent 46%,rgba(10,10,12,.9) 88%),linear-gradient(180deg,transparent 64%,rgba(94,15,28,.6))}
+  .carpet{position:relative;z-index:2;height:26px;margin:-2px 6% 0;clip-path:polygon(6% 0,94% 0,100% 100%,0 100%);background:linear-gradient(180deg,#8b1a2b,#4a0b16)}
+
+  .pride{font-size:clamp(20px,5.4vw,26px);font-weight:300;line-height:1.5;margin:44px 0 0;text-wrap:balance}
+  .pride b{color:var(--gold-l);font-weight:800}
+
+  .mail{margin:40px 0 0;padding:30px 20px 28px;border-radius:26px;border:1.5px solid rgba(243,217,139,.6);background:radial-gradient(120% 90% at 50% 0%,rgba(243,217,139,.2),transparent 60%),linear-gradient(180deg,#14110a,#0a0a0c);box-shadow:0 0 60px rgba(212,175,55,.2)}
+  .mail svg{width:52px;height:52px;margin:0 auto 8px;display:block}
+  .mail .k{font-size:15px;font-weight:700;color:var(--gold);letter-spacing:.04em;margin:0}
+  .mail .big{font-size:clamp(26px,7.4vw,38px);font-weight:800;line-height:1.2;color:var(--ink);margin:6px 0 0;text-wrap:balance}
+  .mail .big em{font-style:normal;color:var(--gold-l)}
+  .mail .note{margin:14px 0 0;font-size:15.5px;font-weight:300;color:#cfc8b6}
+
+  .steps{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:10px;text-align:start}
+  .steps li{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:14px;background:linear-gradient(160deg,#16161d,#0c0c11);border:1px solid var(--line);font-size:clamp(16px,4.3vw,18px)}
+  .steps .n{flex:none;width:28px;height:28px;border-radius:50%;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:#1a1405;font-weight:800;font-size:14px;display:grid;place-items:center;margin-top:1px}
+
+  .help{margin:40px 0 0}
+  .help h2{margin:0;font-size:clamp(24px,6.4vw,32px);font-weight:800;color:var(--gold-l)}
+  .help p{margin:8px 0 0;color:#d6cfbd;font-weight:300;font-size:clamp(17px,4.5vw,20px)}
+  .btn{display:inline-block;margin-top:22px;text-decoration:none;background:linear-gradient(180deg,#f3d98b,#c9a23a);color:#1a1405;border-radius:14px;padding:15px 34px;font-weight:800;font-size:19px;box-shadow:0 8px 28px rgba(212,175,55,.28)}
+  .btn[hidden]{display:none}
+
+  .closing{margin:46px 0 0;font-size:clamp(26px,7.4vw,38px);font-weight:800;color:var(--gold);line-height:1.2}
+  .closing small{display:block;margin-top:8px;font-size:15px;font-weight:300;color:var(--mute)}
+
+  .sp{position:absolute;bottom:40%;left:var(--x);width:16px;height:16px;background:radial-gradient(circle,#fff,#f3d98b 45%,transparent 72%);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:0;animation:rise 5.5s ease-in infinite;animation-delay:var(--d);pointer-events:none;z-index:0}
+  @keyframes rise{0%{transform:translateY(60px) scale(.4);opacity:0}25%{opacity:1}100%{transform:translateY(-260px) scale(1.2) rotate(45deg);opacity:0}}
+  .js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .js .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.sp{display:none}.js .rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<main class="ty">
+  <div class="rays" aria-hidden="true"></div>
+  <span class="sp" style="--x:8%;--d:0s" aria-hidden="true"></span><span class="sp" style="--x:22%;--d:1.4s" aria-hidden="true"></span>
+  <span class="sp" style="--x:38%;--d:2.8s" aria-hidden="true"></span><span class="sp" style="--x:62%;--d:.7s" aria-hidden="true"></span>
+  <span class="sp" style="--x:78%;--d:2.1s" aria-hidden="true"></span><span class="sp" style="--x:92%;--d:3.4s" aria-hidden="true"></span>
+
+  <div class="wrap">
+    <div class="seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1405" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <p class="eyebrow">ההזמנה התקבלה</p>
+    <h1>כל הכבוד לך.<span>עשית את הצעד.</span></h1>
+    <p class="sub">הרבה נשים קוראות, מהנהנות ומשאירות את זה למחר.<br><b>את בחרת בעצמך.</b></p>
+
+    <div class="portal-wrap">
+      <svg class="crown" viewBox="0 0 120 80" aria-hidden="true">
+        <defs><linearGradient id="t-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e3a0"/><stop offset=".55" stop-color="#d4af37"/><stop offset="1" stop-color="#a77a17"/></linearGradient></defs>
+        <path d="M14 62 L22 22 L44 44 L60 10 L76 44 L98 22 L106 62 Z" fill="url(#t-gold)" stroke="#fff3c4" stroke-width="1.5" stroke-linejoin="round"/>
+        <rect x="14" y="62" width="92" height="12" rx="4" fill="url(#t-gold)"/>
+        <circle cx="22" cy="20" r="4.5" fill="#fff3c4"/><circle cx="60" cy="8" r="5.5" fill="#fff3c4"/><circle cx="98" cy="20" r="4.5" fill="#fff3c4"/>
+        <circle cx="60" cy="68" r="3.5" fill="#8b1a2b"/><circle cx="36" cy="68" r="2.6" fill="#8b1a2b"/><circle cx="84" cy="68" r="2.6" fill="#8b1a2b"/>
+      </svg>
+      <div class="portal"><img src="assets/noya.jpg" width="1100" height="880" alt="נויה ברטימור" fetchpriority="high"></div>
+      <div class="carpet" aria-hidden="true"></div>
+    </div>
+
+    <p class="pride rv">הזהות השורדת רצתה לחכות עוד קצת.<br><b>את כבר לא מחכה.</b></p>
+
+    <div class="mail rv">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="5" y="10" width="38" height="28" rx="5" stroke="#f3d98b" stroke-width="2.5"/><path d="M7 14l17 13 17-13" stroke="#f3d98b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p class="k">מה קורה עכשיו</p>
+      <p class="big">פרטי ההתחברות שלך יגיעו אליך <em>למייל תוך 3 שעות</em> מרגע הרכישה.</p>
+      <p class="note">המייל נשלח לכתובת שהזנת בתשלום.</p>
+    </div>
+
+    <ol class="steps rv">
+      <li><span class="n">1</span><span>תוך 3 שעות מרגע הרכישה מגיע אלייך מייל עם פרטי ההתחברות לממלכה.</span></li>
+      <li><span class="n">2</span><span>עברו 3 שעות ולא קיבלת? בדקי בתיקיית הספאם ובפרסומות, ואם עדיין אין, כתבי לי.</span></li>
+      <li><span class="n">3</span><span>נכנסת? מתחילה מאיפה שבא לך. אין דד-ליין, ואת בקצב שלך.</span></li>
+    </ol>
+
+    <div class="help rv">
+      <h2>לכל שאלה, אני כאן.</h2>
+      <p>מוזמנת לפנות אליי באינסטגרם.</p>
+      <a class="btn" id="ig" href="#" target="_blank" rel="noopener" hidden>לכתוב לי באינסטגרם</a>
+    </div>
+
+    <p class="closing rv">ברוכה הבאה לממלכה.<small>נויה</small></p>
+  </div>
+</main>
+
+<script>
+  // ---- למלא: כתובת האינסטגרם שלך (למשל https://instagram.com/השם_שלך) ----
+  var INSTAGRAM_URL = "https://www.instagram.com/noya_bt/";
+  var PRICE = 555;
+
+  (function(){
+    var a=document.getElementById('ig');
+    if(INSTAGRAM_URL){a.href=INSTAGRAM_URL;a.hidden=false}
+    try{if(window.fbq)fbq('track','Purchase',{value:PRICE,currency:'ILS'})}catch(e){}
+    var els=[].slice.call(document.querySelectorAll('.rv'));
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(e){io.observe(e)});
+  })();
+</script>
+</body>
+</html>
