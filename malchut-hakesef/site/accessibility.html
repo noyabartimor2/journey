@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הצהרת נגישות | ממלכת הכסף</title>
+<meta name="description" content="הצהרת הנגישות של האתר ממלכת הכסף של נויה ברטימור.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="a11y.css">
+<style>
+  :root{--bg:#0a0a0c;--gold:#d4af37;--gold-l:#f3d98b;--ink:#efe9d9;--mute:#b4ad98;--line:rgba(212,175,55,.3);color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+  :focus-visible{outline:3px solid var(--gold-l);outline-offset:3px;border-radius:6px}
+  main{max-width:720px;margin:0 auto;padding:40px 20px 90px}
+  h1{margin:0 0 6px;font-size:clamp(32px,8vw,46px);font-weight:800;color:var(--gold);line-height:1.15}
+  .upd{color:var(--mute);margin:0 0 28px;font-size:15px}
+  h2{margin:34px 0 8px;font-size:clamp(21px,5.4vw,26px);font-weight:800;color:var(--gold-l)}
+  p,li{font-size:clamp(17px,4.4vw,19px);font-weight:300;color:#e3dccb}
+  ul{padding-inline-start:22px;margin:8px 0}
+  li{margin:4px 0}
+  a{color:var(--gold-l)}
+  .back{display:inline-block;margin-bottom:22px;font-weight:700}
+  .card{margin-top:10px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:#12121a}
+  .card p{margin:4px 0}
+</style>
+</head>
+<body>
+<main id="main">
+  <a class="back" href="index.html">← חזרה לאתר</a>
+  <h1>הצהרת נגישות</h1>
+  <p class="upd">עודכנה לאחרונה: 14.10.2026</p>
+
+  <p>נויה ברטימור רוצה שכל אישה תוכל לקרוא, להבין ולהשתמש באתר ממלכת הכסף באופן עצמאי ובנוחות, ופועלת להנגשתו לפי תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013, ולפי תקן ישראלי ת"י 5568 (הנחיות WCAG 2.0 ברמה AA).</p>
+
+  <h2>מה כבר נעשה באתר</h2>
+  <ul>
+    <li>תפריט נגישות (הכפתור בצד המסך): הגדלת וצמצום טקסט, ניגודיות גבוהה, גווני אפור, קו תחתון והדגשת קישורים, גופן קריא ועצירת אנימציות.</li>
+    <li>ניווט במקלדת ובמקשי Tab, עם סימון ברור של האלמנט הפעיל, וקישור "דלגי לתוכן הראשי" בתחילת כל עמוד.</li>
+    <li>מבנה כותרות ואזורי עמוד ברור, והגדרת שפה ועברית מימין לשמאל.</li>
+    <li>טקסט חלופי לתמונות, כיבוד העדפת "הפחתת תנועה" של מכשירך, והתאמה לטלפון ולמסכים בגדלים שונים.</li>
+  </ul>
+
+  <h2>מגבלות ידועות</h2>
+  <ul>
+    <li>ההודעות מהמשתתפות מוצגות כצילומי מסך, ואין להן עדיין תמלול טקסט מלא.</li>
+    <li>סרטון ההסבר מוטמע מיוטיוב, ובנגישות שלו אנחנו תלויים בנגן. ייתכן שחסרות בו כתוביות.</li>
+    <li>דף התשלום מתנהל באתר חיצוני (GROW), שאינו בשליטתנו, והנגישות שלו באחריות מפעיליו.</li>
+    <li>תפריט הנגישות הוא כלי עזר ואינו מחליף התאמה מלאה של האתר.</li>
+  </ul>
+
+  <h2>נתקלת בבעיה?</h2>
+  <p>אם נתקלת בקושי או בדבר שאינו נגיש, נשמח לדעת ולתקן. אפשר לפנות אלינו באחת הדרכים:</p>
+  <div class="card">
+    <p><strong>רכזת נגישות:</strong> <span id="c-name">נויה ברטימור</span></p>
+    <p id="c-phone-row" hidden><strong>טלפון:</strong> <a id="c-phone" href="#"></a></p>
+    <p id="c-mail-row" hidden><strong>אימייל:</strong> <a id="c-mail" href="#"></a></p>
+    <p><strong>אינסטגרם:</strong> <a href="https://www.instagram.com/noya_bt/" target="_blank" rel="noopener">@noya_bt</a></p>
+  </div>
+  <p>נשתדל לענות בתוך זמן סביר ולתקן ככל שניתן.</p>
+</main>
+
+<script>
+  // פרטי רכזת הנגישות: למלא כדי שיופיעו בהצהרה
+  var COORD = { phone: "", email: "" };
+  (function(){
+    if(COORD.phone){var a=document.getElementById('c-phone');a.textContent=COORD.phone;a.href='tel:'+COORD.phone.replace(/[^\d+]/g,'');document.getElementById('c-phone-row').hidden=false}
+    if(COORD.email){var m=document.getElementById('c-mail');m.textContent=COORD.email;m.href='mailto:'+COORD.email;document.getElementById('c-mail-row').hidden=false}
+  })();
+</script>
+<script src="a11y.js"></script>
+</body>
+</html>

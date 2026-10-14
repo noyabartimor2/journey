@@ -172,13 +172,6 @@
 
 
   .tm-hint{text-align:center;color:var(--mute);font-size:14px;margin:22px 0 0}
-  .tm-wrap{position:relative;max-width:1100px;margin:14px auto 0}
-  .tm-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 20px 22px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--gold-d) transparent}
-  .tm-card{flex:0 0 min(84%,440px);scroll-snap-align:center;margin:0;align-self:center}
-  .tm-card img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.55)}
-  .tm-nav{display:flex;justify-content:center;gap:12px}
-  .tm-nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--gold);background:#0a0a0c;color:var(--gold-l);font-size:26px;line-height:1;cursor:pointer}
-  .tm-nav button:active{background:#1a1405}
   .legend .n{font-size:13px}
 
   .price .why,.price .terms,.proof,.fine2{text-wrap:balance}
@@ -244,10 +237,30 @@
   .eq-final b{display:block;margin-top:4px;color:var(--gold-l)}
 
   .tm-intro{text-align:center;font-size:clamp(22px,6vw,30px);font-weight:700;color:var(--gold-l);line-height:1.4;margin:0;text-wrap:balance}
-  section.alt:has(.tm-wrap){padding-top:52px}
 
   @media (max-width:420px){.ba{gap:6px}.ba-arrow{font-size:24px}}
   @media (prefers-reduced-motion:reduce){.sp,.blink,.rw-big,.eq::before,.eq::after{animation:none}.sp{display:none}.rw-big{background-position:50% 0}.blink{opacity:1}}
+
+  .sub.hero-q{color:#ff4d63;font-weight:800;font-size:clamp(28px,8.4vw,46px);line-height:1.2;max-width:14em;margin-top:22px;text-wrap:balance;text-shadow:0 0 26px rgba(255,59,85,.3)}
+  .tm2-hint{text-align:center;color:var(--mute);font-size:14.5px;margin:14px 0 0}
+  .tm2{position:relative;max-width:660px;margin:14px auto 0}
+  .tm2-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 14px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tm2-track::-webkit-scrollbar{display:none}
+  .tm2-slide{flex:0 0 90%;scroll-snap-align:center}
+  .tm2-frame{display:flex;gap:8px;align-items:flex-start;padding:10px;border-radius:20px;border:1.5px solid var(--line);background:#050507;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+  .tm2-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .tm2-card{display:block;padding:0;border:0;background:none;cursor:zoom-in;border-radius:8px;overflow:hidden}
+  .tm2-card img{display:block;width:100%;height:auto}
+  .tm-nav{display:flex;justify-content:center;align-items:center;gap:14px}
+  .tm-nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--gold);background:#0a0a0c;color:var(--gold-l);font-size:26px;line-height:1;cursor:pointer}
+  .tm2-dots{display:flex;gap:8px}
+  .tm2-dots i{width:9px;height:9px;border-radius:50%;background:#4a4538}
+  .tm2-dots i.on{background:var(--gold-l);box-shadow:0 0 10px rgba(243,217,139,.6)}
+  .tm2-sec{padding-top:52px}
+  .lb{position:fixed;inset:0;z-index:9995;background:rgba(0,0,0,.92);display:grid;place-items:center;padding:56px 12px 24px;overflow:auto}
+  .lb[hidden]{display:none}
+  .lb img{width:min(94vw,640px);height:auto;border-radius:12px;display:block}
+  .lb-x{position:fixed;top:10px;left:10px;width:46px;height:46px;border-radius:50%;border:2px solid var(--gold-l);background:#0a0a0c;color:var(--gold-l);font-size:28px;line-height:1;cursor:pointer;z-index:1}
 
   /* reveal */
   .js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
@@ -255,17 +268,19 @@
   @media (max-width:420px){.legend{grid-template-columns:1fr}}
   @media (prefers-reduced-motion:reduce){.twinkle,.swirl,.float{animation:none}.js .rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 </style>
+<link rel="stylesheet" href="a11y.css">
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
 
 
 <!-- 1. HERO -->
+<main id="main">
 <section class="hero">
   <div class="wrap">
     <p class="eyebrow">בואי נתחיל מהחלק הכיפי</p>
     <h1 class="h-hero"><span>מזל טוב.</span><br>הבנת שבא לך להיות עשירה.</h1>
-    <p class="sub">אז למה לזמן כסף מרגיש כמו מלחמה מתישה?</p>
+    <p class="sub hero-q">אז למה לזמן כסף מרגיש כמו מלחמה מתישה?</p>
 
     <div class="portal-wrap">
       <div class="rays" aria-hidden="true"></div>
@@ -664,34 +679,56 @@
 <hr class="divider">
 
 <!-- 8. TESTIMONIALS -->
-<section class="alt">
+<section class="alt tm2-sec">
   <div class="wrap">
     <p class="tm-intro rv">ממליצה לך לעצור לקרוא את מה שנשים מספרות על התהליך..</p>
+    <p class="tm2-hint rv">הודעות אמיתיות מהמשתתפות. לחצי על הודעה כדי להגדיל, והחליקי הצידה לעוד.</p>
   </div>
-  <div class="tm-wrap rv">
-    <div class="tm-track" id="tm-track" tabindex="0" role="region" aria-label="הודעות מהמשתתפות בקורס">
-      <figure class="tm-card"><img src="assets/tm/b6.webp" width="622" height="212" alt="הודעה אמיתית מאחת המשתתפות בקורס" ></figure>
-      <figure class="tm-card"><img src="assets/tm/b8.webp" width="555" height="372" alt="הודעה אמיתית מאחת המשתתפות בקורס" ></figure>
-      <figure class="tm-card"><img src="assets/tm/a6.webp" width="572" height="440" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b7.webp" width="529" height="768" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a3.webp" width="506" height="230" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a5.webp" width="513" height="228" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b1.webp" width="557" height="317" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a2.webp" width="546" height="316" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b3.webp" width="490" height="172" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b2.webp" width="490" height="74" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a7.webp" width="498" height="218" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a8.webp" width="492" height="238" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a4.webp" width="546" height="196" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/a1.webp" width="578" height="160" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b5.webp" width="458" height="122" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b9.webp" width="507" height="89" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
-      <figure class="tm-card"><img src="assets/tm/b4.webp" width="356" height="72" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></figure>
+  <div class="tm2 rv" role="region" aria-roledescription="קרוסלה" aria-label="הודעות מהמשתתפות בקורס">
+    <div class="tm2-track" id="tm2-track">
+      <div class="tm2-slide" role="group" aria-label="חלק 1 מתוך 2">
+      <div class="tm2-frame">
+        <div class="tm2-col">
+          <button type="button" class="tm2-card" data-src="assets/tm/a1.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a1.webp" width="578" height="160" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/a3.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a3.webp" width="506" height="230" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/a5.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a5.webp" width="513" height="228" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/a7.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a7.webp" width="498" height="218" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/a8.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a8.webp" width="492" height="238" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+        </div>
+        <div class="tm2-col">
+          <button type="button" class="tm2-card" data-src="assets/tm/a2.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a2.webp" width="546" height="316" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/a4.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a4.webp" width="546" height="196" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/a6.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/a6.webp" width="572" height="440" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+        </div>
+      </div>
+      </div>
+      <div class="tm2-slide" role="group" aria-label="חלק 2 מתוך 2">
+      <div class="tm2-frame">
+        <div class="tm2-col">
+          <button type="button" class="tm2-card" data-src="assets/tm/b1.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b1.webp" width="557" height="317" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b5.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b5.webp" width="458" height="122" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b7.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b7.webp" width="529" height="768" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+        </div>
+        <div class="tm2-col">
+          <button type="button" class="tm2-card" data-src="assets/tm/b2.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b2.webp" width="490" height="74" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b3.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b3.webp" width="490" height="172" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b4.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b4.webp" width="356" height="72" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b6.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b6.webp" width="622" height="212" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b8.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b8.webp" width="555" height="372" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+          <button type="button" class="tm2-card" data-src="assets/tm/b9.webp" aria-label="הגדלת ההודעה"><img src="assets/tm/b9.webp" width="507" height="89" alt="הודעה אמיתית מאחת המשתתפות בקורס" loading="lazy"></button>
+        </div>
+      </div>
+      </div>
     </div>
     <div class="tm-nav">
-      <button type="button" id="tm-prev" aria-label="להודעה הקודמת">›</button>
-      <button type="button" id="tm-next" aria-label="להודעה הבאה">‹</button>
+      <button type="button" id="tm2-prev" aria-label="לחלק הקודם">›</button>
+      <span class="tm2-dots" aria-hidden="true"><i class="on"></i><i></i></span>
+      <button type="button" id="tm2-next" aria-label="לחלק הבא">‹</button>
     </div>
+  </div>
+  <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="הודעה מוגדלת">
+    <button type="button" class="lb-x" id="lb-x" aria-label="סגירה">×</button>
+    <img id="lb-img" alt="הודעה מוגדלת מאחת המשתתפות">
   </div>
 </section>
 
@@ -827,10 +864,12 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
     <p>ממלכת הכסף אינה מהווה ייעוץ פיננסי, השקעות או ייעוץ מקצועי מכל סוג, ואינה מבטיחה תוצאה כספית. התוצאות המתוארות הן חוויות אישיות.</p>
-    <p>© נויה ברטימור</p>
+    <p><a href="accessibility.html">הצהרת נגישות</a> · © נויה ברטימור</p>
   </div>
 </footer>
 
@@ -853,12 +892,24 @@
     new IntersectionObserver(function(es){s.classList.toggle('hide',es[0].isIntersecting)},{threshold:.15}).observe(b);
   })();
 
-  // testimonials carousel
+  // testimonials: 2 frames + enlarge on tap
   (function(){
-    var t=document.getElementById('tm-track');if(!t)return;
-    var step=function(d){var c=t.querySelector('.tm-card');var w=c?c.getBoundingClientRect().width+14:300;t.scrollBy({left:d*w,behavior:'smooth'})};
-    document.getElementById('tm-next').addEventListener('click',function(){step(-1)});
-    document.getElementById('tm-prev').addEventListener('click',function(){step(1)});
+    var tr=document.getElementById('tm2-track');if(!tr)return;
+    var slides=[].slice.call(tr.querySelectorAll('.tm2-slide')),dots=document.querySelectorAll('.tm2-dots i'),cur=0;
+    var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function go(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:calm?'auto':'smooth',block:'nearest',inline:'center'})}
+    document.getElementById('tm2-next').addEventListener('click',function(){go(cur+1)});
+    document.getElementById('tm2-prev').addEventListener('click',function(){go(cur-1)});
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){cur=slides.indexOf(en.target);[].forEach.call(dots,function(d,k){d.className=k===cur?'on':''})}})},{root:tr,threshold:.6});
+      slides.forEach(function(sl){io.observe(sl)});
+    }
+    var lb=document.getElementById('lb'),img=document.getElementById('lb-img'),x=document.getElementById('lb-x'),opener=null;
+    function closeLb(){lb.hidden=true;img.removeAttribute('src');document.body.style.overflow='';if(opener)opener.focus()}
+    tr.addEventListener('click',function(e){var c=e.target.closest('.tm2-card');if(!c)return;opener=c;img.src=c.getAttribute('data-src');lb.hidden=false;document.body.style.overflow='hidden';x.focus()});
+    x.addEventListener('click',closeLb);
+    lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!lb.hidden)closeLb()});
   })();
 
   // checkout click tracking
@@ -867,5 +918,6 @@
     a.addEventListener('click',function(){try{if(window.fbq)fbq('track','InitiateCheckout')}catch(e){}});
   })();
 </script>
+<script src="a11y.js"></script>
 </body>
 </html>

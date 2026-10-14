@@ -150,17 +150,19 @@
   @media (max-width:360px){.up-timer{gap:8px;padding:8px 14px;font-size:13px}.up-timer b{font-size:24px}}
   @media (prefers-reduced-motion:reduce){.cover-wrap::before,.btn.up-btn,.up-timer::before{animation:none}}
 
+  .a11y-foot{margin:34px 0 0;font-size:14px}.a11y-foot a{color:var(--mute)}
   .sp{position:absolute;bottom:40%;left:var(--x);width:16px;height:16px;background:radial-gradient(circle,#fff,#f3d98b 45%,transparent 72%);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:0;animation:rise 5.5s ease-in infinite;animation-delay:var(--d);pointer-events:none;z-index:0}
   @keyframes rise{0%{transform:translateY(60px) scale(.4);opacity:0}25%{opacity:1}100%{transform:translateY(-260px) scale(1.2) rotate(45deg);opacity:0}}
   .js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
   .js .rv.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){.sp{display:none}.js .rv{opacity:1;transform:none;transition:none}}
 </style>
+<link rel="stylesheet" href="a11y.css">
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
 
-<main class="ty">
+<main class="ty" id="main">
   <div class="rays" aria-hidden="true"></div>
   <span class="sp" style="--x:8%;--d:0s" aria-hidden="true"></span><span class="sp" style="--x:22%;--d:1.4s" aria-hidden="true"></span>
   <span class="sp" style="--x:38%;--d:2.8s" aria-hidden="true"></span><span class="sp" style="--x:62%;--d:.7s" aria-hidden="true"></span>
@@ -251,6 +253,7 @@
     </div>
 
     <p class="closing rv">ברוכה הבאה לממלכה.<small>נויה</small></p>
+    <p class="a11y-foot"><a href="accessibility.html">הצהרת נגישות</a></p>
   </div>
 </main>
 
@@ -324,5 +327,6 @@
     new IntersectionObserver(function(es,o){if(es[0].isIntersecting){r.classList.add('go');o.disconnect()}},{threshold:.6}).observe(r);
   })();
 </script>
+<script src="a11y.js"></script>
 </body>
 </html>
