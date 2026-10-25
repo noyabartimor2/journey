@@ -264,6 +264,58 @@
 
   .terms-line{margin-top:10px!important;font-size:13px!important}.terms-line a{color:var(--gold-l)}.terms-line strong{color:var(--ink)}
 
+  .rip{text-align:center;margin:2px 0 4px;width:100%}
+  .rip-label{display:block;font-size:15px;color:var(--mute)}
+  .rip-label.l-new{color:var(--gold);font-weight:700;opacity:0;transition:opacity .6s 2s}
+  .rip-stage{position:relative;height:clamp(130px,38vw,190px);margin:2px 0}
+  .rip-half,.rip-new{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(46px,13.4vw,84px);line-height:1;white-space:nowrap}
+  .rip-new{font-size:clamp(70px,22vw,112px)}
+  .rip-half{color:#ff4d63;text-shadow:0 0 22px rgba(255,59,85,.35)}
+  .ra{clip-path:polygon(0 0,100% 0,100% 28%,94% 40%,82% 34%,70% 52%,58% 46%,46% 62%,34% 56%,22% 70%,10% 64%,0 74%)}
+  .rb{clip-path:polygon(0 74%,10% 64%,22% 70%,34% 56%,46% 62%,58% 46%,70% 52%,82% 34%,94% 40%,100% 28%,100% 100%,0 100%)}
+  .rip-crack{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .rip-crack polyline{fill:none;stroke:#ff3b55;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 6px #ff3b55)}
+  .rip-new{color:#3ddc84;text-shadow:0 0 26px rgba(61,220,132,.55);opacity:0;transform:scale(.2)}
+  .js .rip.go .rip-crack polyline{animation:crack .7s ease-out .3s forwards}
+  .js .rip.go .ra{animation:tearA 1.4s cubic-bezier(.5,0,.2,1) .95s forwards}
+  .js .rip.go .rb{animation:tearB 1.4s cubic-bezier(.5,0,.2,1) .95s forwards}
+  .js .rip.go .rip-new{animation:burst 1s cubic-bezier(.2,.9,.3,1.2) 1.55s forwards}
+  .js .rip.go .l-new{opacity:1}
+  @keyframes crack{to{stroke-dashoffset:0}}
+  @keyframes tearA{0%{transform:none;color:#ff4d63;opacity:1}30%{color:#ff7a8a}100%{transform:translate(-3%,-30%) rotate(-5deg);color:#c9293f;opacity:.32}}
+  @keyframes tearB{0%{transform:none;color:#ff4d63;opacity:1}30%{color:#ff7a8a}100%{transform:translate(3%,30%) rotate(5deg);color:#c9293f;opacity:.32}}
+  @keyframes burst{0%{opacity:0;transform:scale(.2);filter:blur(10px)}60%{opacity:1;transform:scale(1.16);filter:none}100%{opacity:1;transform:scale(1);filter:none}}
+  html:not(.js) .rip .rip-crack polyline,.rip.done .rip-crack polyline{stroke-dashoffset:0}
+  html:not(.js) .rip .ra,.rip.done .ra{transform:translate(-3%,-30%) rotate(-5deg);color:#c9293f;opacity:.32}
+  html:not(.js) .rip .rb,.rip.done .rb{transform:translate(3%,30%) rotate(5deg);color:#c9293f;opacity:.32}
+  html:not(.js) .rip .rip-new,.rip.done .rip-new{opacity:1;transform:none}
+  html:not(.js) .rip .l-new,.rip.done .l-new{opacity:1}
+  .rip.done *{animation:none!important;transition:none!important}
+  .sale-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;overflow:hidden;direction:ltr;background:linear-gradient(90deg,#7d1626,#c4213a 50%,#7d1626);border-bottom:2px solid var(--gold-l);box-shadow:0 6px 24px rgba(196,33,58,.45)}
+  .sale-track{display:flex;width:max-content;animation:sale-run 22s linear infinite}
+  .sale-item{display:flex;align-items:center;gap:22px;padding:11px 11px;white-space:nowrap;direction:rtl;font-weight:800;font-size:clamp(21px,6.2vw,30px);line-height:1.1;color:#fff;letter-spacing:.01em}
+  .sale-item em{font-style:normal;color:var(--gold-l);text-shadow:0 0 14px rgba(243,217,139,.6)}
+  .sale-item i{font-style:normal;color:var(--gold-l);font-size:.8em}
+  @keyframes sale-run{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  .sale-over .sale-only{display:none!important}
+  .reg-only{display:none}
+  .sale-over .reg-only{display:block}
+  .sale-over span.reg-only{display:inline}
+  .sale-timer{margin:2px 0 22px;text-align:center}
+  .sale-timer .lbl{display:block;font-size:clamp(17px,4.8vw,21px);font-weight:800;color:#ff8a99;letter-spacing:.02em;margin:0 0 10px}
+  .sale-timer .lbl::before{content:"";display:inline-block;width:10px;height:10px;margin-inline-end:10px;border-radius:50%;background:#ff3b55;box-shadow:0 0 12px #ff3b55;animation:dot 1s ease-in-out infinite}
+  @keyframes dot{50%{opacity:.25}}
+  .sale-clock{display:flex;justify-content:center;align-items:flex-start;gap:6px;direction:ltr}
+  .sale-clock .u{display:grid;justify-items:center;gap:4px;min-width:0}
+  .sale-clock b{display:block;min-width:2ch;padding:10px 6px;border-radius:14px;border:2px solid #ff4d63;background:linear-gradient(180deg,#2a0a12,#14060a);color:#fff;font-size:clamp(40px,12.8vw,64px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;box-shadow:0 0 24px rgba(255,59,85,.35),inset 0 0 18px rgba(255,59,85,.12);width:clamp(66px,21vw,98px)}
+  .sale-clock small{font-size:13.5px;color:var(--mute);font-weight:600}
+  .sale-clock .sep{font-size:clamp(34px,10vw,54px);font-weight:800;color:#ff4d63;line-height:1.35;padding-top:2px}
+  .sale-tag{display:inline-block;margin:0 0 14px;padding:6px 18px;border-radius:99px;background:linear-gradient(180deg,#f7e3a0,#c9a23a);color:#1a1405;font-weight:900;font-size:16px;letter-spacing:.02em}
+  .sale-note{margin:6px 0 0;font-size:clamp(16px,4.4vw,18px);color:#e3dccb;font-weight:300}
+  .sale-note b{color:var(--gold-l);font-weight:800}
+  .price .now{display:block;font-size:clamp(64px,19vw,92px);font-weight:900;color:var(--gold-l);line-height:1;margin:6px 0}
+  @media (prefers-reduced-motion:reduce){.sale-track{animation:none;width:100%;justify-content:center}.sale-item+.sale-item{display:none}.sale-clock .lbl::before,.sale-timer .lbl::before{animation:none}}
+
   /* reveal */
   .js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
   .js .rv.in{opacity:1;transform:none}
@@ -277,6 +329,13 @@
 
 
 <!-- 1. HERO -->
+<div class="sale-bar sale-only" id="sale-bar" role="region" aria-label="מבצע ל-24 שעות: 555 שקלים במקום 888">
+  <div class="sale-track" aria-hidden="true">
+    <span class="sale-item"><i>✦</i><em>מבצע ל-24 שעות בלבד</em><i>✦</i><span>555 ₪ במקום 888 ₪</span><i>✦</i><span>מבצע אקסלוסיבי</span><i>✦</i></span>
+    <span class="sale-item"><i>✦</i><em>מבצע ל-24 שעות בלבד</em><i>✦</i><span>555 ₪ במקום 888 ₪</span><i>✦</i><span>מבצע אקסלוסיבי</span><i>✦</i></span>
+  </div>
+  <span class="sr" style="position:absolute;left:-9999px">מבצע ל-24 שעות בלבד: 555 שקלים במקום 888 שקלים. מבצע אקסלוסיבי.</span>
+</div>
 <main id="main">
 <section class="hero">
   <div class="wrap">
@@ -768,12 +827,37 @@
     <div class="total rv"><span>סה"כ שווי:</span><s>5,250 ₪</s></div>
 
     <div class="box rv" id="join">
+      <div class="sale-timer sale-only" id="sale-timer" role="timer" aria-label="הזמן שנשאר למבצע">
+        <span class="sale-tag">מבצע אקסלוסיבי · 24 שעות בלבד</span>
+        <span class="lbl">המבצע נגמר בעוד</span>
+        <div class="sale-clock" aria-hidden="true">
+          <span class="u"><b id="t-h">24</b><small>שעות</small></span><span class="sep">:</span>
+          <span class="u"><b id="t-m">00</b><small>דקות</small></span><span class="sep">:</span>
+          <span class="u"><b id="t-s">00</b><small>שניות</small></span>
+        </div>
+      </div>
       <div class="price">
         <div class="reg">ידע בשווי 5,250 ₪</div>
-        <span class="now">888 ₪</span>
-        <p class="inst">או 296 ₪ ב-3 תשלומים</p>
+        <div class="sale-only">
+          <div class="rip" id="rip" role="img" aria-label="מחיר רגיל 888 שקלים. מחיר המבצע: 555 שקלים">
+            <span class="rip-label l-old">מחיר רגיל</span>
+            <div class="rip-stage" aria-hidden="true">
+              <span class="rip-half ra">888 ₪</span>
+              <span class="rip-half rb">888 ₪</span>
+              <svg class="rip-crack" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="-2,74 10,64 22,70 34,56 46,62 58,46 70,52 82,34 94,40 102,28" pathLength="100"/></svg>
+              <span class="rip-new">555 ₪</span>
+            </div>
+            <span class="rip-label l-new">מחיר המבצע</span>
+          </div>
+          <p class="sale-note"><b>אין צורך בקוד קופון.</b> ההנחה כבר קיימת במחיר. זה מבצע אקסלוסיבי, ל-24 שעות בלבד.</p>
+          <p class="inst">או 185 ₪ ב-3 תשלומים</p>
+        </div>
+        <div class="reg-only">
+          <span class="now">888 ₪</span>
+          <p class="inst">או 296 ₪ ב-3 תשלומים</p>
+        </div>
       </div>
-      <a class="btn buy" id="buy" href="https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ" rel="noopener">אני נכנסת לממלכה<small>גישה מיידית · 888 ₪</small></a>
+      <a class="btn buy" id="buy" href="https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ" rel="noopener">אני נכנסת לממלכה<small>גישה מיידית · <span class="sale-only">555 ₪ במקום 888 ₪</span><span class="reg-only">888 ₪</span></small></a>
       <p class="fine2">כולל מע״מ · כל הממלכה נפתחת לך מיד · גישה לכל החיים · מכל מקום, בקצב שלך</p>
       <p class="fine2 terms-line">בלחיצה על הכפתור את מאשרת את <a href="terms.html">התקנון</a>: <strong>מרגע הרכישה לא ניתן לקבל החזר</strong>, והמוצר אינו מתחייב לתוצאה ואינו מחליף ייעוץ מקצועי.</p>
     </div>
@@ -877,7 +961,7 @@
 </footer>
 
 
-<div class="sticky" id="sticky"><a class="btn" href="#join">אני נכנסת לממלכה<small>888 ₪ · או 296 ₪ ב-3 תשלומים</small></a></div>
+<div class="sticky" id="sticky"><a class="btn" href="#join">אני נכנסת לממלכה<small><span class="sale-only">מבצע 24 שעות · 555 ₪ במקום 888 ₪</span><span class="reg-only">888 ₪ · או 296 ₪ ב-3 תשלומים</span></small></a></div>
 
 <script>
   // reveal on scroll
@@ -913,6 +997,35 @@
     x.addEventListener('click',closeLb);
     lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!lb.hidden)closeLb()});
+  })();
+
+  // ---- מבצע: למלא ----
+  // תאריך ושעת סיום המבצע (לפי שעון UTC). אחרי הזמן הזה הדף חוזר אוטומטית למחיר הרגיל, 888 ₪.
+  var SALE_END = "2026-10-26T08:45:00Z";
+  // קישורי התשלום ב-GROW: מחיר מבצע (555 ₪) ומחיר רגיל (888 ₪). חשוב שיתאימו למחיר שמוגדר בכל קישור.
+  var PAY_SALE = "https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ";
+  var PAY_REGULAR = "https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ";
+
+  (function(){
+    var end=Date.parse(SALE_END),root=document.documentElement,buy=document.getElementById('buy');
+    var h=document.getElementById('t-h'),m=document.getElementById('t-m'),s=document.getElementById('t-s');
+    function over(){root.classList.add('sale-over');if(buy)buy.href=PAY_REGULAR;var r=document.getElementById('rip');if(r)r.classList.add('go','done')}
+    if(!end||Date.now()>=end){over();return}
+    if(buy)buy.href=PAY_SALE;
+    function pad(n){return (n<10?'0':'')+n}
+    function tick(){
+      var left=end-Date.now();
+      if(left<=0){clearInterval(iv);over();return}
+      var tot=Math.floor(left/1000);
+      h.textContent=pad(Math.floor(tot/3600));m.textContent=pad(Math.floor(tot%3600/60));s.textContent=pad(tot%60);
+    }
+    var iv=setInterval(tick,1000);tick();
+    var r=document.getElementById('rip');
+    var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(r){
+      if(calm||!('IntersectionObserver' in window)){r.classList.add('go','done')}
+      else new IntersectionObserver(function(es,o){if(es[0].isIntersecting){r.classList.add('go');o.disconnect()}},{threshold:.6}).observe(r);
+    }
   })();
 
   // checkout click tracking
