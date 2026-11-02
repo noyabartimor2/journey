@@ -292,7 +292,7 @@
   html:not(.js) .rip .l-new,.rip.done .l-new{opacity:1}
   .rip.done *{animation:none!important;transition:none!important}
   .sale-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;overflow:hidden;direction:ltr;background:linear-gradient(90deg,#7d1626,#c4213a 50%,#7d1626);border-bottom:2px solid var(--gold-l);box-shadow:0 6px 24px rgba(196,33,58,.45)}
-  .sale-track{display:flex;width:max-content;animation:sale-run 22s linear infinite}
+  .sale-track{display:flex;width:max-content;animation:sale-run 30s linear infinite}
   .sale-item{display:flex;align-items:center;gap:22px;padding:11px 11px;white-space:nowrap;direction:rtl;font-weight:800;font-size:clamp(21px,6.2vw,30px);line-height:1.1;color:#fff;letter-spacing:.01em}
   .sale-item em{font-style:normal;color:var(--gold-l);text-shadow:0 0 14px rgba(243,217,139,.6)}
   .sale-item i{font-style:normal;color:var(--gold-l);font-size:.8em}
@@ -316,6 +316,46 @@
   .price .now{display:block;font-size:clamp(64px,19vw,92px);font-weight:900;color:var(--gold-l);line-height:1;margin:6px 0}
   @media (prefers-reduced-motion:reduce){.sale-track{animation:none;width:100%;justify-content:center}.sale-item+.sale-item{display:none}.sale-clock .lbl::before,.sale-timer .lbl::before{animation:none}}
 
+  /* --- 1+1 sale (Nov) --- */
+  .mega{margin:34px auto 0;max-width:560px;padding:22px 16px 20px;border-radius:24px;border:2px solid #ff4d63;background:radial-gradient(100% 70% at 50% 0%,rgba(196,33,58,.6),transparent 70%),linear-gradient(180deg,#2a0a12,#0a0a0c);box-shadow:0 0 56px rgba(255,59,85,.35);text-align:center}
+  .mega-tag{display:inline-block;padding:5px 18px;border-radius:99px;background:#ff4d63;color:#1a0508;font-weight:900;font-size:15px;letter-spacing:.02em}
+  .mega-h{margin:10px 0 0;font-size:clamp(32px,9.6vw,50px);font-weight:800;line-height:1.08;color:#fff}
+  .mega-h em{font-style:normal;color:var(--gold-l)}
+  .mega-sub{margin:8px 0 0;font-size:clamp(16px,4.4vw,19px);color:#efe9d9;font-weight:300}
+  .mega-price{display:flex;justify-content:center;align-items:baseline;gap:16px;margin:14px 0 0;direction:rtl}
+  .mega-price s{font-size:clamp(34px,10vw,50px);font-weight:900;color:#ff8a99;text-decoration-thickness:5px;text-decoration-color:#ff3b55}
+  .mega-price b{font-size:clamp(68px,21vw,104px);font-weight:900;color:#3ddc84;line-height:1;text-shadow:0 0 30px rgba(61,220,132,.5)}
+  .mega-clock{margin:6px 0 0;font-size:clamp(17px,4.6vw,20px);font-weight:700;color:#ffd9de}
+  .mega-clock b{font-size:clamp(30px,9vw,42px);font-weight:800;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:.04em;vertical-align:-3px}
+  .mega-cond,.cond,.gift-cond{margin:10px 0 0;font-size:clamp(15px,4vw,17px);color:#e3dccb}
+  .mega-cond strong,.cond strong,.gift-cond strong{color:#ff8a99;font-weight:900}
+  .gift{background:radial-gradient(80% 50% at 50% 0%,rgba(139,26,43,.35),transparent 70%),var(--bg);text-align:center}
+  .gift h2 .gold{color:#ff4d63}
+  .duo{display:flex;align-items:center;justify-content:center;gap:6px;margin:28px auto 0;max-width:520px}
+  .duo .cv{container-type:inline-size;position:relative;flex:1 1 0;min-width:0;aspect-ratio:3/4.15;border-radius:14px;border:2px solid var(--gold);background:linear-gradient(170deg,#1a0a0e,#07070a 55%,#2a0a12);box-shadow:0 18px 44px rgba(0,0,0,.7),0 0 46px rgba(212,175,55,.3);overflow:hidden}
+  .duo .cv.gift{border-color:#ff4d63;box-shadow:0 18px 44px rgba(0,0,0,.7),0 0 56px rgba(255,59,85,.5);background:linear-gradient(170deg,#2a0a12,#07070a 55%,#3a0a18)}
+  .duo .arch{position:absolute;inset:8% 17% 47% 17%;border-radius:999px 999px 8px 8px;overflow:hidden;border:1.5px solid var(--gold-l)}
+  .duo .cv.gift .arch{border-color:#ff8a99}
+  .duo .arch img{width:100%;height:100%;object-fit:cover;object-position:46% 12%;display:block}
+  .duo .cv.gift .arch img{filter:saturate(1.15) hue-rotate(-14deg)}
+  .duo .ct{position:absolute;inset:auto 0 6% 0;text-align:center;padding:0 6px}
+  .duo .ct small{display:block;font-size:max(8.5px,4.6cqw);color:var(--mute)}
+  .duo .ct b{display:block;font-size:13cqw;font-weight:800;line-height:1;color:var(--gold-l);margin-top:4px;text-shadow:0 0 16px rgba(243,217,139,.5)}
+  .duo .cv.gift .ct b{color:#ffb3be;text-shadow:0 0 16px rgba(255,59,85,.5)}
+  .duo .plus{flex:none;font-size:clamp(40px,12vw,64px);font-weight:900;color:var(--gold-l);line-height:1;text-shadow:0 0 22px rgba(243,217,139,.6)}
+  .gift-rib{position:absolute;top:10px;left:0;z-index:2;padding:4px 14px 4px 12px;background:#ff4d63;color:#1a0508;font-weight:900;font-size:13px;border-radius:0 8px 8px 0}
+  .gift-list{list-style:none;margin:14px auto 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px}
+  .gift-list li{padding:9px 18px;border-radius:99px;border:1.5px solid rgba(255,138,153,.65);background:rgba(255,59,85,.1);font-weight:700;font-size:clamp(16px,4.3vw,19px);color:#fff}
+  .gift-cond{margin-top:18px;font-weight:700}
+  .stack .gift-row{background:rgba(255,59,85,.1);border-radius:10px;padding-inline:10px}
+  .stack .gift-row .v{color:#ff8a99;font-weight:800}
+  .pay2{margin:14px 0 0;font-size:clamp(20px,5.6vw,26px);color:#efe9d9}
+  .pay2 b{white-space:nowrap;font-size:clamp(24px,7.2vw,36px);font-weight:900;color:var(--gold-l);text-shadow:0 0 22px rgba(243,217,139,.45)}
+  .gift-line{margin:8px 0 0;font-size:clamp(20px,5.6vw,26px);font-weight:800;color:#ff8a99}
+  .sale-over .gift,.sale-over .gift+hr{display:none!important}
+  .sale-bar .sale-item em{white-space:nowrap}
+  @media (prefers-reduced-motion:reduce){.sale-item+.sale-item{display:none}}
+
   /* reveal */
   .js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
   .js .rv.in{opacity:1;transform:none}
@@ -329,12 +369,12 @@
 
 
 <!-- 1. HERO -->
-<div class="sale-bar sale-only" id="sale-bar" role="region" aria-label="מבצע ל-24 שעות: 555 שקלים במקום 888">
+<div class="sale-bar sale-only" id="sale-bar" role="region" aria-label="מבצע מטורף: 520 שקלים במקום 888, וקורס שלם במתנה. עד מחר ב-12:00 או ל-25 הנשים הראשונות">
   <div class="sale-track" aria-hidden="true">
-    <span class="sale-item"><i>✦</i><em>מבצע ל-24 שעות בלבד</em><i>✦</i><span>555 ₪ במקום 888 ₪</span><i>✦</i><span>מבצע אקסלוסיבי</span><i>✦</i></span>
-    <span class="sale-item"><i>✦</i><em>מבצע ל-24 שעות בלבד</em><i>✦</i><span>555 ₪ במקום 888 ₪</span><i>✦</i><span>מבצע אקסלוסיבי</span><i>✦</i></span>
+    <span class="sale-item"><i>✦</i><em>מבצע מטורף · 1+1</em><i>✦</i><span>520 ₪ במקום 888 ₪</span><i>✦</i><span>קורס שלם במתנה</span><i>✦</i><em>עד מחר 12:00</em><i>✦</i><span>או ל-25 הראשונות</span><i>✦</i></span>
+    <span class="sale-item"><i>✦</i><em>מבצע מטורף · 1+1</em><i>✦</i><span>520 ₪ במקום 888 ₪</span><i>✦</i><span>קורס שלם במתנה</span><i>✦</i><em>עד מחר 12:00</em><i>✦</i><span>או ל-25 הראשונות</span><i>✦</i></span>
   </div>
-  <span class="sr" style="position:absolute;left:-9999px">מבצע ל-24 שעות בלבד: 555 שקלים במקום 888 שקלים. מבצע אקסלוסיבי.</span>
+  <span class="sr" style="position:absolute;left:-9999px">מבצע מטורף: 520 שקלים במקום 888 שקלים, וקורס עוצמה פנימית במתנה. בתוקף עד מחר ב-12:00 או ל-25 הנשים הראשונות שרוכשות.</span>
 </div>
 <main id="main">
 <section class="hero">
@@ -360,6 +400,15 @@
 
     <a class="btn inline" href="#join">אני רוצה להיכנס לממלכה</a>
     <p class="proof">מעל 60 נשים כבר עברו את "קוד הכסף" · גישה מיידית · בקצב שלך</p>
+
+    <div class="mega sale-only">
+      <span class="mega-tag">מבצע מטורף · לא יוארך</span>
+      <p class="mega-h">קונות אחד,<br><em>מקבלות שניים.</em></p>
+      <p class="mega-sub">ממלכת הכסף + קורס "עוצמה פנימית" במתנה</p>
+      <p class="mega-price"><s>888 ₪</s><b>520 ₪</b></p>
+      <p class="mega-clock" role="timer" aria-label="הזמן שנשאר למבצע">נגמר בעוד <b data-t="full">00:00:00</b></p>
+      <p class="mega-cond">בתוקף עד מחר ב-12:00 <strong>או</strong> ל-25 הנשים הראשונות שרוכשות, מה שקורה קודם.</p>
+    </div>
   </div>
 </section>
 
@@ -809,6 +858,30 @@
   </div>
 </section>
 
+<!-- GIFT: 1+1 -->
+<section class="gift sale-only" id="gift">
+  <div class="wrap">
+    <p class="eyebrow rv">מתנה בלעדית, רק במבצע</p>
+    <h2 class="rv">קורס שלם במתנה:<br><span class="gold">עוצמה פנימית</span></h2>
+    <div class="duo rv" role="img" aria-label="ממלכת הכסף ועוד קורס עוצמה פנימית במתנה">
+      <div class="cv"><div class="arch"><img src="assets/noya.jpg" width="1100" height="880" alt="" loading="lazy"></div><div class="ct"><small>הקורס של נויה ברטימור</small><b>ממלכת<br>הכסף</b></div></div>
+      <span class="plus" aria-hidden="true">+</span>
+      <div class="cv gift"><span class="gift-rib">מתנה</span><div class="arch"><img src="assets/noya.jpg" width="1100" height="880" alt="" loading="lazy"></div><div class="ct"><small>הקורס של נויה ברטימור</small><b>עוצמה<br>פנימית</b></div></div>
+    </div>
+    <p class="t rv center" style="margin-top:26px">קורס שמעורר אותך <b style="color:var(--gold-l)">לעוצמה הנשית שלך</b>, ומדבר איתך על:</p>
+    <ul class="gift-list rv">
+      <li>ביטחון עצמי</li>
+      <li>אהבה עצמית</li>
+      <li>ערך עצמי</li>
+      <li>עוצמה נשית</li>
+    </ul>
+    <p class="t rv center">קודם מרפאות את הזהות השורדת בממלכת הכסף, ואז בונות את העוצמה הפנימית שמחזיקה את זה. <b style="color:var(--gold-l)">בלי תשלום נוסף.</b></p>
+    <p class="gift-cond rv">המתנה בתוקף עד מחר ב-12:00 <strong>או</strong> ל-25 הנשים הראשונות שרוכשות, מה שקורה קודם.</p>
+  </div>
+</section>
+
+<hr class="divider sale-only">
+
 <!-- 10. OFFER -->
 <section class="offer" id="offer">
   <div class="wrap">
@@ -823,12 +896,13 @@
       <li><span>חוברות עבודה ותרגילים</span><span class="v">שווי 700 ₪</span></li>
       <li><span>משחקי תודעה</span><span class="v">שווי 500 ₪</span></li>
       <li><span>ספריית ההעשרה</span><span class="v">שווי 900 ₪</span></li>
+      <li class="sale-only gift-row"><span>מתנה: קורס "עוצמה פנימית"</span><span class="v">מתנה</span></li>
     </ul>
     <div class="total rv"><span>סה"כ שווי:</span><s>5,250 ₪</s></div>
 
     <div class="box rv" id="join">
       <div class="sale-timer sale-only" id="sale-timer" role="timer" aria-label="הזמן שנשאר למבצע">
-        <span class="sale-tag">מבצע אקסלוסיבי · 24 שעות בלבד</span>
+        <span class="sale-tag">מבצע מטורף · 1+1 · לא יוארך</span>
         <span class="lbl">המבצע נגמר בעוד</span>
         <div class="sale-clock" aria-hidden="true">
           <span class="u"><b id="t-h">24</b><small>שעות</small></span><span class="sep">:</span>
@@ -839,25 +913,27 @@
       <div class="price">
         <div class="reg">ידע בשווי 5,250 ₪</div>
         <div class="sale-only">
-          <div class="rip" id="rip" role="img" aria-label="מחיר רגיל 888 שקלים. מחיר המבצע: 555 שקלים">
+          <div class="rip" id="rip" role="img" aria-label="מחיר רגיל 888 שקלים. מחיר המבצע: 520 שקלים">
             <span class="rip-label l-old">מחיר רגיל</span>
             <div class="rip-stage" aria-hidden="true">
               <span class="rip-half ra">888 ₪</span>
               <span class="rip-half rb">888 ₪</span>
               <svg class="rip-crack" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="-2,74 10,64 22,70 34,56 46,62 58,46 70,52 82,34 94,40 102,28" pathLength="100"/></svg>
-              <span class="rip-new">555 ₪</span>
+              <span class="rip-new">520 ₪</span>
             </div>
-            <span class="rip-label l-new">מחיר המבצע</span>
+            <span class="rip-label l-new">במקום 888 ₪, רק עכשיו</span>
           </div>
-          <p class="sale-note"><b>אין צורך בקוד קופון.</b> ההנחה כבר קיימת במחיר. זה מבצע אקסלוסיבי, ל-24 שעות בלבד.</p>
-          <p class="inst">או 185 ₪ ב-3 תשלומים</p>
+          <p class="pay2">או <b>2 תשלומים של 260 ₪</b></p>
+          <p class="gift-line">+ קורס "עוצמה פנימית" במתנה</p>
+          <p class="cond">בתוקף עד מחר ב-12:00 <strong>או</strong> ל-25 הנשים הראשונות שרוכשות, מה שקורה קודם.</p>
+          <p class="sale-note"><b>אין צורך בקוד קופון.</b> ההנחה כבר קיימת במחיר. זה מבצע אקסלוסיבי.</p>
         </div>
         <div class="reg-only">
           <span class="now">888 ₪</span>
           <p class="inst">או 296 ₪ ב-3 תשלומים</p>
         </div>
       </div>
-      <a class="btn buy" id="buy" href="https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ" rel="noopener">אני נכנסת לממלכה<small>גישה מיידית · <span class="sale-only">555 ₪ במקום 888 ₪</span><span class="reg-only">888 ₪</span></small></a>
+      <a class="btn buy" id="buy" href="https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ" rel="noopener">אני נכנסת לממלכה<small>גישה מיידית · <span class="sale-only">520 ₪ במקום 888 ₪ · קורס מתנה</span><span class="reg-only">888 ₪</span></small></a>
       <p class="fine2">כולל מע״מ · כל הממלכה נפתחת לך מיד · גישה לכל החיים · מכל מקום, בקצב שלך</p>
       <p class="fine2 terms-line">בלחיצה על הכפתור את מאשרת את <a href="terms.html">התקנון</a>: <strong>מרגע הרכישה לא ניתן לקבל החזר</strong>, והמוצר אינו מתחייב לתוצאה ואינו מחליף ייעוץ מקצועי.</p>
     </div>
@@ -961,7 +1037,7 @@
 </footer>
 
 
-<div class="sticky" id="sticky"><a class="btn" href="#join">אני נכנסת לממלכה<small><span class="sale-only">מבצע 24 שעות · 555 ₪ במקום 888 ₪</span><span class="reg-only">888 ₪ · או 296 ₪ ב-3 תשלומים</span></small></a></div>
+<div class="sticky" id="sticky"><a class="btn" href="#join">אני נכנסת לממלכה<small><span class="sale-only">מבצע 1+1 · 520 ₪ במקום 888 ₪ · נגמר בעוד <b data-t="full">00:00:00</b></span><span class="reg-only">888 ₪ · או 296 ₪ ב-3 תשלומים</span></small></a></div>
 
 <script>
   // reveal on scroll
@@ -1001,23 +1077,27 @@
 
   // ---- מבצע: למלא ----
   // תאריך ושעת סיום המבצע (לפי שעון UTC). אחרי הזמן הזה הדף חוזר אוטומטית למחיר הרגיל, 888 ₪.
-  var SALE_END = "2026-10-26T08:45:00Z";
+  var SALE_END = "2026-11-03T10:00:00Z";   // 03.11.2026 12:00 שעון ישראל
+  // להפסקה מיידית של המבצע בדף (למשל כשנרשמו 25 נשים): לשנות ל-false
+  var SALE_ACTIVE = true;
   // קישורי התשלום ב-GROW: מחיר מבצע (555 ₪) ומחיר רגיל (888 ₪). חשוב שיתאימו למחיר שמוגדר בכל קישור.
   var PAY_SALE = "https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ";
   var PAY_REGULAR = "https://pay.grow.link/NjM1MDI~cb0a01f50d9418cecfa27849cfd9fcdb-Mzk4OTAwMQ";
 
   (function(){
     var end=Date.parse(SALE_END),root=document.documentElement,buy=document.getElementById('buy');
-    var h=document.getElementById('t-h'),m=document.getElementById('t-m'),s=document.getElementById('t-s');
+    var hh=document.getElementById('t-h'),mm=document.getElementById('t-m'),ss=document.getElementById('t-s');
+    var fulls=[].slice.call(document.querySelectorAll('[data-t="full"]'));
     function over(){root.classList.add('sale-over');if(buy)buy.href=PAY_REGULAR;var r=document.getElementById('rip');if(r)r.classList.add('go','done')}
-    if(!end||Date.now()>=end){over();return}
+    if(!SALE_ACTIVE||!end||Date.now()>=end){over();return}
     if(buy)buy.href=PAY_SALE;
     function pad(n){return (n<10?'0':'')+n}
     function tick(){
       var left=end-Date.now();
       if(left<=0){clearInterval(iv);over();return}
-      var tot=Math.floor(left/1000);
-      h.textContent=pad(Math.floor(tot/3600));m.textContent=pad(Math.floor(tot%3600/60));s.textContent=pad(tot%60);
+      var tot=Math.floor(left/1000),H=pad(Math.floor(tot/3600)),M=pad(Math.floor(tot%3600/60)),S=pad(tot%60);
+      if(hh){hh.textContent=H;mm.textContent=M;ss.textContent=S}
+      fulls.forEach(function(el){el.textContent=H+':'+M+':'+S});
     }
     var iv=setInterval(tick,1000);tick();
     var r=document.getElementById('rip');
